@@ -1,0 +1,179 @@
+{% extends 'store/base' %}
+{{title}}
+
+{% block content %}
+
+<script type="text/javascript">
+
+    var calculateTotal = function calculateTotal() {
+
+        var q_input = document.getElementById('qty').value;
+        var p_input = document.getElementById('price').value;
+        var result = parseInt(q_input) * parseInt(p_input);
+
+        if (!isNaN(result)) {
+            document.getElementById('total').value = parseInt(result);
+        } else {
+            document.getElementById('total').value = 0;
+        }
+
+    }
+
+</script>
+{% if message %}
+<script>alert('{{ message }}');</script>
+{% endif %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl-6 col-md-7">
+            <div class="container px-3">
+
+
+                <P class="h2 rounded-2 bg-light  text-center pb-1 text-capitalize text-black-75"> Add New Item</P>
+
+
+                <form action={% url 'store:add_item' %} method="post" class="form ">
+                    {% csrf_token %}
+                    <!-- item name -->
+                    <div class="input-group mb-2 py-2">
+                        <span class="input-group-text w-50">Item Name</span>
+                        <input class="form-control text-bg-primary bg-opacity-10" type="text" name="item_name"
+                            placeholder="Ex: tent" required>
+                    </div>
+
+                    <!-- item quantity -->
+                    <div class=" input-group mb-2 py-2">
+                        <span class="input-group-text w-50">Item quantity</span>
+                        <input id="qty" class="form-control text-bg-primary bg-opacity-10 text-black-50" type="number"
+                            onchange='calculateTotal()' name="item_qty" min="1" placeholder="0" required>
+                    </div>
+
+                    <!-- item donour -->
+                    <!-- <div class=" input-group mb-2 py-2 ">
+                        <span class="input-group-text w-50">Donour Name</span>
+                        <input class="form-control bg-opacity-10" type="text" name="isdonation"
+                            placeholder="Ex: Kusal Mendis">
+                    </div> -->
+
+                    <!-- item  expiry date -->
+                    <!-- <div class=" input-group mb-2 py-2 ">
+                        <span class="input-group-text w-50">Item expiry date</span>
+                        <input class="form-control" type="date" name="expiry" placeholder="">
+                    </div> -->
+
+                    <!-- item measurement unit -->
+                    <div class=" input-group mb-2 py-2 ">
+                        <span class="input-group-text ">Item measurement unit</span>
+                        <input class="form-control text-bg-primary bg-opacity-10" type="text" name="item_unit"
+                            placeholder="Ex: ml">
+                    </div>
+
+                    <!-- item  market price of a unit -->
+                    <div class=" input-group mb-2 py-2 ">
+                        <span class="input-group-text">Unit market price</span>
+                        <span class="input-group-text">Rs.</span>
+                        <input id="price" class="form-control text-bg-primary bg-opacity-10" type="number"
+                            name="item_price" placeholder="0" onchange='calculateTotal()'>
+                    </div>
+
+                    <!-- item  total price -->
+                    <div class=" input-group mb-2 py-2">
+                        <span class="input-group-text bg-info border-0 ">Total price</span>
+                        <span class="input-group-text bg-info border-0">Rs.</span>
+                        <input id="total" type="number" class="form-control bg-info text-black border-0" name="total"
+                            readonly>
+                    </div>
+                    <div class="form-group text-center m-1 py-2">
+                        <div class="col-sm-offset-2">
+                            <button class="btn btn-primary btn-lg" type="submit">Add Item</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <div class="col-xl-6 col-md-5">
+            <div class="row">
+                <div class="row">
+                    <div class="container px-5">
+                        <P class="h2 rounded-2 bg-light  text-center pb-1 text-capitalize text-black-75"> Add Item
+                            to Broken Items
+                        </P>
+
+
+                        <form action={% url 'store:add_broken' %} method="post" class="form ">
+                            {% csrf_token %}
+                            <!-- item name -->
+                            <div class="input-group mb-2 py-2">
+                                <span class="input-group-text w-50">Item Code</span>
+                                <input class="form-control text-bg-primary bg-opacity-10" type="number" name="item_code"
+                                    placeholder="Ex: 001" min="1" required>
+                            </div>
+
+                            <!-- item quantity -->
+                            <div class=" input-group mb-2 py-2">
+                                <span class="input-group-text w-50">Item quantity</span>
+                                <input class="form-control text-bg-primary bg-opacity-10 text-black-50" type="number"
+                                    name="item_qty" min="1" placeholder="0" required>
+                            </div>
+
+                            <div class="form-group text-center m-1 py-2">
+                                <div class="col-sm-offset-2">
+
+                                    <button class="btn btn-primary btn-lg" type="submit">Add to broken</button>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="container px-5">
+
+                        <P class="h2 rounded-2 bg-light  text-center pb-1 text-capitalize text-black-75"> Return
+                            From Broken Items
+                        </P>
+
+
+                        <form action={% url 'store:add_repaired' %} method="post" class="form">
+                            {% csrf_token %}
+                            <!-- item name -->
+                            <div class="input-group mb-2 py-2">
+                                <span class="input-group-text w-50">Item Code</span>
+                                <input class="form-control text-bg-primary bg-opacity-10" type="number" name="item_id"
+                                    placeholder="Ex: 001" required>
+                            </div>
+
+                            <!-- item quantity -->
+                            <div class=" input-group mb-2 py-2">
+                                <span class="input-group-text w-50">Item quantity</span>
+                                <input class="form-control text-bg-primary bg-opacity-10 text-black-50" type="number"
+                                    name="item_qty" min="1" placeholder="0" min="1" required>
+                            </div>
+
+                            <div class="form-group text-center m-1 py-2">
+                                <div class="col-sm-offset-2">
+                                    <button class="btn btn-primary btn-lg" value="" type="submit">Mark Repaired</button>
+
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Bootstrap JS -->
+<script src="https://www.markuptag.com/bootstrap/5/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+
+</html>

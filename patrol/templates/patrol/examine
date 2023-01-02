@@ -1,0 +1,133 @@
+{% include "patrol/base" %}
+<!-- Bootstrap JS -->
+<script src="https://www.markuptag.com/bootstrap/5/js/bootstrap.bundle.min.js"></script>
+
+<!-- select2 js -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.select2').select2();
+    });
+</script>
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+<div class="container">
+    <div class="row">
+        <div class="mx-auto d-block" style="width: 60%;">
+
+            <div class="mx-auto d-block">
+                <div class="row bg-success">
+
+                    <div id="minutes" class="col mx-auto text-center fw-bold rounded" style="font-size: 36px; "></div>
+                    <div class="col mx-auto text-center" style="font-size: 36px; ">:</div>
+                    <div id="seconds" class="col mx-auto fw-bold text-center" style="font-size: 36px; "></div>
+
+                </div>
+                <div class="row">
+                    <h1>{{profile.name}}</h1>
+                    {{ form.media }}
+                    <form action="" method="post" id="examine_form">
+                        {% csrf_token %}
+                        {{ form | crispy }}
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+
+                    <!-- Apply Requirement to profile script -->
+                    <script>
+                        user = document.getElementById('id_user').value
+                        examiner = document.getElementById('id_examiner').value
+                        requirement = document.getElementById('id_requirement').value
+
+                        const badgeForm = document.querySelector('#examine_form');
+
+                        badgeForm.addEventListener('submit', (event) => {
+                            event.preventDefault();
+
+                            const badgeFormData = new FormData(badgeForm);
+
+                            badgeFormData.append('user', user);
+                            badgeFormData.append('examiner', examiner);
+                            badgeFormData.append('requirement', requirement);
+
+                            badgeFormData.forEach((value, key) => {
+                                console.log(key + ': ' + value);
+                            });
+
+                            console.log(badgeFormData);
+
+                            fetch("{% url 'patrol:evaluate' %}", {
+                                method: 'POST',
+                                body: badgeFormData
+
+                            })
+                                .then((response) => response.json())
+                                .then((data) => {
+
+                                    console.log(data)
+
+                                    if (data.result == 'success') {
+                                        $('.modal-body').html('Form submission was successful!');
+                                        $('#modal-dialog').modal('show');
+                                        badgeForm.reset();
+
+                                    } else {
+
+                                        $('.modal-body').html('There was an error with the form submission.');
+                                        $('#modal-dialog').modal('show');
+                                    }
+
+                                });
+                        });
+
+                    </script>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Counter -->
+<script>
+    var sec = 0;
+    function pad(val) { return val > 9 ? val : "0" + val; }
+    setInterval(function () {
+        $("#seconds").html(pad(++sec % 60));
+        $("#minutes").html(pad(parseInt(sec / 60, 10)));
+    }, 1000);
+</script>
+
+<!-- close modal because I prevented default -->
+<script>
+    $(document).ready(function () {
+        $('#close-modal').on('click', function () {
+            $('#modal-dialog').modal('hide');
+        });
+    });
+</script>
+
+<!-- jason model dialog box -->
+<div class="modal" tabindex="-1" role="dialog" id="modal-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal content goes here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

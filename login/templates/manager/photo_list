@@ -1,0 +1,30 @@
+<style>
+    .card-footer-custom {
+        position: absolute;
+        bottom: 0;
+    }
+</style>
+
+<div class="row row-cols-sm-1 row-cols-md-2 row-cols-lg-2 g-4">
+    {% for photo in photos %}
+    <div class="col">
+        <div class="card h-100 w-100 p-2 text-truncate" style="min-width:200px">
+            <div class="aspect-ratio">
+                <img src="{{ photo.file.url }}" style="aspect-ratio: auto ;" class="card-img-top w-100" alt="image">
+            </div>
+            <div class="card-body">
+                <h6 class="card-title">{{photo.title}}</h6>
+                <p class="card-text">
+                    {{photo.description}}
+                    <br>
+                    <small> at
+                        {{photo.location}}
+                        on
+                        {{photo.date}}
+                    </small>
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

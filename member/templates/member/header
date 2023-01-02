@@ -1,0 +1,48 @@
+{% load static %}
+<nav class="top-nav navbar navbar-expand-lg navbar-dark m-0 ">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="{% static 'img/symbol.png' %}" alt="RCSG" style="width:40px;" class="rounded-pill">
+
+        </a>
+        <div class="d-flex">
+            <div class="dropdown">
+                <button class="btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Position
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                    <li><a class="dropdown-item small" href="{% url 'member:profile' %}">Member</a></li>
+
+                    {% if request.session.is_secretary %}
+                    <li><a class="dropdown-item small" href="{% url 'manager:mange' %}">Secretary</a></li>
+
+                    {% elif request.session.is_storekeeper %}
+                    <li><a class="dropdown-item small" href="{% url 'member:profile' %} ">StoreKeeper</a></li>
+
+                    {% elif request.session.is_admin %}
+                    <li><a class="dropdown-item small" href=" ">Admin</a></li>
+                    {% endif %}
+                </ul>
+
+            </div>
+            <div class="dropdown">
+                <button class="btn-sm btn-light dropdown-toggle ms-3" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Menu
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item small" href="#">Media</a></li>
+                    <li><a class="dropdown-item small" href="#">Product Two</a></li>
+
+                    <li><a class="dropdown-item small" href={% url 'home:logout' %}>Log out</a></li>
+
+
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    </div>
+</nav>

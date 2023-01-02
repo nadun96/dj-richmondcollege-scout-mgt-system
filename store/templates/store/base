@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}}</title>
+
+    <!-- title icon -->
+    <link
+        href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA+vf5AK0HVwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiIiIiAAAAAiIhEiIgAAAiIiESIiIgAiIiEREiIiACIiIhEiIiIAIhIhERIhIgIhIiEREiISIiESEhEhIRIiISESESESEiIhESIRIhESICIiIRESIiIAIiIhERIiIgAiIiIRIiIiAAIiIhEiIiAAACIiIiIiAAAAACIiIgAADwDwAA4AcAAMABAACAAQAAgAEAAIABAAAAAAAAAAAAAAAAAAAAAAAAgAEAAIABAACAAQAAwAMAAOAHAAD4HwAA"
+        rel="icon" type="image/x-icon" />
+
+    <!-- font awesome css -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://www.markuptag.com/bootstrap/5/css/bootstrap.min.css" />
+
+
+    {% load static %}
+    <!-- other css -->
+    <link rel="stylesheet" href="{% static 'css/storenavbar.css' %}">
+
+</head>
+
+<body>
+
+    <!-- header -->
+    <header class="sticky-top">
+
+        {% include 'store/header' %}
+
+        {% include 'store/childnav' %}
+
+    </header>
+
+    <!-- content -->
+    {% block content %}
+
+    {% endblock %}
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://www.markuptag.com/bootstrap/5/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

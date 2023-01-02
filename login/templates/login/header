@@ -1,0 +1,32 @@
+{% load static %}
+<header>
+    <!-- Navbar for welcome page -->
+    <nav class="navbar navbar-expand-sm navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'img/symbol.png' %}" alt="RCSG" style="width:40px;" class="rounded-pill">
+            </a>
+            <a class="navbar-brand font-monospace fs-4  text-white fw-semibold  rounded-2 px-2" href="#">R C S G</a>
+            <button class="navbar-toggler text-black" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="nav navbar-nav navbar-center">
+                    <li class="nav-item">
+                        <a class="nav-link fs-6 fw-semibold font-monospace text-white" href={% url 'home:home' %}>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-6  fw-semibold  font-monospace text-white " 
+                        href={% url 'home:events' %}>Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-6  fw-semibold  font-monospace text-white " 
+                        href={% url 'home:requirements' %}>Requirements</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- End of navbar -->
+</header>

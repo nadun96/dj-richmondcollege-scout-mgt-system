@@ -1,0 +1,442 @@
+{% extends 'manager/base' %}
+{{title}}
+{% block content %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+<script>
+
+    /**$(document).ready(function () {
+        $('select').selectize({
+            sortField: 'text'
+        });
+    });**/
+
+    $(document).ready(function () {
+        $('').select2();
+    });
+
+    $(document).ready(function () {
+        $('#id_role').select2();
+    });
+
+
+</script>
+<div class="container">
+
+    <div class="row">
+
+        <!-- patrol form pane -->
+        <div class="col-lg-4 col-md-4 col-sm-12">
+
+            <div class="row px-2">
+
+                <!-- Add patrol form -->
+
+                <div class="bg-info px-4 py-2 rounded-2">
+                    <h3 class="text-center ">Add Patrol</h3>
+                </div>
+                <form action="" method="post" class="form my-4 px-2  rounded py-2" enctype="multipart/form-data"
+                    id="add_patrol_form" onsubmit="">
+                    {% csrf_token %}
+                    {{add_patrol|crispy}}
+                    <input type="submit" value="Add" class="btn btn-primary">
+
+                </form>
+
+
+                <!-- Add patrol form script to save data -->
+                <script>
+                    const addPatrolForm = document.querySelector('#add_patrol_form');
+
+                    addPatrolForm.addEventListener('submit', (event) => {
+                        event.preventDefault();
+
+                        const addPatrolFormData = new FormData(addPatrolForm);
+
+                        addPatrolFormData.forEach((value, key) => {
+                            console.log(key + ': ' + value);
+                        });
+
+                        console.log(addPatrolFormData);
+
+                        fetch("{% url 'manager:add_patrol' %}", {
+                            method: 'POST',
+                            body: addPatrolFormData
+
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+
+                                console.log(data);
+
+                                if (data.result == 'success') {
+                                    $('.modal-body').html('Form submission was successful!');
+                                    $('#modal-dialog').modal('show');
+                                    addPatrolForm.reset();
+                                    $.ajax({
+                                        url: "{% url 'manager:get_patrol'  %}",
+                                        type: 'GET',
+                                        dataType: 'json',
+                                        success: function (data) {
+
+                                            console.log(data)
+
+                                            var table = $('#patrols-table tbody');
+                                            index = data.length - 1;
+
+                                            var row = '<tr>';
+                                            row += '<td>' + data[index].name + '</td>';
+                                            row += '</tr>';
+                                            table.append(row);
+
+                                        }
+                                    });
+
+
+
+                                } else {
+
+                                    $('.modal-body').html('There was an error with the form submission.');
+                                    $('#modal-dialog').modal('show');
+                                }
+
+                            });
+                    });
+
+                </script>
+
+                <!-- Update patrol table script -->
+
+                <script>
+                    {% comment %}
+
+                    /**
+                    $(document).ready(function () {
+                
+                        $.ajax({
+                            type: "GET",
+                            url: "{% url 'manager:get_profiles' %}",
+                            dataType: "json",
+                            success: function (response) {
+                                // Update the HTML table with the new data
+                                $("#patrols-table tbody").html("");
+                                for (var i = 0; i < response.patrol.length; i++) {
+                                    var item = response.patrol[i];
+                                    var row = "<tr><td>" + item.id + "</td><td>" + patrol.name + "</td><td>" + patrol.age + "</td></tr>";
+                                    $("#dataTable tbody").append(row);
+                                }
+                            }
+                        });
+                
+                    });
+                    **/
+                    {% endcomment %}
+                </script>
+
+            </div>
+
+
+            <div class="row px-2">
+                <!-- End patrol form -->
+
+                <div class="bg-info px-4 py-2 rounded-2">
+                    <h3 class="text-center">End Patrol</h3>
+                </div>
+
+                <form action="" method="post" class="form my-4 px-2  rounded py-2" enctype="multipart/form-data"
+                    id="end_patrol_form">
+                    {% csrf_token %}
+                    {{end_patrol|crispy}}
+                    <input type="submit" value="Delete" class="btn btn-primary">
+
+                </form>
+
+                <script>
+
+                    const endPatrolForm = document.querySelector('#end_patrol_form');
+
+                    endPatrolForm.addEventListener('submit', (event) => {
+
+
+                        event.preventDefault();
+
+                        const endPatrolFormData = new FormData(endPatrolForm);
+
+                        endPatrolFormData.forEach((value, key) => {
+                            console.log(key + ': ' + value);
+                        });
+
+                        console.log(endPatrolFormData);
+
+
+                        fetch("{% url 'manager:del_patrol' %}", {
+                            method: 'POST',
+                            body: endPatrolFormData
+
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+
+                                console.log(data);
+
+                                if (data.result == 'success') {
+                                    $('.modal-body').html('Form submission was successful!');
+                                    $('#modal-dialog').modal('show');
+                                    endPatrolForm.reset();
+
+
+
+                                } else {
+
+                                    $('.modal-body').html('There was an error with the form submission.');
+                                    $('#modal-dialog').modal('show');
+                                }
+
+                            });
+
+
+                    });
+
+                </script>
+
+
+            </div>
+
+
+
+        </div>
+
+        <!-- member form pane -->
+        <div class="col-lg-4 col-md-4 col-sm-12">
+
+            <!-- Assign patrol form -->
+
+            <div class="bg-info px-4 py-2 rounded-2">
+                <h3 class="text-center ">Assign Patrol</h3>
+            </div>
+
+            <form action="" method="post" class="form my-4 px-2  rounded py-2" enctype="multipart/form-data"
+                id="assign_patrol_form" onsubmit="">
+
+                {% csrf_token %}
+                {{assign_patrol|crispy}}
+
+                <input type="submit" value="Assign" class="btn btn-primary">
+
+            </form>
+
+            <script>
+                const assignPatrolForm = document.querySelector('#assign_patrol_form');
+
+                assignPatrolForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+
+                    const assignPatrolFormData = new FormData(assignPatrolForm);
+
+                    assignPatrolFormData.forEach((value, key) => {
+                        console.log(key + ': ' + value);
+                    });
+
+                    console.log(assignPatrolFormData);
+
+                    fetch("{% url 'manager:assign_patrol' %}", {
+                        method: 'POST',
+                        body: assignPatrolFormData
+
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+
+                            console.log(data);
+
+                            if (data.result == 'success') {
+                                $('.modal-body').html('Form submission was successful!');
+                                $('#modal-dialog').modal('show');
+                                assignPatrolForm.reset();
+                                {% comment %}
+                                $.ajax({
+                                    url: "{% url 'manager:get_profiles'  %}",
+                                    type: 'GET',
+                                    dataType: 'json',
+                                    success: function (data) {
+
+                                        console.log(data)
+
+                                        var table = $('#profiles-table tbody');
+                                        index = data.length - 1;
+
+                                        var row = '<tr>';
+                                        row += '<td>' + data[index].user + '</td>';
+                                        row += '<td>' + data[index].patrol + '</td>';
+                                        row += '</tr>';
+                                        table.append(row);
+
+                                    }
+                                });
+                                {% endcomment %}
+
+
+                            } else {
+
+                                $('.modal-body').html('There was an error with the form submission.');
+                                $('#modal-dialog').modal('show');
+                            }
+
+                        });
+
+
+                });
+            </script>
+
+        </div>
+
+        <!-- view pane tabs -->
+        <div class="col-lg-4 col-md-4 col-sm-12">
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="patrols-tab" data-bs-toggle="tab"
+                        data-bs-target="#patrols-tab-pane" type="button" role="tab" aria-controls="home"
+                        aria-selected="true">Patrols</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#members-tab-pane"
+                        type="button" role="tab" aria-controls="profile" aria-selected="false">Assigned</button>
+                </li>
+
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="patrols-tab-pane" role="tabpanel" aria-labelledby="home-tab">
+
+                    <div class="container">
+                        <div class="container-fluid py-3 border-bottom">
+                            <div class="row">
+                                <div class="col-sm my-1">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control rounded-left search-input"
+                                            placeholder="Search" aria-label="Search" data-table="patrols-list"
+                                            aria-describedby="search-addon" />
+                                        <button type="button" class="btn btn-outline-primary ">Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <table id="patrols-table"
+                            class="table table-striped rounded-2 table-bordered sortable my-3 p-2 patrols-list">
+                            <thead class="bg-success">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Patrol</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for patrol in patrols %}
+                                <tr>
+
+                                    <td>{{patrol.id}}</td>
+                                    <td>{{patrol.name}}</td>
+
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                </div>
+                <div class="tab-pane fade" id="members-tab-pane" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="container">
+
+                        <div class="row">
+                            <div class="container-fluid py-3 border-bottom">
+                                <div class="row">
+                                    <div class="col-sm my-1">
+                                        <div class="input-group">
+                                            <input type="search" class="form-control rounded-left search-input"
+                                                placeholder="Search" aria-label="Search" data-table="profiles-list"
+                                                aria-describedby="search-addon" />
+                                            <button type="button" class="btn btn-outline-primary ">Filter</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table id="profiles-table"
+                                class=" table table-striped rounded-2 table-bordered sortable my-3 p-2 border-5 profiles-list">
+
+                                <thead class="table-header bg-success">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Member</th>
+                                        <th>Patrol</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for profile in profiles %}
+                                    <tr>
+
+                                        <td>{{profile.id}}</td>
+                                        <td>{{profile.user}}</td>
+                                        <td>{{profile.patrol}}</td>
+
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+<!-- close modal because I prevented default -->
+<script>
+    $(document).ready(function () {
+        $('#close-modal').on('click', function () {
+            $('#modal-dialog').modal('hide');
+        });
+    });
+</script>
+
+<!-- jason model dialog box -->
+<div class="modal" tabindex="-1" role="dialog" id="modal-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal content goes here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock %}

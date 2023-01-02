@@ -1,0 +1,414 @@
+{% extends 'manager/base' %}
+{{title}}
+{% block content %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+
+<script>
+
+    $(document).ready(function () {
+        $('').select2();
+    });
+
+    $(document).ready(function () {
+        $('#id_patrol').select2();
+    });
+
+    /** $(document).ready(function () {
+         $('select').selectize({
+             sortField: 'text'
+         });
+     });**/
+
+
+</script>
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="row">
+                <div class="col">
+
+                    <div class="bg-info px-4 py-2 rounded-2">
+                        <h3 class="text-center">Add Badge</h3>
+                    </div>
+
+                    <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data"
+                        id="add_badge_form">
+                        {% csrf_token %}
+                        {{add_badge|crispy}}
+                        <input type="submit" value="Submit" class="btn btn-primary">
+                    </form>
+
+                </div>
+
+                <script>
+
+                    const addBadgeForm = document.querySelector('#add_badge_form');
+
+                    addBadgeForm.addEventListener('submit', (event) => {
+
+
+                        event.preventDefault();
+
+                        const addBadgeFormData = new FormData(addBadgeForm);
+
+                        //addBadgeFormData.forEach((value, key) => {
+                        //   console.log(key + ': ' + value);
+                        //});
+
+                        //console.log(addBadgeFormData);
+
+
+                        fetch("{% url 'manager:add_badge' %}", {
+                            method: 'POST',
+                            body: addBadgeFormData
+
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+
+                                //console.log(data);
+
+                                if (data.result == 'success') {
+                                    $('.modal-body').html('Form submission was successful!');
+                                    $('#modal-dialog').modal('show');
+
+                                    addBadgeForm.reset();
+
+                                    $.ajax({
+                                        url: "{% url 'manager:get_badges'  %}",
+                                        type: 'GET',
+                                        dataType: 'json',
+                                        success: function (data) {
+
+                                            //console.log(data)
+
+                                            var table = $('#badges-table tbody');
+                                            index = data.length - 1;
+
+                                            var row = '<tr>';
+                                            row += '<td>' + data[index].level + '</td>';
+                                            row += '<td>' + data[index].name + '</td>';
+                                            row += '<td>' + data[index].description + '</td>';
+                                            row += '</tr>';
+                                            table.append(row);
+
+                                        }
+                                    });
+
+                                } else {
+
+                                    $('.modal-body').html('There was an error with the form submission.');
+                                    $('#modal-dialog').modal('show');
+                                }
+                            });
+
+
+                    });
+
+                    //load badges ajax
+                    /*
+                    $.ajax({
+                        url: "{% url 'manager:get_badges'  %}",
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+
+                            // console.log(data)
+
+                            var table = $('#badges-table tbody');
+                            for (var i = 0; i < data.length; i++) {
+                                var row = '<tr>';
+                                row += '<td>' + data[i].level + '</td>';
+                                row += '<td>' + data[i].name + '</td>';
+                                row += '<td>' + data[i].description + '</td>';
+                                row += '</tr>';
+                                table.append(row);
+                            }
+                        }
+                    });
+                    */
+
+
+                </script>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="bg-info px-4 py-2 rounded-2">
+                        <h3 class="text-center">Add Requirement</h3>
+                    </div>
+                    <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data"
+                        id="add_requirement_form">
+                        {% csrf_token %}
+                        {{add_requirement|crispy}}
+                        <input type="submit" value="Submit" class="btn btn-primary">
+                    </form>
+
+                    <!-- requirement form on submit script  -->
+
+                    <script>
+
+                        const addRequirementForm = document.querySelector('#add_requirement_form');
+
+                        addRequirementForm.addEventListener('submit', (event) => {
+
+
+                            event.preventDefault();
+
+                            const addRequirementFormData = new FormData(addRequirementForm);
+
+                            addRequirementFormData.forEach((value, key) => {
+                                console.log(key + ': ' + value);
+                            });
+
+                            console.log(addRequirementFormData);
+
+
+                            fetch("{% url 'manager:add_requirement' %}", {
+                                method: 'POST',
+                                body: addRequirementFormData
+
+                            })
+                                .then((response) => response.json())
+                                .then((data) => {
+
+                                    console.log(data);
+
+                                    if (data.result == 'success') {
+                                        $('.modal-body').html('Form submission was successful!');
+                                        $('#modal-dialog').modal('show');
+
+                                        addRequirementForm.reset();
+
+                                        $.ajax({
+                                            url: "{% url 'manager:get_requirements'  %}",
+                                            type: 'GET',
+                                            dataType: 'json',
+                                            success: function (data) {
+
+                                                console.log(data)
+
+                                                var table = $('#requirements-table tbody');
+                                                index = data.length - 1;
+
+                                                var row = '<tr>';
+                                                row += '<td>' + data[index].id + '</td>';
+                                                row += '<td>' + data[index].badge__name + '</td>';
+                                                row += '<td>' + data[index].number + '</td>';
+                                                row += '<td>' + data[index].name + '</td>';
+                                                row += '<td>' + data[index].description + '</td>';
+                                                row += '</tr>';
+                                                table.append(row);
+
+                                            }
+                                        });
+
+                                    } else {
+
+                                        $('.modal-body').html('There was an error with the form submission.');
+                                        $('#modal-dialog').modal('show');
+                                    }
+
+                                });
+
+                        });
+
+                        /*
+                        $.ajax({
+                             url: "{% url 'manager:get_requirements'  %}",
+                             type: 'GET',
+                             dataType: 'json',
+                             success: function (data) {
+ 
+                                 console.log(data)
+ 
+                                 var table = $('#requirements-table tbody');
+                                 for (var i = 0; i < data.length; i++) {
+                                     var row = '<tr>';
+                                     row += '<td>' + data[i].id + '</td>';
+                                     row += '<td>' + data[i].badge__name + '</td>';
+                                     row += '<td>' + data[i].number + '</td>';
+                                     row += '<td>' + data[i].name + '</td>';
+                                     row += '<td>' + data[i].description + '</td>';
+                                     row += '</tr>';
+                                     table.append(row);
+ 
+                                 }
+                             }
+ 
+                         });
+                         */
+
+                    </script>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- tab nav buttons -->
+        <div class="col-lg-8 col-md-12 col-sm-12">
+
+            <ul class="nav nav-tabs" id="badges-tabs" role="tablist">
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="badges-tab" data-bs-toggle="tab"
+                        data-bs-target="#badges-tab-content" type="button" role="tab" aria-controls="badges-tab"
+                        aria-selected="true">Badges</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="requirements-tab" data-bs-toggle="tab"
+                        data-bs-target="#requirements-tab-content" type="button" role="tab"
+                        aria-controls="requirements-tab" aria-selected="false">Requirements</button>
+                </li>
+
+            </ul>
+
+            <!--  tab for badges -->
+            <div class="tab-content" id="tab-content">
+                <div class="tab-pane fade show active" id="badges-tab-content" role="tabpanel"
+                    aria-labelledby="badges-tab-content">
+
+                    <div class="container">
+                        <div class="container-fluid py-3 border-bottom">
+                            <div class="row">
+                                <div class="col-sm my-1">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control rounded-left search-input"
+                                            placeholder="Search" aria-label="Search" data-table="badges-table-cls"
+                                            aria-describedby="search-addon" />
+                                        <button type="button" class="btn btn-outline-primary ">Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+
+                                </div>
+                            </div>
+                            <div class="table-responsive my-2 p-1">
+                                <table
+                                    class="table table-striped-columns table-striped table-bordered sortable badges-table-cls"
+                                    id="badges-table">
+                                    <thead class="bg-success">
+                                        <tr>
+                                            <th>level</th>
+                                            <th>name</th>
+                                            <th>description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for badge in badges %}
+                                        <tr>
+                                            <td> {{badge.level}} </td>
+                                            <td> {{badge.name}} </td>
+                                            <td> {{badge.description}} </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--   tab for requirements -->
+                <div class="tab-pane fade" id="requirements-tab-content" role="tabpanel"
+                    aria-labelledby="requirements-tab-content">
+
+                    <div class="container">
+                        <div class="container-fluid py-3 border-bottom">
+                            <div class="row">
+                                <div class="col-sm my-1">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control rounded-left search-input"
+                                            placeholder="Search" aria-label="Search" data-table="requirements-table-cls"
+                                            aria-describedby="search-addon" />
+                                        <button type="button" class="btn btn-outline-primary ">Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="table-responsive my-2 p-1">
+                                <table
+                                    class="table table-striped-columns table-striped table-bordered sortable requirements-table-cls"
+                                    id="requirements-table">
+                                    <thead class="bg-success">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>badge</th>
+                                            <th>number</th>
+                                            <th>name</th>
+                                            <th>description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for requirement in requirements %}
+                                        <tr>
+
+                                            <td>{{requirement.id}}</td>
+                                            <td>{{requirement.badge__name }}</td>
+                                            <td>{{requirement.number }}</td>
+                                            <td>{{requirement.name}}</td>
+                                            <td>{{requirement.description}}</td>
+
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+<!-- close modal because I prevented default -->
+<script>
+    $(document).ready(function () {
+        $('#close-modal').on('click', function () {
+            $('#modal-dialog').modal('hide');
+        });
+    });
+</script>
+
+<!-- jason model dialog box -->
+<div class="modal" tabindex="-1" role="dialog" id="modal-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal content goes here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock %}

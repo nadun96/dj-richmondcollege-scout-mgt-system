@@ -1,0 +1,57 @@
+<!-- Footer -->
+<footer class="bg-primary text-center text-white ftc">
+    <!-- Grid container -->
+    <div class="container p-4">
+        <!-- Section: Links -->
+        <section class="">
+            <!--Grid row-->
+            <div class="row">
+                <!--Grid column-->
+                <div class="col-lg-4 col-md-4 mb-4 mb-md-0">
+                    <!-- <h5 class="text-uppercase">Contact </h5> -->
+
+                    <ul class="list-unstyled mb-0">
+                        <li>
+                            Group Scout Leader, Richmond College Scout Group,
+                            Richmond College,
+                            Galle.
+                        </li>
+                    </ul>
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-lg-4 col-md-4 mb-4 mb-md-0">
+                    <!-- <h5 class="text-uppercase">Address</h5> -->
+
+                    <ul class="list-unstyled mb-0">
+                        <li>
+                            Tel: 0776337788
+                        </li>
+
+                    </ul>
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-lg-4 col-md-4 mb-4 mb-md-0">
+                    <!-- <h5 class="text-uppercase">Email</h5> -->
+
+                    <ul class="list-unstyled mb-0">
+                        <li>
+                            email: richmondscouts@gmail.com
+                        </li>
+                    </ul>
+
+                </div>
+                <!--Grid column-->
+            </div>
+            <!--Grid row-->
+        </section>
+        <!-- Section: Links -->
+
+    </div>
+    <!-- Grid container -->
+
+</footer>
+<!--  end Footer -->

@@ -1,0 +1,15 @@
+{% extends 'login/base' %}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block content %}
+
+<div class="main content container mt-5">
+
+    {% include "manager/photo_list" %}
+
+</div>
+
+{% endblock %}
+{% block footer %}
+{% endblock %}

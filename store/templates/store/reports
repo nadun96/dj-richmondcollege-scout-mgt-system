@@ -1,0 +1,40 @@
+{% extends 'store/base' %}
+{{title}}
+
+{% block content %}
+{% if message %}
+<script>alert('{{ message }}');</script>
+{% endif %}
+<!-- content -->
+<div class="container mt-3">
+    <h2>Striped Rows</h2>
+    <p>The .table-striped class adds zebra-stripes to a table:</p>
+    <table class="table table-striped">
+        {{users}}
+        <br>
+        {{day}}
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+
+        </thead>
+        <tbody>
+            <tr>
+                <td>Member</td>
+                <td>Count</td>
+
+            </tr>
+            <tr>
+                <td>Team</td>
+                <td>Count/td>
+
+            </tr>
+            <tr>
+                <td>Day</td>
+                <td>Count</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

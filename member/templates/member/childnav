@@ -1,0 +1,34 @@
+<div class="container-fluid p-0 m-0">
+    <nav class="new">
+        <ul>
+            <li class="px-2 {% if title == 'profile' %} act bg-warning  rounded-2 {% endif %}">
+                <a class="" href={% url 'member:profile' user_id=request.user.id %}>Profile</a>
+            </li>
+
+            <li class="px-2 {% if title == 'hikes' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class="" href={% url 'member:hikes' user_id=request.user.id %}>Hikes</a>
+            </li>
+
+            <li class="px-2 {% if title == 'projects' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class="  " href={% url 'member:projects' user_id=request.user.id %}>Projects</a>
+            </li>
+
+            <li class="px-2 {% if title == 'camps' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class=" " href={% url 'member:camps' user_id=request.user.id %}>Camps</a>
+            </li>
+
+            <li class="px-2 {% if title == 'messages' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class=" " href={% url 'member:messages' %}>Messages</a>
+            </li>
+
+            <li class="px-2 {% if title == 'articles' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class=" " href={% url 'member:articles' %}>Articles</a>
+            </li>
+            
+            <li class="px-2 {% if title == 'badges' %} act bg-warning  rounded-2 {% endif %}">
+                <a class="" href={% url 'member:badges' user_id=request.user.id %}>Badges</a>
+            </li>
+        </ul>
+
+    </nav>
+</div>

@@ -1,0 +1,162 @@
+{% extends 'store/base' %}
+{{title}}
+
+{% block content %}
+{% load static %}
+<script src="{% static 'js/sorttable.js' %}"></script>
+{% load static %}
+<script src="{% static 'js/search.js' %}"></script>
+
+<!-- search -->
+
+<!-- selectize js api-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+    integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
+    integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+
+{% if message %}
+<script>alert('{{ message }}');</script>
+{% endif %}
+<script>
+
+    $(document).ready(function () {
+        $('select').selectize({
+            sortField: 'text'
+        });
+    });
+
+</script>
+
+
+<style type="text/css">
+    table,
+    td,
+    tr,
+    th {
+        padding: 0%;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <P class="h2 rounded-2 bg-info  text-center pb-2 text-capitalize text-black-75">Lend Item</P>
+                <form action={% url 'store:add_lend' %} class="my-3" method="post" enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    {% for field in lends %}
+                    <div class="form-group row py-1">
+                        <label for="{{field.name}}" class="col-sm-4 col-form-label">{{field.label}}</label>
+                        <div class="col-sm-6 py-1">
+                            {% if field.field.widget.input_type == 'select' %}
+                            <select class="form-control" name="{{field.name}}" id="{{field.name}}" placeholder=" ">
+                                <option value=""></option>
+                                {% for choice in field.field.choices %}
+                                <option class="" value="{{choice.0}}">{{choice.1}}</option>
+                                {% endfor %}
+                            </select>
+                            {% elif field.field.widget.input_type == 'number' %}
+                            <input type="{{field.field.widget.input_type}}" class="form-control" name="{{field.name}}"
+                                id="{{field.name}}" value="{{field.value}}" min="1">
+                            {% else %}
+                            <input type="{{field.field.widget.input_type}}" class="form-control" name="{{field.name}}"
+                                id="{{field.name}}" placeholder="{{field.label}}" value="{{field.value}}">
+                            {% endif %}
+                        </div>
+
+                    </div>
+                    {% endfor %}
+
+                    <input type="submit" value="lend the item" class="btn btn-primary text-center">
+                </form>
+            </div>
+            <div class="row">
+                <P class="h2 rounded-2 bg-info text-center pb-2 text-capitalize text-black-75">Return Item</P>
+                <form action={% url 'store:return_lend' %} method="post" enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    {% for field in lends %}
+                    <div class="form-group row py-1">
+                        {% if field.field.widget.input_type == 'select' %}
+                        <label for="{{field.name}}" class="col-sm-4 col-form-label">{{field.label}}</label>
+                        <div class="col-sm-6">
+
+                            <select class="form-control" name="{{field.name}}" id="{{field.name}}" placeholder=" ">
+                                <option value=""></option>
+                                {% for choice in field.field.choices %}
+                                <option class="" value="{{choice.0}}">{{choice.1}}</option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+                        {% endif %}
+
+                    </div>
+                    {% endfor %}
+
+                    <input type="submit" value="mark item as returned" class="btn btn-primary text-center">
+
+                </form>
+            </div>
+
+        </div>
+        <div class="col">
+            <div class="container-fluid py-3 border-bottom">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group my-2">
+                            <input type="search" class=" form-control rounded-left search-input" placeholder="Search"
+                                aria-label="Search" data-table="items-list" aria-describedby="search-addon" />
+                            <button type="button" class="btn btn-outline-primary ">Filter</button>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="input-group  my-2">
+                            <input type="search" class=" form-control rounded-left search-input" placeholder="Search"
+                                aria-label="Search" data-table="items-list" aria-describedby="search-addon" />
+                            <button type="button" class="btn btn-outline-primary ">Filter</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="mt-3 table-responsive">
+                <table class="table table-bordered table-striped text-wrap sortable items-list">
+                    <thead class="bg-success">
+                        <tr>
+                            <th>Code</th>
+                            <th>Person</th>
+                            <th>Quantity</th>
+                            <th>Date</th>
+                            <th>Returned Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td>{{item.item}}</td>
+                            <td>{{item.user}}</td>
+                            <td>{{item.item_quantity_lent}}</td>
+                            <td>{{item.item_lent_date}}</td>
+                            <td>{{item.date_returned_date}}</td>
+                            <!-- <td>{{item.item_is_lent}}</td> -->
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!-- content -->
+
+<!-- end content -->
+
+
+{% endblock %}

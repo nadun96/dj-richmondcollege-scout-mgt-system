@@ -1,0 +1,195 @@
+{% extends 'login/base' %}
+{% block title %}{{register}}{% endblock %}
+{% block content %}
+<!-- Start of main -->
+<div class="container-fluid">
+
+    <div class="container mt-0 pt-3">
+
+        <!-- Start of form -->
+        <form name="Student_form" class="form form-group" action={% url 'home:register' %} method="post"
+            enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row mt-0 mb-2">
+                <p class="h3 text-center text-capitalize ">Registration Form</p>
+            </div>
+
+            <div class="row">
+
+                <!-- div left section -->
+                <div class="col-lg-6">
+
+                    <!-- Name input -->
+                    <div class="input-group mb-2 ">
+                        <span class="input-group-text w-25">Surname</span>
+                        <input class="form-control text-bg-primary bg-opacity-10 text-dark" type="text"
+                            name="student_surname" placeholder="Ex: Bandara" required>
+                    </div>
+
+                    <!-- Initials input -->
+                    <div class="input-group mb-2 ">
+                        <span class="input-group-text w-25">Initials</span>
+                        <input class="form-control text-bg-primary bg-opacity-10 text-dark" type="text"
+                            name="student_initials" placeholder="Ex: L.A.M.N.U" required>
+                    </div>
+
+
+                    <!-- birthday input  -->
+                    <div class=" input-group mb-2 ">
+                        <span class="input-group-text w-25">Birthday</span>
+                        <input class="form-control text-bg-primary bg-opacity-10 text-dark" type="date"
+                            name="student_birthday" id="student_birthday" onchange="getAge()" required>
+                    </div>
+
+                    <script>
+
+                        var getAge = function getAge() {
+                            var today = new Date();
+                            var birthDate = new Date(document.getElementById("student_birthday").value);
+                            var age = today.getFullYear() - birthDate.getFullYear();
+                            var m = today.getMonth() - birthDate.getMonth();
+                            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                                age--;
+                            }
+                            if (age < 10) {
+                                alert("You are not eligible to register You should be at least 10 years old");
+                                document.getElementById("student_birthday").value = "";
+                            }
+
+                        }
+                    </script>
+
+                    <!-- entrance number -->
+                    <div class="input-group mb-2 ">
+                        <span class="input-group-text w-50" for="entrance">Entrance Number </span>
+                        <input class="form-control text-dark text-bg-primary bg-opacity-10" type="number"
+                            name="student_entrance" placeholder="Ex: 223423" required />
+                    </div>
+
+
+                    <!-- photo input -->
+                    <div class="input-group mb-2 ">
+                        <span for="photo" class="input-group-text w-50" for="entrance">Upload Photo</span>
+                        <input class="form-control text-bg-primary bg-opacity-10 text-dark text-opacity-50" type="file"
+                            name="student_photo" placeholder="Click to Upload" required />
+                    </div>
+
+                    <!-- residence -->
+                    <div class="input-group mb-2 ">
+                        <span class="input-group-text w-25" for="residance">Residence</span>
+                        <input class="form-control text-bg-primary bg-opacity-10 text-dark text-opacity-50"
+                            type="textarea" name="student_residence" cols="4" rows="5"
+                            placeholder="type current address" required>
+                    </div>
+
+                    <!-- fathers name -->
+                    <div class="input-group mb-2 ">
+                        <span class="input-group-text w-25" for="guardian">Guardian</span>
+                        <input class="form-control text-bg-primary bg-opacity-10 text-dark text-opacity-50" type="text"
+                            name="student_father" placeholder="type guardian/Father's name" required>
+                    </div>
+
+                    <!-- email -->
+                    <div class="input-group mb-2 ">
+                        <span class="input-group-text w-25" for="email">Email</span>
+                        <input class="form-control text-bg-primary bg-opacity-10 text-dark text-opacity-50" type="email"
+                            name="student_email" placeholder="type guardian/Fathers 's email">
+                    </div>
+
+                    <!-- fathers number -->
+                    <div class="input-group mb-2 ">
+                        <span class="input-group-text w-25" for="gtele">Contact</span>
+                        <input class="form-control text-bg-primary bg-opacity-10 text-dark text-opacity-50"
+                            name="student_contact" placeholder="type guardian/Fathers 's telephone" type="tel" required>
+                    </div>
+
+                </div>
+
+                <!-- div right section -->
+                <div class=" col-lg-6">
+
+                    <!-- other skills -->
+                    <div class="input-group mb-2 ">
+                        <span class="input-group-text w-25" for="otherskills">Skills</span>
+                        <input class="form-control" type="text" name="student_skills"
+                            placeholder="Ex: Singing,Dancing,Poetry" />
+                    </div>
+
+                    <!-- birth certificate -->
+                    <div class="input-group mb-2 ">
+                        <span class="input-group-text w-50" for="Certificate">Birth Certificate</span>
+                        <input class="form-control text-bg-primary bg-opacity-10 text-dark text-opacity-50" type="file"
+                            name="student_certificate" placeholder="Upload birth Certificate here" />
+                    </div>
+
+                    <!-- letter -->
+                    <div class="input-group mb-2 ">
+                        <span class="input-group-text w-50" for="letter">Permission Letter</span>
+                        <input class="form-control text-bg-primary bg-opacity-10 text-dark text-opacity-50" type="file"
+                            name="student_letter" placeholder="Upload Permission letter to here" />
+                    </div>
+
+                    <!-- medical -->
+                    <div class="input-group mb-2 ">
+                        <span class="input-group-text w-50" for="medical">Medical Certificates</span>
+                        <input class="form-control" type="file" name="student_medical"
+                            placeholder="Upload Medical Certificate" multiple />
+                    </div>
+
+                    <!-- sports -->
+                    <div class="input-group mb-2 ">
+                        <span class="input-group-text w-25" for="sports">Sports</span>
+                        <input class="form-control" type="textarea" name="student_sports"
+                            placeholder="Others Extra Curricular Activities" />
+                    </div>
+
+                    <!-- student_username -->
+                    <div class="input-group mb-2 ">
+                        <span class="input-group-text w-25" for="sports">username</span>
+                        <input class="form-control" type="textarea" name="student_username" value="{{next_id}}"
+                            placeholder="" readonly />
+                    </div>
+
+                    <!-- password -->
+                    <div class="input-group mb-2 ">
+                        <span class="input-group-text w-25" for="sports">Password</span>
+                        <input class="form-control text-bg-warning bg-opacity-25" type="password"
+                            name="student_password" name="password" placeholder="type your password" required />
+                    </div>
+
+                    <!-- Confirm -->
+                    <div class="input-group mb-2 ">
+                        <span class="input-group-text w-25" type="text" for="student_username">Confirm</span>
+                        <input class="form-control text-bg-warning bg-opacity-25" type="password"
+                            placeholder="type password again" required />
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-12 text-center">
+                    <button class=" btn btn-primary btn-lg px-5 my-3" type="submit" value="submit" onclick="">
+                        Submit
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+
+        <!-- End of form -->
+
+
+    </div>
+
+    {{error}}
+
+</div>
+<!--End of main-->
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

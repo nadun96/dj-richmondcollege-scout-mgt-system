@@ -1,0 +1,192 @@
+{% extends 'manager/base' %}
+{{title}}
+{% block content %}
+
+{% load widget_tweaks %}
+<script>
+    /** $(document).ready(function () {
+         $('select').selectize({
+             sortField: 'text'
+         });
+     }); **/
+</script>
+<div class="container-fluid">
+    {%load crispy_forms_tags %}
+    <div class="row">
+        <div class="col-lg-4 col-sm-12 col-md-6 p-3">
+            <div class="bg-info px-4 py-2 rounded-2">
+                <h3 class="text-center"> Add a Hike</h3>
+            </div>
+            <!-- hike from -->
+            {{ hikes.media }}
+            <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" id="hike_form"
+                onsubmit="">
+                {% csrf_token %}
+                {{hikes|crispy}}
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </form>
+            <!-- hike from script -->
+            <script>
+                const hikeForm = document.querySelector('#hike_form');
+
+                hikeForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+
+                    const hikeFormData = new FormData(hikeForm);
+
+                    hikeFormData.forEach((value, key) => {
+                        console.log(key + ': ' + value);
+                    });
+
+                    console.log(hikeFormData);
+
+                    fetch("{% url 'manager:add_hike' %}", {
+                        method: 'POST',
+                        body: hikeFormData
+
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+
+                            console.log(data);
+
+                            if (data.result == 'success') {
+                                $('.modal-body').html('Form submission was successful!');
+                                $('#modal-dialog').modal('show');
+                                hikeForm.reset();
+
+                            } else {
+
+                                $('.modal-body').html('There was an error with the form submission.');
+                                $('#modal-dialog').modal('show');
+                            }
+
+                        });
+                });
+
+            </script>
+        </div>
+        <div class=" col-lg-4 col-sm-12 col-md-6 p-3">
+            <div class="bg-info px-4 py-2 rounded-2">
+                <h3 class="text-center">Add a Camp</h3>
+            </div>
+            <!-- camp from -->
+            <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" onsubmit=""
+                id="camp_form">
+                {% csrf_token %}
+                {{camps|crispy}}
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </form>
+            <!-- camp from script -->
+            <script>
+                const campForm = document.querySelector('#camp_form');
+
+                campForm.addEventListener('submit', (event) => {
+
+                    event.preventDefault();
+
+                    const CampFormData = new FormData(campForm);
+
+                    console.log(CampFormData);
+
+                    fetch("{% url 'manager:add_camp' %}", {
+                        method: 'POST',
+                        body: CampFormData
+
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            console.log(data);
+                            if (data.result == 'success') {
+                                $('.modal-body').html('Form submission was successful!');
+                                $('#modal-dialog').modal('show');
+                                campForm.reset();
+                            } else {
+                                $('.modal-body').html('There was an error with the form submission.');
+                                $('#modal-dialog').modal('show');
+                            }
+                        });
+                });
+
+            </script>
+
+        </div>
+        <div class="col-lg-4 col-sm-12 col-md-6 p-3">
+            <div class="bg-info px-4 py-2 rounded-2">
+                <h3 class="text-center">Add a Project</h3>
+            </div>
+
+            <!-- project from -->
+            <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" id="project_from"
+                onsubmit="">
+                {% csrf_token %}
+                {{projects|crispy}}
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </form>
+            <!-- project from script -->
+            <script>
+                const projectForm = document.querySelector('#project_from');
+
+                projectForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+
+                    const projectFormData = new FormData(projectForm);
+
+                    console.log(projectFormData);
+
+                    fetch("{% url 'manager:add_project' %}", {
+                        method: 'POST',
+                        body: projectFormData
+
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            console.log(data);
+                            if (data.result == 'success') {
+                                $('.modal-body').html('Form submission was successful!');
+                                $('#modal-dialog').modal('show');
+                                projectForm.reset();
+                            } else {
+                                $('.modal-body').html('There was an error with the form submission.');
+                                $('#modal-dialog').modal('show');
+                            }
+                        });
+                });
+            </script>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- close modal because I prevented default -->
+<script>
+    $(document).ready(function () {
+        $('#close-modal').on('click', function () {
+            $('#modal-dialog').modal('hide');
+        });
+    });
+</script>
+
+<!-- jason model dialog box -->
+<div class="modal" tabindex="-1" role="dialog" id="modal-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal content goes here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

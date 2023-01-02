@@ -1,0 +1,37 @@
+<div class="container-fluid p-0 m-0">
+    <nav class="new">
+        <ul>
+            <li class="px-2 {% if title == 'manage_view' %} act bg-warning  rounded-2 {% endif %}">
+                <a class="" href={% url 'manager:manage_view' %}>View</a>
+            </li>
+            <li class="px-2 {% if title == 'manage_edit' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class="" href={% url 'manager:manage_edit' %}>Events</a>
+            </li>
+            <li class="px-2 {% if title == 'manage_wall' %} act bg-warning  rounded-2 {% endif %}">
+                <a class="" href={% url 'manager:manage_wall' %}>Uploads</a>
+            </li>
+            <li class="px-2 {% if title == 'manage_patrols' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class="  " href={% url 'manager:manage_patrols' %}>Patrols</a>
+            </li>
+            <li class="px-2 {% if title == 'manage_member' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class=" " href={% url 'manager:manage_member' %}>Membership</a>
+            </li>
+            <li class="px-2 {% if title == 'manage_announce' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class=" " href={% url 'manager:manage_announce' %}>Announce</a>
+            </li>
+            <li class="px-2 {% if title == 'manage_badges' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class=" " href={% url 'manager:manage_badges' %}>Badges</a>
+            </li>
+
+            <li class="px-2 {% if title == 'manage_roles' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class=" " href={% url 'manager:manage_roles' %}>Roles</a>
+            </li>
+
+            <li class="px-2 {% if title == 'manage_leaders' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class=" " href={% url 'manager:manage_leaders' %}>Leaders</a>
+            </li>
+
+        </ul>
+
+    </nav>
+</div>

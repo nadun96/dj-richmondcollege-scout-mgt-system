@@ -1,0 +1,38 @@
+{% regroup requires by badge__name as rb_level %}
+<div class="sorter px-2 py-3">
+{% for badge__name in rb_level %}
+<div class="row">
+    <div class="row">
+        <h3>Level:{{badge__name.list.0.badge__level}} - {{ badge__name.grouper }}</h3>
+        <p>{{badge__name.list.0.badge__description}}</p>
+    </div>
+    <div class="row">
+        <div class="col">
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped ">
+                    <thead class="bg-success">
+                        <tr>
+                            <th>number</th>
+                            <th>name</th>
+                            <th>description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in badge__name.list %}
+                        <tr>
+                            <td> {{ item.number }} </td>
+                            <td> {{ item.name }} </td>
+                            <td> {{ item.description }} </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endfor %}
+
+</div>

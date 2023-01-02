@@ -1,0 +1,28 @@
+<div class="container-fluid p-0 m-0">
+    <nav class="new">
+        <ul>
+            <li class="px-2 {% if title == 'examine' %} act bg-warning  rounded-2 {% endif %}">
+                <a class="" href={% url 'patrol:examine_tab' user_id=1 %}>Examine</a>
+            </li>
+            {% comment %}
+            <li class="px-2 {% if title == 'hikes' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class="" href={% url 'hikes' %}>Hikes</a>
+            </li>
+            <li class="px-2 {% if title == 'badges' %} act bg-warning  rounded-2 {% endif %}">
+                <a class="" href={% url 'badges' %}>Badges</a>
+            </li>
+            <li class="px-2 {% if title == 'projects' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class="  " href={% url 'projects' %}>Projects</a>
+            </li>
+            <li class="px-2 {% if title == 'camps' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class=" " href={% url 'camps' %}>Camps</a>
+            </li>
+            <li class="px-2 {% if title == 'announce' %} act bg-warning  rounded-2 {% endif %} ">
+                <a class=" " href={% url 'announce' %}>Messages</a>
+            </li>
+            {% endcomment %}
+
+        </ul>
+
+    </nav>
+</div>

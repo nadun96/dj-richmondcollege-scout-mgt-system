@@ -1,0 +1,35 @@
+{% load static %}
+<nav class="top-nav navbar navbar-expand-lg navbar-dark m-0">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="{% static 'img/symbol.png' %}" alt="RCSG" style="width:40px;" class="rounded-pill">
+
+        </a>
+        <div class="d-flex">
+            <div class="dropdown">
+                <button class="btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Position
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item small" href="#">Product One</a></li>
+                    <li><a class="dropdown-item small" href="#">Product Two</a></li>
+                    <li><a class="dropdown-item small" href="#">Product Three</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <button class="btn-sm btn-light dropdown-toggle ms-3" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Menu
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item small" href="#">Media</a></li>
+                    <li><a class="dropdown-item small" href="#">Product Two</a></li>
+                    <li><a class="dropdown-item small" href={% url 'login' %}>Log out</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    </div>
+</nav>

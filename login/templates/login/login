@@ -1,0 +1,141 @@
+{% extends 'login/base' %}
+
+{% block title %} {{title}} {% endblock %}
+
+
+{% block content %}
+<div class="main content container">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md m-1">
+                        <h1>About Us</h1>
+                        <p> 2nd Galle Richmond Scout Group is a Reputed Community society in Galle
+                            area. They consist with cub scout and rover groups. All these three from 2nd Galle scout
+                            troop. We are currently contributing to many community services projects in that area. We
+                            consist with nearly 1000 members Yearly have over 300 new enrollments for cub and scout
+                            troop. Our decision body consist with two councils. One is Group Scout Leader’s council and
+                            the other one is Patrol Leaders Council.</p>
+                        <a href=""><input type="submit" name="signin" id="signin" value="badge list"
+                                class="btn-close-white" /></a>
+
+                    </div>
+                    <div class="col-md my-2">
+                        <h1 class="text-center">Login</h1>
+                        <div class="center  align-content-center justify-content-center d-flex">
+
+                            <div class="container">
+                                <div class="row">
+
+                                    {% comment %}
+                                    {% url 'member:profile'?next= user_id=request.user.id %}"
+                                    {% endcomment %}
+
+                                    <!-- start login form  -->
+                                    <form method="post" action="{% url 'home:login' %}"
+                                        class="form-horizontal" role="form">
+
+                                        {% csrf_token %}
+                                        <div class="form-group p-1 m-1">
+                                            <label class="control-label col-sm-2 text-capitalize"
+                                                for="username">username<em>*</em></label>
+                                            <div class="col">
+                                                <input type="text" name="username" id="username" placeholder="username"
+                                                    required="true" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group p-1 m-1">
+                                            <label class="control-label col-sm-2 text-capitalize"
+                                                for="password">password<em>*</em></label>
+                                            <div class="col">
+                                                <input type="password" name="password" id="password" required="true"
+                                                    class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group text-center m-1 py-2">
+                                            <div class="col-sm-offset-2">
+
+                                                <input type="submit" name="sign_in" id="login" value="login"
+                                                    class="btn primary text-bg-primary px-5" />
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- end login form  -->
+
+                                </div>
+
+
+                                <div class="row">
+
+                                    <div class="center  align-content-center justify-content-center d-flex">
+                                        <a class="form-group text-center py-2">
+                                            <div class="container">
+
+                                                <a href={% url 'home:signup' %}>
+
+                                                    <b>
+                                                        <p
+                                                            class="text-center text-decoration-underline font-weight-bold px-5">
+
+                                                            click here to register
+
+                                                        </p>
+
+                                                    </b>
+
+                                                </a>
+                                                <a href="">
+                                                    {% if error %}
+                                                    <p> {{error}}authentication failed</p>
+                                                    {% endif %}
+                                                </a>
+
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+</div>
+</section>
+</div>
+
+<!-- alert section -->
+<div id="alert-box"></div>
+
+<style>
+    #alert-box {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+<script>
+    function showAlert(message) {
+        var alertBox = document.createElement("div");
+        alertBox.innerHTML = message;
+        alertBox.classList.add("alert");
+        document.getElementById("alert-box").appendChild(alertBox);
+    }
+</script>
+<script>
+    {% if messages %}
+    {% for message in messages %}
+    showAlert("{{ message }}");
+    {% endfor %}
+    {% endif %}
+</script>
+
+
+{% endblock %}
