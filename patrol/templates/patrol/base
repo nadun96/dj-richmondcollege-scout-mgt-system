@@ -42,9 +42,9 @@
     <!-- header -->
     <header class="sticky-top">
 
-        {% include 'patrol/header.html' %}
+        {% include 'patrol/header' %}
 
-        {% include 'patrol/childnav.html' %}
+        {% include 'patrol/childnav' %}
 
     </header>
 

@@ -116,7 +116,7 @@ class Complete(models.Model):
         Profile, on_delete=models.CASCADE, null=True, blank=True, related_name='examiner')
     requirement = models.ForeignKey(Requirement, on_delete=models.CASCADE)
     applied = models.DateField(blank=False, auto_now_add=True)
-    completed = models.DateField()
+    completed = models.DateField(blank=True, null=True)
     stage = models.IntegerField(choices=COMPLETE_CHOICES, validators=[
                                 MinValueValidator(1)], blank=False)
 

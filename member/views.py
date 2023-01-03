@@ -39,6 +39,7 @@ def profile_update(request):
             skills = request.POST.get('skills')
             sports = request.POST.get('sports')
             address = request.POST.get('address')
+            contact = request.POST.get('contact')
 
             # FILES para
             picture = request.FILES.get('picture')
@@ -70,6 +71,8 @@ def profile_update(request):
             if picture and files:
                 files.picture = picture
                 print(f'picture set: {files.picture.name}')
+            if contact and profile:
+                profile.contact = contact
 
             if medical and files:
                 files.medical = medical
@@ -85,7 +88,7 @@ def profile_update(request):
                 files.save()
                 print(f'files saved: {files.picture.name}')
             else:
-                context = {'result': 'User Does Not Exist'}
+                context = {'result': 'User files Does Not Exist'}
                 print(context)
 
             if profile and files:
@@ -123,8 +126,8 @@ def view_profile(request):
 
 
 def user_profile(request, user_id):
-    #result = session_processor(request)
-    # print(result)
+    result = session_processor(request)
+    print(result)
     # Get the user with the specified ID
     user = User.objects.get(id=user_id)
     profile = Profile.objects.get(user=user)
@@ -287,7 +290,7 @@ def apply_requirement(request):
             complete = Complete(user=profile, requirement=requirement, stage=1)
             complete.save()
             print(f'requirement added id :{complete.id}')
-            context = {'result': 'created'}
+            context = {'result': 'success'}
         else:
             print(f'requirement already applied!')
             context = {'result': 'exist'}

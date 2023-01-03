@@ -49,12 +49,14 @@
     background: #721c25;
 }
 
-.new{
-    background: #F8D7DA;
+#childnav{
+    background: #65a6a8;
+    /**background: #F8D7DA;**/
 }
 
-.act  {
-    background: #f7ab08;
+
+.act {
+    background: #ffffff;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;

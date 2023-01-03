@@ -25,7 +25,7 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <li><a class="dropdown-item small" href="#">Media</a></li>
                     <li><a class="dropdown-item small" href="#">Product Two</a></li>
-                    <li><a class="dropdown-item small" href={% url 'login' %}>Log out</a></li>
+                    <li><a class="dropdown-item small" href={% url 'home:logout' %}>Log out</a></li>
                 </ul>
             </div>
 

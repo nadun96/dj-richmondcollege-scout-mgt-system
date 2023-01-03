@@ -1,4 +1,5 @@
-{% extends 'patrol/base.html' %}
+{% extends 'patrol/base' %}
+
 {{title}}
 
 {% block content %}
@@ -45,7 +46,7 @@
  
                      console.log(badgeFormData);
  
-                     fetch("{% url 'apply_requirement' %}", {
+                     fetch("{% url 'member:apply_requirement' %}", {
                          method: 'POST',
                          body: badgeFormData
  

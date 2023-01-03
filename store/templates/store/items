@@ -8,9 +8,6 @@
 {% load static %}
 <script src="{% static 'js/search.js' %}"></script>
 
-{% if message %}
-<script>alert('{{ message }}');</script>
-{% endif %}
 
 <!-- search -->
 <div class="container-fluid py-2 border-bottom">
@@ -60,7 +57,7 @@
             <tbody>
                 {% for item in items %}
                 <tr>
-                    <td>{{item.id}}</td>
+                    <td>{{item.item_code}}</td>
                     <td>{{item.item_name}}</td>
                     <td>{{item.item_quantity_received}}</td>
                     <td>{{item.item_units}}</td>

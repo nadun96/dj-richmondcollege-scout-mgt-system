@@ -62,7 +62,7 @@
             <tbody class="pl-1 pr-0">
                 {% for broken in brokens %}
                 <tr class="pl-1 pr-0">
-                    <td class="pl-1 pr-0">{{broken.item.id}}</td>
+                    <td class="pl-1 pr-0">{{broken.item.item_code}}</td>
                     <td class="pl-1 pr-0">{{broken.item}}</td>
                     <td class="pl-1 pr-0">{{broken.item_quantity_broken}}</td>
                     <td class="pl-1 pr-0">{{broken.item_broken_date}}</td>

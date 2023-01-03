@@ -2,10 +2,10 @@
     <nav class="new">
         <ul>
             <li class="px-2 {% if title == 'manage_view' %} act bg-warning  rounded-2 {% endif %}">
-                <a class="" href={% url 'manager:manage_view' %}>View</a>
+                <a class="" href={% url 'manager:main' %}>View</a>
             </li>
             <li class="px-2 {% if title == 'manage_edit' %} act bg-warning  rounded-2 {% endif %} ">
-                <a class="" href={% url 'manager:manage_edit' %}>Events</a>
+                <a class="" href={% url 'manager:events' %}>Events</a>
             </li>
             <li class="px-2 {% if title == 'manage_wall' %} act bg-warning  rounded-2 {% endif %}">
                 <a class="" href={% url 'manager:manage_wall' %}>Uploads</a>

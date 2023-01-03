@@ -20,6 +20,7 @@
     }
 
 </script>
+
 {% if message %}
 <script>alert('{{ message }}');</script>
 {% endif %}
@@ -33,7 +34,7 @@
                 <P class="h2 rounded-2 bg-light  text-center pb-1 text-capitalize text-black-75"> Add New Item</P>
 
 
-                <form action={% url 'store:add_item' %} method="post" class="form ">
+                <form action={% url 'store:add_item' %} method="post" class="form" id="add_item_form">
                     {% csrf_token %}
                     <!-- item name -->
                     <div class="input-group mb-2 py-2">
@@ -48,19 +49,6 @@
                         <input id="qty" class="form-control text-bg-primary bg-opacity-10 text-black-50" type="number"
                             onchange='calculateTotal()' name="item_qty" min="1" placeholder="0" required>
                     </div>
-
-                    <!-- item donour -->
-                    <!-- <div class=" input-group mb-2 py-2 ">
-                        <span class="input-group-text w-50">Donour Name</span>
-                        <input class="form-control bg-opacity-10" type="text" name="isdonation"
-                            placeholder="Ex: Kusal Mendis">
-                    </div> -->
-
-                    <!-- item  expiry date -->
-                    <!-- <div class=" input-group mb-2 py-2 ">
-                        <span class="input-group-text w-50">Item expiry date</span>
-                        <input class="form-control" type="date" name="expiry" placeholder="">
-                    </div> -->
 
                     <!-- item measurement unit -->
                     <div class=" input-group mb-2 py-2 ">
@@ -90,7 +78,34 @@
                         </div>
                     </div>
                 </form>
+                <script>
+                    document.getElementById("add_item_form").addEventListener("submit", function (event) {
+                        event.preventDefault();
+                        // Your code here
+                        bootbox.confirm({
+                            message: "Are you sure?",
+                            buttons: {
+                                confirm: {
+                                    label: 'Yes',
+                                    className: 'btn-success'
+                                },
+                                cancel: {
+                                    label: 'No',
+                                    className: 'btn-danger'
+                                }
+                            },
+                            callback: function (result) {
+                                if (result) {
+                                    // the user clicked "OK"
+                                    $('#add_item_form').off('submit').submit(); // submit the form
+                                }
+                                // Handle the result
+                            }
+                        });
 
+                    });
+
+                </script>
             </div>
         </div>
         <div class="col-xl-6 col-md-5">
@@ -102,7 +117,7 @@
                         </P>
 
 
-                        <form action={% url 'store:add_broken' %} method="post" class="form ">
+                        <form action={% url 'store:add_broken' %} method="post" class="form" id="add_to_broken_form">
                             {% csrf_token %}
                             <!-- item name -->
                             <div class="input-group mb-2 py-2">
@@ -126,6 +141,35 @@
                                 </div>
                             </div>
                         </form>
+                        <script>
+
+                            document.getElementById("add_to_broken_form").addEventListener("submit", function (event) {
+                                event.preventDefault();
+                                // Your code here
+                                bootbox.confirm({
+                                    message: "Are you sure?",
+                                    buttons: {
+                                        confirm: {
+                                            label: 'Yes',
+                                            className: 'btn-success'
+                                        },
+                                        cancel: {
+                                            label: 'No',
+                                            className: 'btn-danger'
+                                        }
+                                    },
+                                    callback: function (result) {
+                                        if (result) {
+                                            // the user clicked "OK"
+                                            $('#add_to_broken_form').off('submit').submit(); // submit the form
+                                        }
+                                        // Handle the result
+                                    }
+                                });
+
+                            });
+
+                        </script>
                     </div>
                 </div>
 
@@ -137,7 +181,7 @@
                         </P>
 
 
-                        <form action={% url 'store:add_repaired' %} method="post" class="form">
+                        <form action={% url 'store:add_repaired' %} method="post" class="form" id="mark_repaired_form">
                             {% csrf_token %}
                             <!-- item name -->
                             <div class="input-group mb-2 py-2">
@@ -161,6 +205,34 @@
                             </div>
 
                         </form>
+                        <script>
+                            document.getElementById("mark_repaired_form").addEventListener("submit", function (event) {
+                                event.preventDefault();
+                                // Your code here
+                                bootbox.confirm({
+                                    message: "Are you sure?",
+                                    buttons: {
+                                        confirm: {
+                                            label: 'Yes',
+                                            className: 'btn-success'
+                                        },
+                                        cancel: {
+                                            label: 'No',
+                                            className: 'btn-danger'
+                                        }
+                                    },
+                                    callback: function (result) {
+                                        if (result) {
+                                            // the user clicked "OK"
+                                            $('#mark_repaired_form').off('submit').submit(); // submit the form
+                                        }
+                                        // Handle the result
+                                    }
+                                });
+
+                            });
+                        </script>
+
                     </div>
                 </div>
 
@@ -168,12 +240,5 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
-
-<!-- Bootstrap JS -->
-<script src="https://www.markuptag.com/bootstrap/5/js/bootstrap.bundle.min.js"></script>
-
-
-</body>
-
-</html>

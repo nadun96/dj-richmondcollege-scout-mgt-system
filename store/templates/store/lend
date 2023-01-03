@@ -137,7 +137,7 @@
                     <tbody>
                         {% for item in items %}
                         <tr>
-                            <td>{{item.item}}</td>
+                            <td>{{item.item.item_code}}</td>
                             <td>{{item.user}}</td>
                             <td>{{item.item_quantity_lent}}</td>
                             <td>{{item.item_lent_date}}</td>

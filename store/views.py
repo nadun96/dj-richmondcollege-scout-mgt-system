@@ -1,3 +1,5 @@
+from django.db.models import Max
+from .utility import generate_code
 from django.db.models.functions import ExtractWeekDay
 from django.shortcuts import render
 from core.models import Profile
@@ -91,6 +93,10 @@ def add_item(request):
             price = int(request.POST.get('item_price'))
 
             # if item exists update quantity else create new item
+            max_id = Item.objects.all().aggregate(Max('id'))['id__max']
+            next_id = max_id + 1
+            next_code = generate_code(next_id)
+            print(f"Next Code is : {next_code}")
 
             with transaction.atomic():
                 it, created = Item.objects.get_or_create(
@@ -98,6 +104,7 @@ def add_item(request):
                     item_name=item, item_price=price,
                     # set default values dont check for similarity
                     defaults={
+                        'item_code': next_code,
                         'item_quantity_received': qty,
                         'item_quantity_available': qty,
                         'item_purchased_date': datetime.datetime.now(),
@@ -114,6 +121,7 @@ def add_item(request):
                     it.item_quantity_available = it.item_quantity_available + \
                         int(qty)
                     it.save()
+                    print("item updated")
                     context = {
                         'title': 'main',
                         'message': 'item updated',
@@ -121,6 +129,7 @@ def add_item(request):
 
             # if created is true then item was created
             else:
+                print("item added")
                 context = {
                     'title': 'item added',
                     'message': 'item added successfully',
@@ -150,6 +159,9 @@ def add_broken(request):
             # save request params
             item = request.POST.get('item_code')
             qty = int(request.POST.get('item_qty'))
+
+            item = int(item.lstrip('0'))
+            print(item)  # Output: 1
 
             # check if the item is already in the items table
             exist = Item.objects.filter(id=item).filter(
@@ -214,6 +226,9 @@ def add_repaired(request):
             # save params
             item = request.POST.get('item_id')
             qty = int(request.POST.get('item_qty'))
+
+            item = int(item.lstrip('0'))
+            print(item)  # Output: 1
 
             # get current details from items existence
             exist_in_items = Item.objects.filter(id=item).exists()
@@ -294,6 +309,8 @@ def add_lend(request):
         if request.method == 'POST':
             user = request.POST.get('user')
             item = request.POST.get('item')
+            item = int(item.lstrip('0'))
+            print(item)  # Output: 1
             qty = int(request.POST.get('item_quantity_lent'))
 
             # get users list from users table
@@ -375,6 +392,9 @@ def return_lend(request):
         if request.method == 'POST':
             user = int(request.POST.get('user'))
             item = int(request.POST.get('item'))
+            
+            item = int(item.lstrip('0'))
+            print(item)  # Output: 1
 
             # for query
             item = Item.objects.get(id=item)

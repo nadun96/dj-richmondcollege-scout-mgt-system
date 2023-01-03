@@ -28,7 +28,7 @@ def session_processor(request):
     profile_roles_exist = MemberRole.objects.filter(
         profile_id=profile.id, active=True).exists()
 
-    #print('This is working!')
+    print('This is working!')
 
     if (profile_roles_exist):
         profile_roles = MemberRole.objects.filter(
@@ -50,7 +50,7 @@ def session_processor(request):
         if (is_admin):
             request.session['is_admin'] = True
 
-        #print('This is working too!')
+        print('This is working too!')
 
         request.session['profile_roles_exist'] = True
 

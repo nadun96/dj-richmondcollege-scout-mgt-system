@@ -2,19 +2,19 @@
     <nav class=" new ">
         <ul>
             <li class="px-2 {% if title == 'main' %}  act bg-white {% endif %}">
-                <a class="" href={% url 'store:manage_store' %}>Main</a>
+                <a class="" href={% url 'store:main' %}>Main</a>
             </li>
             <li class="px-2 {% if title == 'items' %} act bg-white {% endif %} ">
                 <a class="" href={% url 'store:items' %}>Items</a>
             </li>
             <li class="px-2 {% if title == 'broken' %} act bg-white {% endif %}">
-                <a class="" href={% url 'store:broken_items' %}>Broken</a>
+                <a class="" href={% url 'store:broken' %}>Broken</a>
             </li>
             <li class="px-2 {% if title == 'lend' %} act bg-white {% endif %} ">
-                <a class="  " href={% url 'store:lend_items' %}>Lend</a>
+                <a class="  " href={% url 'store:lend' %}>Lend</a>
             </li>
             <li class="px-2 {% if title == 'reports' %} act bg-white {% endif %} ">
-                <a class=" " href={% url 'store:store_reports' %}>Report</a>
+                <a class=" " href={% url 'store:reports' %}>Report</a>
             </li>
         </ul>
     </nav>
