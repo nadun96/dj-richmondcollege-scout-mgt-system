@@ -1,6 +1,5 @@
-{% extends 'member/base.html' %}
+{% extends 'patrol/base' %}
 {{title}}
-
 {% block content %}
 
 
@@ -13,26 +12,26 @@
     <!-- form hike row -->
     <div class="row p-3">
 
-        <div class="col-lg-9 col-md-9 col-sm-12">
+        <div class="col-lg-4 col-md-4 col-sm-12">
 
-            <form action="" class="from" method="post" id="add_hike">
+            <form action="" class="from" method="post" id="add_attendance">
 
                 {% csrf_token %}
 
                 <div class="col-lg-9 col-sm-12">
-                    {{add_hike|crispy}}
-                    {{add_hike.non_field_errors}}
+                    {{form|crispy}}
+                    {{form.non_field_errors}}
                 </div>
 
                 <input type="submit" class="btn btn-primary rounded px-3 py-1 my-1 d-flex" aria-label="add Hike"
-                    value="Add Hike" aria-describedby="add button" />
+                    value="Mark" aria-describedby="add button" />
 
             </form>
 
         </div>
 
-        <div class="col-lg-3 col-md-3 col-sm-12">
-            <div class="input-group rounded pt-1 mt-4">
+        <div class="col-lg-8 col-md-8 col-sm-12">
+            <div class="input-group rounded pt-1 mt-4 mb-4">
 
                 <input type="search" class="form-control rounded search-input" data-table="project-list"
                     placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
@@ -42,62 +41,64 @@
                 </span>
 
             </div>
-        </div>
-    </div>
 
-    <!-- hike table row -->
-    <div class="row">
-        <div class="table-responsive">
+            <!-- hike table row -->
+            <div class="row">
+                <div class="table-responsive">
 
-            <table class="table table-striped table-bordered text-wrap sortable project-list">
-                <thead class="bg-success">
-                    <tr>
-                        <th>#</th>
-                        <th>title</th>
-                        <th>year</th>
-                        <th>date</th>
-                        <th>nights</th>
-                        <th>location</th>
-                    </tr>
-                </thead>
-                {% for hike in hikes %}
-                <tr>
-                    <td>{{hike.id}}</td>
-                    <td>{{hike.title}}</td>
-                    <td>{{hike.year|date:"Y"}}</td>
-                    <td>{{hike.date|date:"Y M d"}}</td>
-                    <td>{{hike.nights}}</td>
-                    <td>{{hike.location}}</td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    <table class="table table-striped table-bordered text-wrap sortable project-list">
+                        <thead class="bg-success">
+                            <tr>
+                                <th>#</th>
+                                <th>title</th>
+                                <th>date</th>
+                                <th>member</th>
+                                <th>time</th>
+                                <th>location</th>
+                            </tr>
+                        </thead>
+                        {% for hike in hikes %}
+                        <tr>
+                            <td>{{hike.id}}</td>
+                            <td>{{hike.title}}</td>
+                            <td>{{hike.year|date:"Y"}}</td>
+                            <td>{{hike.date|date:"Y M d"}}</td>
+                            <td>{{hike.nights}}</td>
+                            <td>{{hike.location}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 
+
+
 <!-- add project to profile script -->
 <script>
 
-    const hikeForm = document.querySelector('#add_hike');
+    const attendForm = document.querySelector('#add_attendance');
 
-    hikeForm.addEventListener('submit', (event) => {
+    attendForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
-        const hikeFormData = new FormData(hikeForm);
+        const attendFormData = new FormData(attendForm);
 
-        hikeFormData.append('pro', '{{ profile.id }}');
+        /*attendFormData.append('pro', '{{ profile.id }}');*/
 
-        hikeFormData.forEach((value, key) => {
+        attendFormData.forEach((value, key) => {
             console.log(key + ': ' + value);
         });
 
-        console.log(hikeFormData);
+        console.log(attendFormData);
 
-        fetch("{% url 'profile_add_hike' %}", {
+        fetch("{% url 'patrol:add_attendance' %}", {
             method: 'POST',
-            body: hikeFormData
+            body: attendFormData
 
         })
             .then((response) => response.json())
@@ -106,13 +107,13 @@
                 console.log(data)
 
                 if (data.result == 'success') {
-                    $('.modal-body').html('Form submission was successful!');
+                    $('.modal-body').html('Attendance Mark was successful!');
                     $('#modal-dialog').modal('show');
-                    hikeForm.reset();
+                    attendForm.reset();
 
                 } else {
 
-                    $('.modal-body').html('There was an error with the form submission.');
+                    $('.modal-body').html('Attendance Mark Error.');
                     $('#modal-dialog').modal('show');
                 }
 
@@ -124,7 +125,7 @@
 <script>
 
     $(document).ready(function () {
-        $('#hike_field').select2();
+        $('#id_member').select2();
     });
 
 </script>

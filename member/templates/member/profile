@@ -33,6 +33,10 @@
                     <span class="pull-left"><strong>Projects</strong></span>
                     {{profile.projects.count}}
                 </li>
+                <li class="list-group-item text-right">
+                    <span class="pull-left"><strong>Camp Nights</strong></span>
+                    {{nights}}
+                </li>
             </ul>
 
         </div>
@@ -248,10 +252,9 @@
                     </div>
                 </div>
             </div>
-
-
             <!--/col-9-->
         </div>
+        
         <!--/row-->
         <!-- close modal because I prevented default -->
         <script>

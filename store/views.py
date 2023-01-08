@@ -42,7 +42,7 @@ lend_form = LendForm()
 
 @login_required()
 def lend(request):
-    items = Lend.objects.filter(item_is_lent=True)
+    items = Lend.objects.all()
     context = {
         'title': 'lend',
         'lends': lend_form,

@@ -1,7 +1,7 @@
 .new ul {
     display: table;
     padding: 0px 20px;
-    border-radius: 8px;
+    /*border-radius: 8px;*/
 }
 
 .new ul li {
@@ -41,7 +41,7 @@
 }
 
 .top-nav{
-    background: #721c25ad;
+    background: #6e0c15;
 }
 
 .new{
@@ -50,9 +50,5 @@
 
 .act  {
     background: #f7ab08;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    -ms-border-radius: 3px;
-    -o-border-radius: 3px;
+    box-sizing: border-box;
 }

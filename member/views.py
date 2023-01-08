@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from core.views import session_processor
 import datetime
 
@@ -132,6 +133,10 @@ def user_profile(request, user_id):
     user = User.objects.get(id=user_id)
     profile = Profile.objects.get(user=user)
     files = UserFile.objects.get(user=user)
+    camps = profile.camps.all()
+    nights = Camp.objects.filter(id__in=camps).aggregate(
+        Sum('nights'))['nights__sum']
+    print(nights)
 
     file_form = FilesUpdateForm()
     update_form = ProfileUpdateForm()
@@ -142,6 +147,7 @@ def user_profile(request, user_id):
         'profile': profile,
         'file_form': file_form,
         'update_form': update_form,
+        'nights': nights,
     }
 
     return render(request, 'member/profile', context)

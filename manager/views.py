@@ -197,12 +197,21 @@ def toggle_leader(request):
         if form.is_valid():
             name = Profile.objects.get(id=name)
             patrol = Patrol.objects.get(id=patrol)
+            print(name)
+            print(patrol)
+
+            pat = name.patrol
+            print(name.patrol)
+
+            is_same = True
+            if (pat != patrol):
+                is_same = False
 
             exist = Leader.objects.filter(
                 name=name, patrol=patrol)\
                 .exists()
 
-            if (exist):
+            if (exist and is_same):
                 with transaction.atomic():
                     ml = Leader.objects.get(name=name, patrol=patrol)
                     ml.is_active = not ml.is_active
@@ -327,9 +336,10 @@ def add_patrol(request):
 
 
 def get_profiles(request):
-    profiles = Profile.objects.all()
-    profiles = list(profiles.values())
-    return JsonResponse(profiles, safe=False)
+    if request.method == 'POST':
+        profiles = Profile.objects.all()
+        profiles = list(profiles.values())
+        return JsonResponse(profiles, safe=False)
 
 
 """ delete patrol from patrol list """

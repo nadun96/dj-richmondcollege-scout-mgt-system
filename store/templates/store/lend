@@ -137,11 +137,11 @@
                     <tbody>
                         {% for item in items %}
                         <tr>
-                            <td>{{item.item.item_code}}</td>
-                            <td>{{item.user}}</td>
-                            <td>{{item.item_quantity_lent}}</td>
-                            <td>{{item.item_lent_date}}</td>
-                            <td>{{item.date_returned_date}}</td>
+                            <td><strong class="text-danger">{{item.item.item_code}}</strong></td>
+                            <td><strong class="text-danger">{{item.user}}</strong></td>
+                            <td><strong class="text-danger">{{item.item_quantity_lent}}</strong></td>
+                            <td>{{item.item_lent_date|date:"Y-M-d"}}</td>
+                            <td>{{item.date_returned_date|date:"Y-M-d"}}</td>
                             <!-- <td>{{item.item_is_lent}}</td> -->
                         </tr>
                         {% endfor %}

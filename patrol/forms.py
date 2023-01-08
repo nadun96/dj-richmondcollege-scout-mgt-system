@@ -1,5 +1,7 @@
 from django import forms
 from core.models import Complete, Profile, UserFile
+from .models import Attendance
+
 
 """ profile tab forms """
 
@@ -25,4 +27,14 @@ class ResultForm(forms.ModelForm):
             'requirement': forms.Select(attrs={'class': 'form-control select2', 'readonly': True, 'disabled': True}),
 
             'stage': forms.Select(attrs={'class': 'form-control select2 col-lg-12 col-sm-12', 'style': 'width: 100%'}),
+        }
+
+
+class AttendanceForm(forms.ModelForm):
+    class Meta:
+        model = Attendance
+        fields = ['title', 'marker', 'member']
+        widgets = {
+            'marker': forms.Select(attrs={'id': 'id_marker', 'class': 'form-control select2 col-lg-12 col-sm-12', 'readonly': True, 'disabled': True}),
+            'member': forms.Select(attrs={'id': 'id_member', 'class': 'form-control select2 col-lg-12 col-sm-12'}),
         }

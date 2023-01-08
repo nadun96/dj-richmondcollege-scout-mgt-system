@@ -1,11 +1,105 @@
+from django.forms import modelform_factory
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from core.models import Complete, Profile, UserFile
-from .forms import ResultForm
+from .forms import ResultForm, AttendanceForm
+import datetime
 from .cryptography import encrypt_value, decrypt_value
 from django.http import JsonResponse
-import datetime
+from django.db.models import Max
+from django.contrib.sessions.models import Session
+from manager.models import Patrol
+from .models import Attendance
 # Create your views here.
+
+
+""" ajax add Attendance """
+
+
+def add_attendance(request):
+    if request.method == 'POST':
+        # check and get variables
+        print("Form submitted:")
+        print("----------------")
+        marker = request.POST.get('marker')
+        print(f'marker is {marker}')
+        member = request.POST.get('member')
+        print(f'member is {member}')
+        print("----------------")
+
+        # validate form
+        form = AttendanceForm(request.POST)
+        valid = form.is_valid()
+
+        # check user == examiner
+        if (marker == member):
+            valid = False
+
+        if (valid):
+
+            # get the object
+            marker = Profile.objects.get(user=marker)
+            member = Profile.objects.get(user=member)
+
+            # create the object
+            attend = Attendance.objects.create(
+                marker=marker, member=member)
+
+            print("-------------------------")
+            print(f"Attendance object marker: {attend.marker}")
+            print(f"Attendance object member: {attend.member}")
+            print(f"Attendance object date: {attend.date}")
+            print(f"Attendance object time: {attend.time}")
+            print("-------------------------")
+
+            context = {
+                'result': 'success',
+            }
+            return HttpResponse(JsonResponse(context))
+        else:
+            context = {
+                'result': 'fail',
+            }
+            return HttpResponse(JsonResponse(context))
+
+""" tab for Attendance """
+
+
+def view_attendance(request):
+    patrol = request.session.get('s_patrol_id')
+    print(f'Patrol id is -- {patrol}')
+    members = Profile.objects.filter(patrol=patrol).all()
+    attends = Attendance.objects.filter(
+        member__in=members).values()
+
+    form = AttendanceForm(
+        initial={'marker': request.user.id, 'member': members})
+
+    context = {
+        'title': 'attendance',
+        'attends': attends,
+        'form': form,
+    }
+
+    return render(request, 'patrol/attendance', context)
+
+
+""" tab for members """
+
+
+def view_members(request):
+    patrol = request.session.get('s_patrol_id')
+    print(f'Patrol id is -- {patrol}')
+    members = Profile.objects.filter(patrol=patrol).all()
+    # .select_related('badges').select_related('requirement').annotate(
+    #     max_level=Max('badge__level')).order_by('-level').first()
+
+    context = {
+        'title': 'members',
+        'members': members,
+    }
+    return render(request, 'patrol/members', context)
+
 
 """ pass fail or apply for badge """
 

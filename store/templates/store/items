@@ -10,7 +10,7 @@
 
 
 <!-- search -->
-<div class="container-fluid py-2 border-bottom">
+<div class="container py-2 border-bottom">
     <div class="row">
         <div class="col-sm my-1">
             <div class="input-group">
@@ -39,7 +39,7 @@
 </style>
 
 <!-- content -->
-<div class="container-xxl w-100 mx-0 px-0">
+<div class="container">
     <div class="mt-3 table-responsive">
         <table class="table table-bordered table-striped text-wrap sortable items-list">
             <thead class="bg-success">
@@ -57,12 +57,12 @@
             <tbody>
                 {% for item in items %}
                 <tr>
-                    <td>{{item.item_code}}</td>
-                    <td>{{item.item_name}}</td>
+                    <td><strong class="text-success">{{item.item_code}}</strong></td>
+                    <td><strong class="text-success">{{item.item_name}}</strong></td>
                     <td>{{item.item_quantity_received}}</td>
                     <td>{{item.item_units}}</td>
-                    <td>{{item.item_quantity_available}}</td>
-                    <td>{{item.item_purchased_date}}</td>
+                    <td><strong class="text-success">{{item.item_quantity_available}}</strong></td>
+                    <td>{{item.item_purchased_date|date:"Y-M-d"}}</td>
                     <td>{{item.item_price}}</td>
 
                 </tr>

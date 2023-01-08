@@ -17,6 +17,10 @@
                 <a class=" " href={% url 'member:camps' user_id=request.user.id %}>Camps</a>
             </li>
 
+            <li class="px-2 {% if title == 'badges' %} act  {% endif %}">
+                <a class="" href={% url 'member:badges' user_id=request.user.id %}>Badges</a>
+            </li>
+
             <li class="px-2 {% if title == 'messages' %} act  {% endif %} ">
                 <a class=" " href={% url 'member:messages' %}>Messages</a>
             </li>
@@ -24,10 +28,7 @@
             <li class="px-2 {% if title == 'articles' %} act  {% endif %} ">
                 <a class=" " href={% url 'member:articles' %}>Articles</a>
             </li>
-            
-            <li class="px-2 {% if title == 'badges' %} act  {% endif %}">
-                <a class="" href={% url 'member:badges' user_id=request.user.id %}>Badges</a>
-            </li>
+
         </ul>
 
     </nav>
