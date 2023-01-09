@@ -10,7 +10,9 @@
 }
 
 .new ul li a {
-    font-family: arial;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    font-weight: 900;
     color: #0a0907;
     text-decoration: none;
     position: relative;
@@ -45,10 +47,10 @@
 }
 
 .new{
-    background: #F8D7DA;
+    background: #92c59c;
 }
 
 .act  {
-    background: #f7ab08;
+    background: #ffffff;
     box-sizing: border-box;
 }

@@ -565,7 +565,7 @@ def manage_view(request):
 """ navbar edit tab rendering """
 
 
-def manage_edit(request):
+def manage_events(request):
     hikes = HikeForm()
     camps = CampForm()
     projects = ProjectForm()
@@ -575,7 +575,7 @@ def manage_edit(request):
         'camps': camps,
         'projects': projects,
     }
-    return render(request, 'manager/manage_edit', context)
+    return render(request, 'manager/manage_events', context)
 
 
 """ navbar Uploads tab rendering """

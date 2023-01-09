@@ -4,7 +4,6 @@ from . import views
 app_name = 'store'
 
 
-
 urlpatterns = [
 
     path('view/main/', views.main, name='main'),
@@ -26,5 +25,11 @@ urlpatterns = [
     path('add/lend/', views.add_lend, name='add_lend'),
 
     path('return/lend/', views.return_lend, name='return_lend'),
+
+    path('exp/lend/', views.export_lend, name='exp_lend'),
+
+    path('exp/item/', views.export_items, name='exp_item'),
+
+    path('exp/broken/', views.export_broken, name='exp_broken'),
 
 ]

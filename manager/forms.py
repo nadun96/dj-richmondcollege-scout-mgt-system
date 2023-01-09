@@ -123,31 +123,16 @@ class AnnounceForm(forms.ModelForm):
         }
 
 
-""" Patrol forms """
-
-
-class AddPatrolForm(forms.ModelForm):
-    class Meta:
-        model = Patrol
-        fields = ['name']
-
-
-class EndPatrolForm(forms.Form):
-    patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(),
-                                    widget=forms.Select(
-                                        attrs={'class': 'form-control select2 search-input', 'readonly': False}))
-
-
 """ Add Assign Members to Patrol form """
 
 
 class AssignPatrolForm(forms.Form):
     member = forms.ModelChoiceField(queryset=Profile.objects.all(),
                                     widget=forms.Select(
-                                        attrs={'class': 'form-control  select2 search-input col-lg-12 col-md-12 col-sm-12', 'readonly': False}))
+                                        attrs={'class': 'form-control  col-lg-12 col-md-12 col-sm-12', 'readonly': False}), initial={''})
     patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(),
                                     widget=forms.Select(
-                                        attrs={'id': 'assign_patrol', 'class': 'form-control select2 search-input col-lg-12 col-md-12 col-sm-12', 'readonly': False}))
+                                        attrs={'id': 'assign_patrol', 'class': 'form-control  col-lg-12 col-md-12 col-sm-12', 'readonly': False}), initial={''})
 
 
 """ Member Activation / Deactivate form """
@@ -156,7 +141,9 @@ class AssignPatrolForm(forms.Form):
 class ActivateMemberForm(forms.Form):
     member = forms.ModelChoiceField(queryset=User.objects.all(),
                                     widget=forms.Select(
-                                        attrs={'class': 'form-control  select2 search-input col-lg-12 col-md-12 col-sm-12', 'readonly': False, 'id': 'a_m_member'}))
+                                        attrs={'class': 'form-control  select2 search-input col-lg-12 col-md-12 col-sm-12', 'readonly': False, 'id': 'a_m_member'}),
+                                    initial={''}
+                                    )
 
     active = forms.BooleanField(required=False, widget=forms.CheckboxInput(
         attrs={'id': 'a_m_member', 'data-toggle': 'toggle', 'data-style': 'ios'}))
@@ -175,6 +162,7 @@ class MembershipFeeForm(forms.ModelForm):
             'for_year': YearPickerInput(),
             'amount': forms.NumberInput(attrs={'class': 'form-control', 'min': 0}),
         }
+        initial = {'member': ''}
 
 
 """ Assign Role form """
@@ -192,6 +180,8 @@ class AssignRoleForm(forms.ModelForm):
 
         }
 
+        initial = {'role': '', 'profile': ''}
+
 
 """ Assign Leader form  """
 
@@ -207,3 +197,20 @@ class AssignLeaderForm(forms.ModelForm):
             'patrol': forms.Select(attrs={'class': 'form-control select2  col-lg-12 col-md-12 col-sm-12'}),
 
         }
+
+        initial = {'name': '', 'patrol': ''}
+
+
+""" Patrol forms """
+
+
+class AddPatrolForm(forms.ModelForm):
+    class Meta:
+        model = Patrol
+        fields = ['name']
+
+
+class EndPatrolForm(forms.Form):
+    patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(),
+                                    widget=forms.Select(
+                                        attrs={'class': 'form-control ', 'id': 'end-form-select-patrol', 'readonly': False}), initial={})

@@ -30,8 +30,10 @@
         <div class="col-xl-6 col-md-7">
             <div class="container px-3">
 
-
-                <P class="h2 rounded-2 bg-light  text-center pb-1 text-capitalize text-black-75"> Add New Item</P>
+                <div class="bg-info px-4 py-2 rounded-2">
+                    <h3 class="text-center"> Add New Item</h3>
+                </div>
+                <!-- <P class="h2 rounded-2 bg-info p-2  text-center pb-1 text-capitalize text-black-75"> </P> -->
 
 
                 <form action={% url 'store:add_item' %} method="post" class="form" id="add_item_form">
@@ -78,6 +80,7 @@
                         </div>
                     </div>
                 </form>
+
                 <script>
                     document.getElementById("add_item_form").addEventListener("submit", function (event) {
                         event.preventDefault();
@@ -104,18 +107,17 @@
                         });
 
                     });
-
                 </script>
+
             </div>
         </div>
         <div class="col-xl-6 col-md-5">
             <div class="row">
                 <div class="row">
                     <div class="container px-5">
-                        <P class="h2 rounded-2 bg-light  text-center pb-1 text-capitalize text-black-75"> Add Item
-                            to Broken Items
-                        </P>
-
+                        <div class="bg-info px-4 py-2 rounded-2">
+                            <h3 class="text-center">Add Item to Broken Items</h3>
+                        </div>
 
                         <form action={% url 'store:add_broken' %} method="post" class="form" id="add_to_broken_form">
                             {% csrf_token %}
@@ -141,11 +143,13 @@
                                 </div>
                             </div>
                         </form>
+
+
                         <script>
 
                             document.getElementById("add_to_broken_form").addEventListener("submit", function (event) {
                                 event.preventDefault();
-                                // Your code here
+
                                 bootbox.confirm({
                                     message: "Are you sure?",
                                     buttons: {
@@ -175,10 +179,10 @@
 
                 <div class="row">
                     <div class="container px-5">
-
-                        <P class="h2 rounded-2 bg-light  text-center pb-1 text-capitalize text-black-75"> Return
-                            From Broken Items
-                        </P>
+                        <div class="bg-info px-4 py-2 rounded-2">
+                            <h3 class="text-center"> Return
+                                From Broken Items</h3>
+                        </div>
 
 
                         <form action={% url 'store:add_repaired' %} method="post" class="form" id="mark_repaired_form">
@@ -208,7 +212,7 @@
                         <script>
                             document.getElementById("mark_repaired_form").addEventListener("submit", function (event) {
                                 event.preventDefault();
-                                // Your code here
+
                                 bootbox.confirm({
                                     message: "Are you sure?",
                                     buttons: {

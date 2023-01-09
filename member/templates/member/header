@@ -19,15 +19,16 @@
                     <li><a class="dropdown-item small" href="{% url 'manager:main' %}">Secretary</a></li>
                     {%endif%}
                     
-                    {% comment %} 
+                     
                     {% if request.session.is_storekeeper %}
-                    <li><a class="dropdown-item small" href="{% url 'member:profile' user_id=request.user.id %} ">StoreKeeper</a></li>
+                    <li><a class="dropdown-item small" href="{% url 'store:main' %} ">StoreKeeper</a></li>
                     {%endif%}   
 
+                    
                     {% if request.session.is_admin %}
-                    <li><a class="dropdown-item small" href=" ">Admin</a></li>
+                    <li><a class="dropdown-item small" href="/admin/login/">Admin</a></li>
                     {% endif %} 
-                    {% endcomment %}
+                    
                 </ul>
 
             </div>

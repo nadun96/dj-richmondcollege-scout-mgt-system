@@ -4,6 +4,7 @@
 
 
 {% block content %}
+
 <div class="main content container">
     <section class="content">
         <div class="container-fluid">
@@ -11,14 +12,16 @@
                 <div class="row">
                     <div class="col-md m-1">
                         <h1>About Us</h1>
-                        <p> 2nd Galle Richmond Scout Group is a Reputed Community society in Galle
-                            area. They consist with cub scout and rover groups. All these three from 2nd Galle scout
-                            troop. We are currently contributing to many community services projects in that area. We
-                            consist with nearly 1000 members Yearly have over 300 new enrollments for cub and scout
-                            troop. Our decision body consist with two councils. One is Group Scout Leader’s council and
-                            the other one is Patrol Leaders Council.</p>
-                        <a href=""><input type="submit" name="signin" id="signin" value="badge list"
-                                class="btn-close-white" /></a>
+                        {% for g in group %}
+                        <p>{{g.about}}</p>
+                        {% endfor %}
+                    
+                                {% comment %} 2nd Galle Richmond Scout Group is a Reputed Community society in Galle
+                        area. They consist with cub scout and rover groups. All these three from 2nd Galle scout
+                        troop. We are currently contributing to many community services projects in that area. We
+                        consist with nearly 1000 members Yearly have over 300 new enrollments for cub and scout
+                        troop. Our decision body consist with two councils. One is Group Scout Leader’s council and
+                        the other one is Patrol Leaders Council. {% endcomment %}
 
                     </div>
                     <div class="col-md my-2">

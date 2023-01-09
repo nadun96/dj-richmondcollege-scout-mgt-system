@@ -54,11 +54,13 @@
     <script src="{% static 'js/search.js' %}"></script>
 
 
+    {% comment %} 
     <script>
         $(document).ready(function () {
             $('.select2').select2();
         });
-    </script>
+    </script> 
+    {% endcomment %}
 
 
     {% load static %}

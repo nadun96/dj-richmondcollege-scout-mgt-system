@@ -4,7 +4,7 @@ import os
 import time
 from manager.models import Post, Photo
 from member.models import Requirement
-from core.models import Profile, UserFile
+from core.models import Profile, UserFile, Group
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -19,8 +19,11 @@ User = get_user_model()
 
 
 def home(request):
+    group = Group.objects.filter(id=1).values()
+
     context = {
-        'title': 'home'
+        'title': 'home',
+        'group': group,
     }
     return render(request, 'login/login', context)
 

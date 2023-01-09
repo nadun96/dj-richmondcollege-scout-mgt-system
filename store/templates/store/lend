@@ -20,6 +20,7 @@
 {% if message %}
 <script>alert('{{ message }}');</script>
 {% endif %}
+
 <script>
 
     $(document).ready(function () {
@@ -43,7 +44,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <div class="row">
+            <div class="row mx-2">
                 <P class="h2 rounded-2 bg-info  text-center pb-2 text-capitalize text-black-75">Lend Item</P>
                 <form action={% url 'store:add_lend' %} class="my-3" method="post" enctype='multipart/form-data'>
                     {% csrf_token %}
@@ -73,7 +74,7 @@
                     <input type="submit" value="lend the item" class="btn btn-primary text-center">
                 </form>
             </div>
-            <div class="row">
+            <div class="row mx-2">
                 <P class="h2 rounded-2 bg-info text-center pb-2 text-capitalize text-black-75">Return Item</P>
                 <form action={% url 'store:return_lend' %} method="post" enctype='multipart/form-data'>
                     {% csrf_token %}
@@ -89,7 +90,6 @@
                                 <option class="" value="{{choice.0}}">{{choice.1}}</option>
                                 {% endfor %}
                             </select>
-
                         </div>
                         {% endif %}
 
@@ -127,11 +127,11 @@
                 <table class="table table-bordered table-striped text-wrap sortable items-list">
                     <thead class="bg-success">
                         <tr>
-                            <th>Code</th>
-                            <th>Person</th>
+                            <th>Item Code</th>
+                            <th>Member</th>
                             <th>Quantity</th>
                             <th>Date</th>
-                            <th>Returned Date</th>
+                            {% comment %} <th>Returned Date</th> {% endcomment %}
                         </tr>
                     </thead>
                     <tbody>
@@ -141,8 +141,7 @@
                             <td><strong class="text-danger">{{item.user}}</strong></td>
                             <td><strong class="text-danger">{{item.item_quantity_lent}}</strong></td>
                             <td>{{item.item_lent_date|date:"Y-M-d"}}</td>
-                            <td>{{item.date_returned_date|date:"Y-M-d"}}</td>
-                            <!-- <td>{{item.item_is_lent}}</td> -->
+                            {% comment %} <td>{{item.date_returned_date|date:"Y-M-d"}}</td> {% endcomment %}
                         </tr>
                         {% endfor %}
                     </tbody>

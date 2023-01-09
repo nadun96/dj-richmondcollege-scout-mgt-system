@@ -1,3 +1,7 @@
+from django.db.models import Count
+from django.http import HttpResponse
+import openpyxl
+from django.http import JsonResponse, HttpResponse
 from django.db.models import Max
 from .utility import generate_code
 from django.db.models.functions import ExtractWeekDay
@@ -42,7 +46,7 @@ lend_form = LendForm()
 
 @login_required()
 def lend(request):
-    items = Lend.objects.all()
+    items = Lend.objects.filter(item_is_lent=True)
     context = {
         'title': 'lend',
         'lends': lend_form,
@@ -124,7 +128,7 @@ def add_item(request):
                     print("item updated")
                     context = {
                         'title': 'main',
-                        'message': 'item updated',
+                        'message': f'{it} updated',
                     }
 
             # if created is true then item was created
@@ -151,9 +155,9 @@ def add_item(request):
 
 @ login_required()
 def add_broken(request):
+    """ send items to broken list """
 
     context = {}
-
     try:
         if request.method == 'POST':
             # save request params
@@ -189,7 +193,7 @@ def add_broken(request):
                     print(br)
                     context = {
                         'title': 'main',
-                        'message': 'item added successfully',
+                        'message': f'{qty} {it} marked as broken',
                     }
 
                     return render(request, 'store/main', context)
@@ -323,8 +327,8 @@ def add_lend(request):
 
             print(exist_available_items)
 
-            exist_available_items = Item.objects.filter(
-                Q(id=item) & Q(item_quantity_available__gte=qty)).get()
+            # exist_available_items = Item.objects.filter(
+            #     Q(id=item) & Q(item_quantity_available__gte=qty)).get()
 
             print(exist_available_items)
             # if all ok add to lend table
@@ -346,17 +350,23 @@ def add_lend(request):
                     )
                     ln.save()
 
-                context = {
+                    # reduce from items table
+                    item.item_quantity_available = item.item_quantity_available = item.item_quantity_available - \
+                        qty
 
-                }
+                    item.save()
 
-                # render page
-                context = {
-                    'title': 'lend',
-                    'items': items,
-                    'lends': lend_form,
-                    'message': 'item added successfully',
-                }
+                    context = {
+
+                    }
+
+                    # render page
+                    context = {
+                        'title': 'lend',
+                        'items': items,
+                        'lends': lend_form,
+                        'message': 'item lent',
+                    }
 
                 return render(request, 'store/lend', context)
 
@@ -365,7 +375,7 @@ def add_lend(request):
                     'title': 'lend',
                     'items': items,
                     'lends': lend_form,
-                    'message': 'user or item does not exist',
+                    'message': 'items not available',
                 }
 
                 return render(request, 'store/lend', context)
@@ -391,9 +401,9 @@ def return_lend(request):
     try:
         if request.method == 'POST':
             user = int(request.POST.get('user'))
-            item = int(request.POST.get('item'))
-            
-            item = int(item.lstrip('0'))
+            item = request.POST.get('item')
+
+            # item = int(item.lstrip('0'))
             print(item)  # Output: 1
 
             # for query
@@ -426,7 +436,7 @@ def return_lend(request):
                     ln.save()
 
                     # add back to items availability
-                    it = Item.objects.get(id=item)
+                    it = Item.objects.get(id=item.id)
 
                     it.item_quantity_available = it.item_quantity_available\
                         + ln.item_quantity_lent
@@ -459,3 +469,223 @@ def return_lend(request):
             'message': 'record failed',
         }
         return render(request, 'store/lend', context)
+
+
+""" get items data from database  to  json"""
+
+
+def get_items(request):
+    items = Item.objects.all().values()
+    context = {'items': items}
+    return HttpResponse(JsonResponse(context, safe=False))
+
+
+""" get lends data from database  to  json """
+
+
+def get_lends(request):
+    lends = Lend.objects.all().select_related('user', 'user__user', 'item')\
+        .values(
+            'user__user__username',
+            'user__surname',
+            'user__patrol',
+            'item__item_name',
+            'item_lent_date',
+            'item_quantity_lent',
+            'item_is_lent'
+    ).all()
+    context = {'lends': lends}
+    return HttpResponse(JsonResponse(context, safe=False))
+
+
+""" grouped by patrol """
+
+def get_lends_patrol(request):
+    lends = Lend.objects.all().select_related('user', 'user__user', 'item')\
+        .values(
+            'user__patrol'
+    ).annotate(
+            count=Count('user__patrol')
+    ).group_by('user__patrol').order_by('user__patrol')
+
+    context = {'lends': lends}
+    return HttpResponse(JsonResponse(context, safe=False))
+
+
+""" get broken items data from database  to  json """
+
+
+def get_broken(request):
+    broken = Broken.objects.all().values()
+    context = {'broken': broken}
+    return HttpResponse(JsonResponse(context, safe=False))
+
+
+def get_users_lends(request):
+    # lends with users who took items and their patrol
+    pass
+
+
+""" export lend data to excel """
+
+
+def export_lend(request):
+    # create a queryset of records to export
+    records = Lend.objects.all().select_related('user', 'user__user', 'item')\
+        .values(
+            'user__user__username',
+            'user__surname',
+            'user__patrol',
+            'item__item_name',
+            'item_lent_date',
+            'item_quantity_lent',
+            'item_is_lent'
+    ).all()
+
+    # print(records)
+
+    # create the Excel file
+    wb = openpyxl.Workbook()
+
+    ws = wb.active
+
+    # write the field names to the first row
+    ws.append([
+        'username',
+        'surname',
+        'patrol',
+        'item',
+        'date',
+        'quantity',
+        'item_is_lent'
+    ])
+
+    # iterate over the records and write the data to the sheet
+    for record in records:
+        ws.append([
+            record['user__user__username'],
+            record['user__surname'],
+            record['user__patrol'],
+            record['item__item_name'],
+            record['item_lent_date'],
+            record['item_quantity_lent'],
+            record['item_is_lent'],
+        ])
+
+    # create an HttpResponse object with the Excel file as an attachment
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename=lend data{datetime.datetime.now()} .xlsx'
+
+    wb.save(response)
+
+    return response
+
+
+""" export items data to excel """
+
+
+def export_items(request):
+    # create a queryset of records to export
+    records = Item.objects.all().\
+        values(
+        'item_code',
+        'item_name',
+        'item_price',
+        'item_quantity_received',
+        'item_units',
+        'item_quantity_available',
+        'item_purchased_date'
+    )
+
+    print(records)
+
+    # create the Excel file
+    wb = openpyxl.Workbook()
+
+    ws = wb.active
+
+    # write the field names to the first row
+    ws.append([
+        'Code',
+        'Name',
+        'Price',
+        'Received',
+        'Units',
+        'Available',
+        'Date'
+    ])
+
+    # iterate over the records and write the data to the sheet
+    for record in records:
+        ws.append([
+            record['item_code'],
+            record['item_name'],
+            record['item_price'],
+            record['item_quantity_received'],
+            record['item_units'],
+            record['item_quantity_available'],
+            record['item_purchased_date']
+
+        ])
+
+    # create an HttpResponse object with the Excel file as an attachment
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename=items data - {datetime.datetime.now()} .xlsx'
+    wb.save(response)
+
+    return response
+
+
+""" export broken data to excel """
+
+
+@login_required()
+def export_broken(request):
+    # create a queryset of records to export
+    records = Broken.objects.all().select_related('item')\
+        .values(
+            'item__item_code',
+            'item__item_name',
+            'item_quantity_broken',
+            'item_broken_date',
+            'item_is_broken',
+            'date_repaired',
+    ).all()
+
+    print(records)
+
+    # create the Excel file
+    wb = openpyxl.Workbook()
+
+    ws = wb.active
+
+    # write the field names to the first row
+    ws.append([
+        'Code',
+        'Item Name',
+        'Quantity broken',
+        'Date',
+        'Broken',
+        'date_repaired',
+    ])
+
+    # iterate over the records and write the data to the sheet
+    for record in records:
+        ws.append([
+            record['item__item_code'],
+            record['item__item_name'],
+            record['item_quantity_broken'],
+            record['item_broken_date'],
+            record['item_is_broken'],
+            record['date_repaired'],
+        ])
+
+    # create an HttpResponse object with the Excel file as an attachment
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename=broken data{datetime.datetime.now()} .xlsx'
+    wb.save(response)
+
+    return response

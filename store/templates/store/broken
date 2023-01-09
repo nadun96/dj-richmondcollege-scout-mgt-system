@@ -68,7 +68,7 @@
                     <td class="pl-1 pr-0">{{broken.item.item_quantity_available}}</td>
                     <td class="pl-1 pr-0">{{broken.item.item_units}}</td>
 
-                    {% if broken.item_broken_date == broken.date_repaired  %}
+                    {% if broken.item_is_broken %}
                     <td class="pl-1 pr-0">Not Repaired</td>
                     {% else %}
                     <td class="pl-1 pr-0">{{broken.date_repaired|date:"Y-M-d"}}</td>

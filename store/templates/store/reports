@@ -6,7 +6,73 @@
 <script>alert('{{ message }}');</script>
 {% endif %}
 <!-- content -->
-<div class="container mt-3">
+<div class="container mt-1">
+    <div class="row p-3">
+        <div class="col-lg-4 col-md-3 col-sm-12 p-3">
+            <button class="btn btn-secondary mx-auto" id="exp-lend" onclick="exportLends()">Export Lend Data</button>
+        </div>
+
+        <!-- script to export lends -->
+        <script>
+            function exportLends() {
+                console.log('called')
+                $.ajax({
+                    url: "{% url 'store:exp_lend' %}",
+                    type: 'GET',
+                    success: function (response) {
+                        // do something with the response
+                        window.location = "{% url 'store:exp_lend' %}";
+                    },
+                    error: function (error) {
+                        // handle the error
+                    }
+                });
+            }
+        </script>
+
+        <div class="col-lg-4 col-md-3 col-sm-12 p-3">
+            <button class="btn btn-secondary mx-auto" id="exp-item" onclick="exportItems()">Export Items Data</button>
+        </div>
+
+        <!-- script to export items -->
+        <script>
+            function exportItems() {
+                console.log('called')
+                $.ajax({
+                    url: "{% url 'store:exp_item' %}",
+                    type: 'GET',
+                    success: function (response) {
+                        // do something with the response
+                        window.location = "{% url 'store:exp_item' %}";
+                    },
+                    error: function (error) {
+                        // handle the error
+                    }
+                });
+            }
+        </script>
+        <div class="col-lg-4 col-md-3 col-sm-12 p-3">
+            <button class="btn btn-secondary mx-auto" id="exp-broke" onclick="exportBroken()">Export Broken Items
+                Data</button>
+        </div>
+        <!-- script to export broken -->
+        <script>
+            function exportBroken() {
+                console.log('called')
+                $.ajax({
+                    url: "{% url 'store:exp_broken' %}",
+                    type: 'GET',
+                    success: function (response) {
+                        // do something with the response
+                        window.location = "{% url 'store:exp_broken' %}";
+                    },
+                    error: function (error) {
+                        // handle the error
+                    }
+                });
+            }
+        </script>
+    </div>
     <h2>Striped Rows</h2>
     <p>The .table-striped class adds zebra-stripes to a table:</p>
     <table class="table table-striped">

@@ -50,7 +50,7 @@ class Group(models.Model):
     address = models.CharField(max_length=100, null=True, blank=True)
     telephone = models.CharField(max_length=11, null=True, blank=True)
     email = models.EmailField(max_length=254, blank=True)
-    about = models.TextField(max_length=500, blank=True)
+    about = models.TextField(max_length=1000, blank=True)
     fee = models.IntegerField(blank=True, null=True)
 
     def __str__(self):

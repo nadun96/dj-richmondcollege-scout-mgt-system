@@ -6,7 +6,7 @@ app_name = 'manager'
 urlpatterns = [
 
     path('view/', views.manage_view, name='main'),
-    path('events/', views.manage_edit, name='events'),
+    path('events/', views.manage_events, name='events'),
     path('wall/', views.manage_wall, name='manage_wall'),
     path('welcome/', views.manage_patrols, name='manage_patrols'),
     path('announce/', views.manage_announcements, name='manage_announce'),

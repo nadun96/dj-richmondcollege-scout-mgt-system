@@ -10,7 +10,9 @@
 }
 
 .new ul li a {
-    font-family: arial;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    font-weight: 900;
     color: #0a0907;
     text-decoration: none;
     position: relative;
@@ -51,15 +53,9 @@
 
 #childnav{
     background: #65a6a8;
-    /**background: #F8D7DA;**/
 }
 
 
 .act {
     background: #ffffff;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    -ms-border-radius: 3px;
-    -o-border-radius: 3px;
 }

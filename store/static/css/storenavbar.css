@@ -9,6 +9,9 @@
 }
 
 .new ul li a {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    font-weight: 900;
     color: #0a0907;
     text-decoration: none;
     position: relative;
