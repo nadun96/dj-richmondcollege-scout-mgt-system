@@ -15,13 +15,6 @@
                         {% for g in group %}
                         <p>{{g.about}}</p>
                         {% endfor %}
-                    
-                                {% comment %} 2nd Galle Richmond Scout Group is a Reputed Community society in Galle
-                        area. They consist with cub scout and rover groups. All these three from 2nd Galle scout
-                        troop. We are currently contributing to many community services projects in that area. We
-                        consist with nearly 1000 members Yearly have over 300 new enrollments for cub and scout
-                        troop. Our decision body consist with two councils. One is Group Scout Leader’s council and
-                        the other one is Patrol Leaders Council. {% endcomment %}
 
                     </div>
                     <div class="col-md my-2">
@@ -30,10 +23,6 @@
 
                             <div class="container">
                                 <div class="row">
-
-                                    {% comment %}
-                                    {% url 'member:profile'?next= user_id=request.user.id %}"
-                                    {% endcomment %}
 
                                     <!-- start login form  -->
                                     <form method="post" action="{% url 'home:login' %}"

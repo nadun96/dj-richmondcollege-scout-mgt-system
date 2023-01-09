@@ -307,7 +307,9 @@ def add_repaired(request):
 # add items to the lend list
 @ login_required()
 def add_lend(request):
-    items = Lend.objects.filter(item_is_lent=True)
+    exist = Lend.objects.filter(item_is_lent=True).exists()
+    if exist:
+        items = Lend.objects.filter(item_is_lent=True)
     context = {'lends': lend_form, 'message': '', 'title': 'lend'}
     try:
         if request.method == 'POST':
@@ -499,6 +501,7 @@ def get_lends(request):
 
 
 """ grouped by patrol """
+
 
 def get_lends_patrol(request):
     lends = Lend.objects.all().select_related('user', 'user__user', 'item')\

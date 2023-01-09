@@ -4,3 +4,4 @@
 **command** - python manage.py runserver_plus
 0003 - **installed server plus**
 0004 - **installed openpyxl can export data as excel**
+0005 - **signup page completed**

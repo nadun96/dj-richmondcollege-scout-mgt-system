@@ -39,12 +39,12 @@ header.stickey{
 main{
     display: block;
     position: absolute;
-    top: 50px;
+    top: 30px;
     bottom: 30px;
 }
 
 section.content{
-    padding-top: 50px;
+    padding-top: 30px;
     overflow: auto;
 }
 

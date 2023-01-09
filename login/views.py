@@ -1,7 +1,8 @@
 
+from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 import os
-import time
+from .utils import generate_username
 from manager.models import Post, Photo
 from member.models import Requirement
 from core.models import Profile, UserFile, Group
@@ -19,6 +20,7 @@ User = get_user_model()
 
 
 def home(request):
+    """ view login page """
     group = Group.objects.filter(id=1).values()
 
     context = {
@@ -29,11 +31,8 @@ def home(request):
 
 
 def signup(request):
-    # generate student number
-    max_id = User.objects.aggregate(id=Max('id'))
-    max_id = int(max_id['id']) + 1
-    currentYear = time. strftime("%Y")
-    username = f'SC/{currentYear}/{str(max_id)}'
+    """ view signup page """
+    username = generate_username()
 
     # pass data to  context
     context = {
@@ -44,88 +43,89 @@ def signup(request):
 
 
 def register(request):
+    """ register user and profile """
+    try:
+        context = {}
+        if request.method == "POST":
+            # variables request.POST
+            student_surname = request.POST.get('student_surname')
+            student_initials = request.POST.get('student_initials')
+            student_birthday = request.POST.get('student_birthday')
+            student_username = request.POST.get('student_username')
+            student_email = request.POST.get('student_email')
+            student_entrance = request.POST.get('student_entrance')
+            student_contact = request.POST.get('student_contact')
+            student_residence = request.POST.get('student_residence')
+            student_father = request.POST.get('student_father')
+            student_other_skills = request.POST.get('student_skills')
+            student_sports = request.POST.get('student_sports')
+            student_password = request.POST.get('student_password')
 
-    context = {}
+            # variables request.FILES
+            student_letter = request.FILES['student_letter']
+            student_medical = request.FILES['student_medical']
+            student_photo = request.FILES['student_photo']
 
-    if request.method == "POST":
+            # validate files
+            image_validator = FileExtensionValidator(['jpg', 'jpeg', 'png'])
+            file_validator = FileExtensionValidator(
+                ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'])
+            image_validator(student_photo)
+            file_validator(student_letter)
+            file_validator(student_medical)
 
-        # variables request.POST
-        student_surname = request.POST.get('student_surname')
-        student_initials = request.POST.get('student_initials')
-        student_birthday = request.POST.get('student_birthday')
-        student_username = request.POST.get('student_username')
-        student_email = request.POST.get('student_email')
-        student_entrance = request.POST.get('student_entrance')
-        student_contact = request.POST.get('student_contact')
-        student_residence = request.POST.get('student_residence')
-        student_father = request.POST.get('student_father')
-        student_other_skills = request.POST.get('student_skills')
-        student_sports = request.POST.get('student_sports')
-        student_password = request.POST.get('student_password')
+            # Change the file name to a custom name with the same file type
+            _, file_extension = os.path.splitext(student_photo.name)
+            student_photo.name = repr(student_username) + file_extension
 
-        # variables request.FILES
-        student_letter = request.FILES['student_letter']
-        student_medical = request.FILES['student_medical']
-        student_photo = request.FILES['student_photo']
+            _, file_extension = os.path.splitext(student_letter.name)
+            student_letter.name = repr(student_username) + file_extension
 
-        # validate files
-        image_validator = FileExtensionValidator(['jpg', 'jpeg', 'png'])
-        file_validator = FileExtensionValidator(
-            ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'])
-        image_validator(student_photo)
-        file_validator(student_letter)
-        file_validator(student_medical)
+            _, file_extension = os.path.splitext(student_medical.name)
+            student_medical.name = repr(student_username) + file_extension
 
-        # Change the file name to a custom name with the same file type
-        _, file_extension = os.path.splitext(student_photo.name)
-        student_photo.name = repr(student_username) + file_extension
+            # create user object
+            user = User.objects.create_user(
+                username=generate_username(),
+                email=student_email,
+                password=student_password
+            )
 
-        _, file_extension = os.path.splitext(student_letter.name)
-        student_letter.name = repr(student_username) + file_extension
+            # save user FILES object
+            user_files = UserFile.objects.create(
+                user=user, letter=student_letter, medical=student_medical, picture=student_photo)
 
-        _, file_extension = os.path.splitext(student_medical.name)
-        student_medical.name = repr(student_username) + file_extension
+            user_files.save()
 
-        # create user object
-        user = User.objects.create_user(
-            username=student_username,
-            email=student_email,
-            password=student_password
-        )
+            # instead of signals
+            student_profile = Profile.objects.create(
+                user=user,  # this is the foreign key
+                surname=student_surname,
+                initials=student_initials,
+                entrance_number=student_entrance,
+                email=student_email,
+                father=student_father,
+                skills=student_other_skills,
+                sports=student_sports,
+                birthday=student_birthday,
+                contact=student_contact,
+                address=student_residence,
+            )
 
-        # save user FILES object
-        user_files = UserFile.objects.create(
-            user=user, letter=student_letter, medical=student_medical, picture=student_photo)
+            student_profile.save()
 
-        user_files.save()
-
-        # instead of signals
-        student_profile = Profile.objects.create(
-            user=user,  # this is the foreign key
-            surname=student_surname,
-            initials=student_initials,
-            entrance_number=student_entrance,
-            email=student_email,
-            father=student_father,
-            skills=student_other_skills,
-            sports=student_sports,
-            birthday=student_birthday,
-            contact=student_contact,
-            address=student_residence,
-        )
-
-        student_profile.save()
-
-        context = {'title': 'success'}
-
-        render(request, 'login/login', context)
-
-
-""" # call auth login function """
+            context['result'] = 'success'
+            return HttpResponse(
+                JsonResponse(context),
+            )
+    except Exception as e:
+        print(e)
+        context = {'result': 'error'}
+        return HttpResponse(JsonResponse(context))
 
 
 def user_login(request):
-
+    """ call auth login function """
     # try:
     username = request.POST['username']
     password = request.POST['password']
@@ -147,18 +147,14 @@ def user_login(request):
         return redirect(LOG_IN_URL, context)
 
 
-""" # call auth logout function """
-
-
 def user_logout(request):
+    """ call auth logout function """
     logout(request)
     return redirect(reverse('home:home'))
 
 
-""" view home events """
-
-
 def events(request):
+    """ view home events """
     photos = Photo.objects.all().order_by('-date')
 
     context = {
@@ -170,7 +166,7 @@ def events(request):
 
 
 def requirements(request):
-
+    """ view requirements page """
     requires = Requirement.objects.all().select_related('badge')\
         .values(
         'badge__level', 'badge__name', 'badge__description', 'number', 'name', 'description')\

@@ -64,7 +64,7 @@
                         <span class="input-group-text">Unit market price</span>
                         <span class="input-group-text">Rs.</span>
                         <input id="price" class="form-control text-bg-primary bg-opacity-10" type="number"
-                            name="item_price" placeholder="0" onchange='calculateTotal()'>
+                            name="item_price" placeholder="0" onchange='calculateTotal()' min="0">
                     </div>
 
                     <!-- item  total price -->
@@ -235,6 +235,7 @@
                                 });
 
                             });
+                            
                         </script>
 
                     </div>

@@ -7,11 +7,12 @@
     <div class="container mt-0 pt-3">
 
         <!-- Start of form -->
-        <form name="Student_form" class="form form-group" action={% url 'home:register' %} method="post"
-            enctype="multipart/form-data">
+        <form name="Student_form" class="form form-group" action="" method="post" enctype="multipart/form-data"
+            id="registerForm">
+
             {% csrf_token %}
             <div class="row mt-0 mb-2">
-                <p class="h3 text-center text-capitalize ">Registration Form</p>
+                <p class="h3 text-center text-capitalize ">Member Registration Form</p>
             </div>
 
             <div class="row">
@@ -182,12 +183,98 @@
 
         <!-- End of form -->
 
+        <!-- submit data to backend and handle response -->
+        <script>
+            const regForm = document.querySelector('#registerForm');
 
+            regForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                // Your code here
+                bootbox.confirm({
+                    message: "Are you sure?",
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            // the user clicked "OK"
+                            const regFormData = new FormData(regForm);
+
+                            regFormData.forEach((value, key) => {
+                                console.log(key + ': ' + value);
+                            });
+
+                            console.log(regFormData);
+
+                            fetch("{% url 'home:register' %} ", {
+                                method: 'POST',
+                                body: regFormData
+
+                            })
+                                .then((response) => response.json())
+                                .then((data) => {
+                                    console.log(data);
+                                    if (data.result == 'success') {
+                                        $('.modal-body').html('Form submission was successful!');
+                                        $('#modal-dialog').modal('show');
+                                        regForm.reset();
+                                    } else {
+                                        $('.modal-body').html('There was an error with the form submission.');
+                                        $('#modal-dialog').modal('show');
+                                    }
+                                });
+
+
+                            // submit the form
+                        }
+                        // Handle the result
+                    }
+                });
+
+            });
+        </script>
     </div>
-
-    {{error}}
-
 </div>
+
+<!-- close modal because I prevented default -->
+<script>
+    $(document).ready(function () {
+        $('#close-modal').on('click', function () {
+            $('#modal-dialog').modal('hide');
+        });
+    });
+</script>
+
+<!-- jason model dialog box -->
+<div class="modal" tabindex="-1" role="dialog" id="modal-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal content goes here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 <!--End of main-->
 {% endblock %}
 
