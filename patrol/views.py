@@ -1,15 +1,14 @@
-from django.db.models import Count
+# from django.db.models import Count
+# from django.db.models import Max
+# from django.contrib.sessions.models import Session
+# from manager.models import Patrol
 from django.forms import modelform_factory
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from core.models import Complete, Profile, UserFile
 from .forms import ResultForm, AttendanceForm
-import datetime
 from .cryptography import encrypt_value, decrypt_value
 from django.http import JsonResponse
-from django.db.models import Max
-from django.contrib.sessions.models import Session
-from manager.models import Patrol
 from .models import Attendance
 from datetime import date
 # Create your views here.
@@ -182,7 +181,7 @@ def evaluate(request):
             # update the object
             comp.stage = stage
 
-            comp.completed = datetime.date.today()
+            comp.completed = today
             comp.save()
 
             print("-------------------------")

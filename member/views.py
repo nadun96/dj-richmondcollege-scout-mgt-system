@@ -1,7 +1,7 @@
 from django.db.models import Sum
 from core.views import session_processor
 import datetime
-
+from django.contrib.auth.decorators import login_required
 from core.models import Complete, Profile, User, UserFile
 from django.conf import settings
 from django.db import transaction
@@ -17,32 +17,37 @@ from .models import Badge, Camp, Hike, Project, Requirement
 """ view saturday posts """
 
 from django.views.generic import ListView
+from django.utils.decorators import method_decorator
 
 
-class PostListView(ListView):
-    model = Post
-    template_name = 'post_list'
-    context_object_name = 'posts'
-    ordering = ['-id']
+# @login_required()
+# @method_decorator(name='post')
+# class PostListView(ListView):
+#     model = Post
+#     template_name = 'post_list'
+#     context_object_name = 'posts'
+#     ordering = ['-id']
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'articles'
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['title'] = 'articles'
+#         return context
 
 
+@login_required()
 def saturday_posts(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('-id')
     context = {
         'title': 'articles',
         'posts': posts,
     }
-    return render(request, 'member/articles', context)
+    return render(request, 'manager/post_list', context)
 
 
 """ update profile details specific user """
 
 
+@login_required()
 def profile_update(request):
     try:
         if request.method == 'POST':
@@ -120,6 +125,7 @@ def profile_update(request):
 """ view profile """
 
 
+@login_required()
 def view_profile(request):
     profile = Profile.objects.all()
     files = UserFile.objects.all()
@@ -140,6 +146,7 @@ def view_profile(request):
 """ view profile details specific user """
 
 
+@login_required()
 def user_profile(request, user_id):
     result = session_processor(request)
     print(result)
@@ -170,6 +177,7 @@ def user_profile(request, user_id):
 """ hikes for specific user done """
 
 
+@login_required()
 def hikes(request, user_id):
     add_hike = MemberHikeForm()
     user = User.objects.get(pk=user_id)
@@ -188,6 +196,7 @@ def hikes(request, user_id):
 """ add Hike to profile """
 
 
+@login_required()
 def add_hike(request):
     context = {'result': 'not loaded'}
     if request.method == 'POST':
@@ -213,6 +222,7 @@ def add_hike(request):
 """ view hikes page """
 
 
+@login_required()
 def view_hikes(request):
 
     context = {
@@ -225,6 +235,7 @@ def view_hikes(request):
 """ badges """
 
 
+@login_required()
 def view_badges(request):
     context = {
         'title': 'badges'
@@ -235,6 +246,7 @@ def view_badges(request):
 """ get badges for specific user """
 
 
+@login_required()
 def badges(request, user_id):
     user = User.objects.get(id=user_id)
     profile = Profile.objects.get(user=user)
@@ -256,6 +268,7 @@ def badges(request, user_id):
 """ add Badge to profile """
 
 
+@login_required()
 def apply_requirement(request):
     context = {'result': 'not loaded'}
 
@@ -323,6 +336,7 @@ def apply_requirement(request):
 """ projects """
 
 
+@login_required()
 def view_projects(request):
     context = {
         'title': 'projects'
@@ -333,6 +347,7 @@ def view_projects(request):
 """ get projects for specific user """
 
 
+@login_required()
 def projects(request, user_id):
     select_project = MemberProjectForm()
     user = User.objects.get(id=user_id)
@@ -352,6 +367,7 @@ def projects(request, user_id):
 """ add project to profile """
 
 
+@login_required()
 def add_project(request):
     context = {'result': 'not loaded'}
     if request.method == 'POST':
@@ -378,6 +394,7 @@ def add_project(request):
 """ camps """
 
 
+@login_required()
 def view_camps(request):
     context = {
         'title': 'camps'
@@ -388,6 +405,7 @@ def view_camps(request):
 """ get camps for specific user """
 
 
+@login_required()
 def camps(request, user_id):
     select_camp = MemberCampForm()
     user = User.objects.get(id=user_id)
@@ -406,6 +424,7 @@ def camps(request, user_id):
 """ add Camp to profile  not done"""
 
 
+@login_required()
 def add_camp(request):
     context = {'result': 'not loaded'}
     if request.method == 'POST':
@@ -430,6 +449,7 @@ def add_camp(request):
 """ announce """
 
 
+@login_required()
 def view_announce(request):
 
     context = {

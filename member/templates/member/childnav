@@ -25,14 +25,8 @@
                 <a class=" " href={% url 'member:messages' %}>Messages</a>
             </li>
 
-            {% comment %}
             <li class="px-2 {% if title == 'articles' %} act  {% endif %} ">
                 <a class=" " href={% url 'member:articles' %}>Articles</a>
-            </li> 
-            {% endcomment %}
-
-            <li class="px-2 {% if title == 'articles' %} act  {% endif %} ">
-                <a class=" " href={% url 'member:post' %}>Articles</a>
             </li>
 
         </ul>

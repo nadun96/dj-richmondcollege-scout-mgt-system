@@ -27,6 +27,4 @@ urlpatterns = [
 
     path('announce/', views.view_announce, name='messages'),
     path('sat/', views.saturday_posts, name='articles'),
-    path('sat/lv/', views.PostListView.as_view(), name='post'),
-
 ]

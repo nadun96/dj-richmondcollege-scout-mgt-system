@@ -1,7 +1,0 @@
-{% include 'member/base' %}
-{% block title %}{{ article.title }}{% endblock %}
-{% block content %}
-<h1>{{ article.title }}</h1>
-<p>{{ article.body }}</p>
-{% include "manager/post_list" %}
-{% endblock %}

@@ -3,20 +3,6 @@
 
 {% block content %}
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-<!-- select2 js -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css">
-
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        $('.select2').select2();
-    });
-</script>
-
 <!-- content -->
 
 <div class="container mt-3">
@@ -29,7 +15,7 @@
 
         <div class="col-lg-9 col-md-9 col-sm-12">
 
-            <form action="" class="from" method="post" id="add_project">
+            <form action="" class="from mt-1" method="post" id="add_project">
 
                 {% csrf_token %}
 
@@ -46,7 +32,7 @@
         </div>
 
         <div class="col-lg-3 col-md-3 col-sm-12">
-            <div class="input-group rounded pt-1 mt-4">
+            <div class="input-group rounded mt-5">
 
                 <input type="search" class="form-control rounded search-input" data-table="hike-list"
                     placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
@@ -131,13 +117,11 @@
 
 </script>
 
-<!-- select2 js activate to fields -->
+<!-- selectize -->
 <script>
-
     $(document).ready(function () {
-        $('#project_field').select2();
+        $('.selectize').selectize();
     });
-
 </script>
 
 <!-- close modal because I prevented default -->

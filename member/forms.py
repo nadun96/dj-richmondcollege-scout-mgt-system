@@ -23,7 +23,7 @@ class FilesUpdateForm(forms.ModelForm):
 
 class MemberHikeForm(forms.Form):
     hike = forms.ModelChoiceField(queryset=Hike.objects.all(
-    ), widget=forms.Select(attrs={'class': 'form-control select2 pt-2 m-3  col-lg-10 col-md-10 col-sm-12', 'id': 'hike_field'}))
+    ), widget=forms.Select(attrs={'class': 'form-control selectize pt-2 col-lg-10 col-md-10 col-sm-12', 'id': 'hike_field', 'placeholder': 'Select a hike...'}))
 
 
 """ camp tab forms """
@@ -31,7 +31,7 @@ class MemberHikeForm(forms.Form):
 
 class MemberCampForm(forms.Form):
     camp = forms.ModelChoiceField(queryset=Camp.objects.all(
-    ), widget=forms.Select(attrs={'class': 'form-control select2 pt-2 m-3  col-lg-10 col-md-10 col-sm-12', 'id': 'camp_field'}))
+    ), widget=forms.Select(attrs={'class': 'form-control selectize  pt-2 col-lg-10 col-md-10 col-sm-12', 'id': 'camp_field', 'placeholder': 'Select a camp...'}))
 
 
 """ project tab forms """
@@ -39,7 +39,7 @@ class MemberCampForm(forms.Form):
 
 class MemberProjectForm(forms.Form):
     project = forms.ModelChoiceField(queryset=Project.objects.all(
-    ), widget=forms.Select(attrs={'class': 'form-control select2 pt-2 m-3  col-lg-10 col-md-10 col-sm-12', 'id': 'project_field'}))
+    ), widget=forms.Select(attrs={'class': 'form-control selectize pt-2 col-lg-10 col-md-10 col-sm-12', 'id': 'project_field',  'placeholder': 'Select a project...'}))
 
 
 """ badges tab forms """
@@ -47,4 +47,4 @@ class MemberProjectForm(forms.Form):
 
 class MemberRequirementForm(forms.Form):
     requirement = forms.ModelChoiceField(queryset=Requirement.objects.all().order_by('badge__level', 'number'), widget=forms.Select(
-        attrs={'class': 'form-control select2 pt-2 m-3  col-lg-10 col-md-10 col-sm-12', 'id': 'requirement_field'}))
+        attrs={'class': 'form-control selectize pt-2  col-lg-10 col-md-10 col-sm-12', 'id': 'requirement_field', 'placeholder': 'Select your requirement...'}))
