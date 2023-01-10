@@ -41,16 +41,6 @@
     </div>
 </div>
 
-
-<!-- select2 js activate to fields -->
-<script>
-
-    $(document).ready(function () {
-        $('#camp_field').select2();
-    });
-
-</script>
-
 <!-- close modal because I prevented default -->
 <script>
     $(document).ready(function () {

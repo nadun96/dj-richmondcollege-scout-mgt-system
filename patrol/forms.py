@@ -20,13 +20,10 @@ class ResultForm(forms.ModelForm):
         fields = ['user', 'requirement', 'stage', 'examiner']
 
         widgets = {
-            'user': forms.Select(attrs={'class': 'form-control select2', 'readonly': True, 'disabled': True}),
-
-            'examiner': forms.Select(attrs={'class': 'form-control select2', 'readonly': True, 'disabled': True}),
-
-            'requirement': forms.Select(attrs={'class': 'form-control select2', 'readonly': True, 'disabled': True}),
-
-            'stage': forms.Select(attrs={'class': 'form-control select2 col-lg-12 col-sm-12', 'style': 'width: 100%'}),
+            'user': forms.Select(attrs={'class': 'form-control  col-lg-12 col-sm-12', 'readonly': True, 'disabled': True}),
+            'examiner': forms.Select(attrs={'class': 'form-control  col-lg-12 col-sm-12', 'readonly': True, 'disabled': True}),
+            'requirement': forms.Select(attrs={'class': 'form-control  col-lg-12 col-sm-12', 'readonly': True, 'disabled': True}),
+            'stage': forms.Select(attrs={'class': 'form-control selectize col-lg-12 col-sm-12', 'style': 'width: 100%'}),
         }
 
 
@@ -35,6 +32,6 @@ class AttendanceForm(forms.ModelForm):
         model = Attendance
         fields = ['title', 'marker', 'member']
         widgets = {
-            'marker': forms.Select(attrs={'id': 'id_marker', 'class': 'form-control select2 col-lg-12 col-sm-12', 'readonly': True, 'disabled': True}),
-            'member': forms.Select(attrs={'id': 'id_member', 'class': 'form-control select2 col-lg-12 col-sm-12'}),
+            'marker': forms.Select(attrs={'id': 'id_marker', 'class': 'form-control selectize col-lg-12 col-sm-12', 'disabled': True}),
+            'member': forms.Select(attrs={'id': 'id_member', 'class': 'form-control selectize col-lg-12 col-sm-12', 'placeholder': 'Select a member'}),
         }

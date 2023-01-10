@@ -26,6 +26,7 @@ urlpatterns = [
          name='apply_requirement'),
 
     path('announce/', views.view_announce, name='messages'),
-    path('saturday/', views.saturday_posts, name='articles'),
+    path('sat/', views.saturday_posts, name='articles'),
+    path('sat/lv/', views.PostListView.as_view(), name='post'),
 
 ]

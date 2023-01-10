@@ -12,10 +12,27 @@
                     Position
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item small" href="#">Product One</a></li>
-                    <li><a class="dropdown-item small" href="#">Product Two</a></li>
-                    <li><a class="dropdown-item small" href="#">Product Three</a></li>
+
+                    <li><a class="dropdown-item small"
+                            href="{% url 'member:profile' user_id=request.user.id %}">Member</a></li>
+
+
+                    {% if request.session.is_secretary %}
+                    <li><a class="dropdown-item small" href="{% url 'manager:main' %}">Secretary</a></li>
+                    {%endif%}
+
+
+                    {% if request.session.is_storekeeper %}
+                    <li><a class="dropdown-item small" href="{% url 'store:main' %} ">StoreKeeper</a></li>
+                    {%endif%}
+
+
+                    {% if request.session.is_admin %}
+                    <li><a class="dropdown-item small" href="/admin/login/">Admin</a></li>
+                    {% endif %}
+
                 </ul>
+
             </div>
             <div class="dropdown">
                 <button class="btn-sm btn-light dropdown-toggle ms-3" type="button" id="dropdownMenuButton"
@@ -23,8 +40,9 @@
                     Menu
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item small" href="#">Media</a></li>
-                    <li><a class="dropdown-item small" href="#">Product Two</a></li>
+                    {% comment %} <li><a class="dropdown-item small" href="#">Media</a></li>
+                    <li><a class="dropdown-item small" href="#">Product Two</a></li> {% endcomment %}
+
                     <li><a class="dropdown-item small" href={% url 'home:logout' %}>Log out</a></li>
                 </ul>
             </div>

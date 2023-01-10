@@ -15,17 +15,13 @@
         <div class="col-lg-4 col-md-4 col-sm-12">
 
             <form action="" class="from" method="post" id="add_attendance">
-
                 {% csrf_token %}
-
                 <div class="col-lg-9 col-sm-12">
                     {{form|crispy}}
                     {{form.non_field_errors}}
                 </div>
-
                 <input type="submit" class="btn btn-primary rounded px-3 py-1 my-1 d-flex" aria-label="add Hike"
                     value="Mark" aria-describedby="add button" />
-
             </form>
 
         </div>
@@ -45,26 +41,26 @@
             <!-- hike table row -->
             <div class="row">
                 <div class="table-responsive">
-
                     <table class="table table-striped table-bordered text-wrap sortable project-list">
                         <thead class="bg-success">
                             <tr>
                                 <th>#</th>
-                                <th>title</th>
                                 <th>date</th>
-                                <th>member</th>
+                                <th>title</th>
                                 <th>time</th>
-                                <th>location</th>
+                                <th>marked by</th>
+                                <th>member</th>
                             </tr>
                         </thead>
-                        {% for hike in hikes %}
+                        {% for at in attends %}
                         <tr>
-                            <td>{{hike.id}}</td>
-                            <td>{{hike.title}}</td>
-                            <td>{{hike.year|date:"Y"}}</td>
-                            <td>{{hike.date|date:"Y M d"}}</td>
-                            <td>{{hike.nights}}</td>
-                            <td>{{hike.location}}</td>
+
+                            <td>{{forloop.counter}}</td>
+                            <td>{{at.date|date:"Y-M-d"}}</td>
+                            <td>{{at.title}}</td>
+                            <td>{{at.time|time:'g:i a'}}</td>
+                            <td>{{at.marker__user__username}}</td>
+                            <td>{{at.member__user__username}}</td>
                         </tr>
                         {% endfor %}
                         </tbody>
@@ -75,6 +71,12 @@
     </div>
 </div>
 
+<!-- selectize -->
+<script>
+    $(document).ready(function () {
+        $('.selectize').selectize();
+    });
+</script>
 
 
 
@@ -88,7 +90,7 @@
 
         const attendFormData = new FormData(attendForm);
 
-        /*attendFormData.append('pro', '{{ profile.id }}');*/
+        attendFormData.append('marker', '{{ request.session.s_profile_id }}');
 
         attendFormData.forEach((value, key) => {
             console.log(key + ': ' + value);
@@ -110,22 +112,18 @@
                     $('.modal-body').html('Attendance Mark was successful!');
                     $('#modal-dialog').modal('show');
                     attendForm.reset();
+                }else if(data.result == 'exist'){
+
+                    $('.modal-body').html('Already marked.');
+                    $('#modal-dialog').modal('show');
+                    attendForm.reset();
 
                 } else {
-
                     $('.modal-body').html('Attendance Mark Error.');
                     $('#modal-dialog').modal('show');
                 }
 
             });
-    });
-
-</script>
-<!-- select2 js activate to field -->
-<script>
-
-    $(document).ready(function () {
-        $('#id_member').select2();
     });
 
 </script>

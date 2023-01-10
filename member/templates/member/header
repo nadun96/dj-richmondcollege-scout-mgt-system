@@ -12,23 +12,24 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                    <li><a class="dropdown-item small" href="{% url 'member:profile' user_id=request.user.id %}">Member</a></li>
+                    <li><a class="dropdown-item small"
+                            href="{% url 'member:profile' user_id=request.user.id %}">Member</a></li>
 
-                    
+
                     {% if request.session.is_secretary %}
                     <li><a class="dropdown-item small" href="{% url 'manager:main' %}">Secretary</a></li>
                     {%endif%}
-                    
-                     
+
+
                     {% if request.session.is_storekeeper %}
                     <li><a class="dropdown-item small" href="{% url 'store:main' %} ">StoreKeeper</a></li>
-                    {%endif%}   
+                    {%endif%}
 
-                    
+
                     {% if request.session.is_admin %}
                     <li><a class="dropdown-item small" href="/admin/login/">Admin</a></li>
-                    {% endif %} 
-                    
+                    {% endif %}
+
                 </ul>
 
             </div>
@@ -38,12 +39,10 @@
                     Menu
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item small" href="#">Media</a></li>
-                    <li><a class="dropdown-item small" href="#">Product Two</a></li>
+                    {% comment %} <li><a class="dropdown-item small" href="#">Media</a></li>
+                    <li><a class="dropdown-item small" href="#">Product Two</a></li> {% endcomment %}
 
                     <li><a class="dropdown-item small" href={% url 'home:logout' %}>Log out</a></li>
-
-
                 </ul>
             </div>
 

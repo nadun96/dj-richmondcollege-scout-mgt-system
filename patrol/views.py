@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.forms import modelform_factory
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
@@ -10,70 +11,100 @@ from django.db.models import Max
 from django.contrib.sessions.models import Session
 from manager.models import Patrol
 from .models import Attendance
+from datetime import date
 # Create your views here.
 
 
-""" ajax add Attendance """
+today = date.today()
 
 
 def add_attendance(request):
-    if request.method == 'POST':
-        # check and get variables
-        print("Form submitted:")
-        print("----------------")
-        marker = request.POST.get('marker')
-        print(f'marker is {marker}')
-        member = request.POST.get('member')
-        print(f'member is {member}')
-        print("----------------")
+    """ ajax add Attendance """
+    try:
+        if request.method == 'POST':
+            # check and get variables
+            print("Form submitted:")
+            print("----------------")
+            title = request.POST.get('title')
+            # marker = request.POST.get('marker')
+            marker = request.session.get('_auth_user_id')
+            print(f'marker is {marker}')
+            member = request.POST.get('member')
+            print(f'member is {member}')
+            print("----------------")
 
-        # validate form
-        form = AttendanceForm(request.POST)
-        valid = form.is_valid()
+            # check if already marked
+            exist = Attendance.objects.filter(
+                title=title, marker=marker, member=member, date=today).exists()
 
-        # check user == examiner
-        if (marker == member):
-            valid = False
+            print('exist: ', exist)
 
-        if (valid):
+            # validate form
+            form = AttendanceForm(request.POST)
+            valid = form.is_valid()
 
-            # get the object
-            marker = Profile.objects.get(user=marker)
-            member = Profile.objects.get(user=member)
+            print("form is valid: ", valid)
 
-            # create the object
-            attend = Attendance.objects.create(
-                marker=marker, member=member)
+            # check user == examiner
+            if (marker == member or exist):
+                valid = False
 
-            print("-------------------------")
-            print(f"Attendance object marker: {attend.marker}")
-            print(f"Attendance object member: {attend.member}")
-            print(f"Attendance object date: {attend.date}")
-            print(f"Attendance object time: {attend.time}")
-            print("-------------------------")
+            if (valid):
 
-            context = {
-                'result': 'success',
-            }
-            return HttpResponse(JsonResponse(context))
-        else:
-            context = {
-                'result': 'fail',
-            }
-            return HttpResponse(JsonResponse(context))
+                # get the object
+                marker = Profile.objects.get(id=marker)
+                member = Profile.objects.get(id=member)
 
-""" tab for Attendance """
+                # create the object
+                attend = Attendance.objects.create(
+                    marker=marker, member=member, title=title)
+
+                print("-------------------------")
+                print(f"Attendance object marker: {attend.marker}")
+                print(f"Attendance object member: {attend.member}")
+                print(f"Attendance object date: {attend.date}")
+                print(f"Attendance object time: {attend.time}")
+                print("-------------------------")
+
+                context = {
+                    'result': 'success',
+                }
+                return HttpResponse(JsonResponse(context))
+            else:
+                context = {
+                    'result': 'exist',
+                }
+                return HttpResponse(JsonResponse(context))
+
+    except Exception as e:
+        print(e)
+        context = {
+            'result': 'error',
+        }
+        return HttpResponse(JsonResponse(context))
 
 
 def view_attendance(request):
+    """ view tab for Attendance """
+
     patrol = request.session.get('s_patrol_id')
+    profile = request.session.get('s_profile_id')
     print(f'Patrol id is -- {patrol}')
+
     members = Profile.objects.filter(patrol=patrol).all()
     attends = Attendance.objects.filter(
-        member__in=members).values()
+        member__in=members).select_related('user')\
+        .values(
+            'title', 'marker__user__username', 'date', 'member__user__username', 'time'
+    )\
+        .order_by('-date')
+
+    """ attends = Attendance.objects.filter(member__in=members) \
+                            .values('date') \
+                            .annotate(count=Count('id')) """
 
     form = AttendanceForm(
-        initial={'marker': request.user.id, 'member': members})
+        initial={'marker': profile, 'member': members})
 
     context = {
         'title': 'attendance',
@@ -84,10 +115,9 @@ def view_attendance(request):
     return render(request, 'patrol/attendance', context)
 
 
-""" tab for members """
-
-
 def view_members(request):
+    """ view tab members """
+
     patrol = request.session.get('s_patrol_id')
     print(f'Patrol id is -- {patrol}')
     members = Profile.objects.filter(patrol=patrol).all()
@@ -101,11 +131,10 @@ def view_members(request):
     return render(request, 'patrol/members', context)
 
 
-""" pass fail or apply for badge """
-
-
 def evaluate(request):
+    """ pass fail or apply for badge """
     context = {
+
     }
 
     if request.method == 'POST':
@@ -173,10 +202,9 @@ def evaluate(request):
         return HttpResponse(JsonResponse(context))
 
 
-""" load examine form in a new tab after clicking on table link"""
-
-
 def examine_form(request, pk):
+    """ load examine form in a new tab after clicking on table link"""
+
     # get the object
     comp = Complete.objects.get(id=pk)
     # get the examiner
@@ -192,10 +220,9 @@ def examine_form(request, pk):
     return render(request, 'patrol/examine', context)
 
 
-""" view tab badges """
-
-
 def view_examine(request, user_id):
+    """ view tab badges """
+
     profile = Profile.objects.get(user=user_id)
     # badges completed
     badges = profile.badges.all()

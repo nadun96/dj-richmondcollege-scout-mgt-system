@@ -4,10 +4,8 @@ from django.utils.translation import gettext as _
 from django.db import models
 
 
-"""  home photo page """
-
-
 class Photo(models.Model):
+    """  home photo page """
     title = models.CharField(max_length=50, blank=False)
     description = models.CharField(max_length=50, blank=False)
     date = models.DateField(blank=False)
@@ -18,10 +16,8 @@ class Photo(models.Model):
         return self.title
 
 
-"""  saturday posts """
-
-
 class Post(models.Model):
+    """  saturday posts """
     title = models.CharField(max_length=100, blank=False)
     description = models.TextField()
     date = models.DateField(auto_now_add=True, blank=False)
@@ -32,10 +28,8 @@ class Post(models.Model):
         return f'{self.id} | {self.date}'
 
 
-"""  patrol model """
-
-
 class Patrol(models.Model):
+    """  patrol model """
     name = models.CharField(max_length=50, blank=False, unique=True)
 
     def __str__(self):
@@ -46,15 +40,14 @@ class Patrol(models.Model):
     # is_active = models.BooleanField(default=True)
 
 
-"""  Send model with abstract class for sending messages and announcements """
-
-
 class Communication(models.Model):
+    """  Send model with abstract class for sending messages and announcements """
     class Meta:
         abstract = True
 
 
 class Announcement(Communication):
+    """ Model Announcements for members """
     title = models.CharField(max_length=50, blank=False)
     content = models.TextField(blank=False)
     date = models.DateField(auto_now_add=True, blank=False)

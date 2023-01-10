@@ -16,6 +16,20 @@ from .models import Badge, Camp, Hike, Project, Requirement
 
 """ view saturday posts """
 
+from django.views.generic import ListView
+
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'post_list'
+    context_object_name = 'posts'
+    ordering = ['-id']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'articles'
+        return context
+
 
 def saturday_posts(request):
     posts = Post.objects.all()

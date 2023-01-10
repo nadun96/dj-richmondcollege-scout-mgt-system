@@ -1,0 +1,65 @@
+<style>
+    .card-footer-custom {
+        position: absolute;
+        bottom: 0;
+    }
+</style>
+
+{% extends 'member/base' %}
+
+
+{% block content %}
+
+<div class="container">
+
+    <div class="input-group rounded pt-1 mt-4 mb-4">
+
+        <input type="search" id="Search" class="form-control rounded search-input" data-table="card-list"
+            placeholder="Search" onkeyup="myFunction()" aria-label="Search" aria-describedby="search-addon" />
+
+        <span class="input-group-text border-0 btn-primary" id="search-addon">
+            <i class="fas fa-search"></i>
+        </span>
+        <script>
+            function myFunction() {
+                var input = document.getElementById("Search");
+                var filter = input.value.toLowerCase();
+                var nodes = document.getElementsByClassName('card');
+
+                for (i = 0; i < nodes.length; i++) {
+                    if (nodes[i].innerText.toLowerCase().includes(filter)) {
+                        nodes[i].style.display = "block";
+                    } else {
+                        nodes[i].style.display = "none";
+                    }
+                }
+            }
+        </script>
+    </div>
+
+    <div class="card-deck">
+        {% for post in posts %}
+        <div class="">
+            <div class="card mb-3">
+                <img src="{{ post.picture.url }}" class="card-img-top" alt="{{ post.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text">{{ post.description }}</p>
+                    {% if post.file %}
+                    {% comment %} {% for file in post.file.all %} {% endcomment %}
+                    <a href="{{ file.url }}" class="btn btn-primary">Download file
+                        {% comment %} <b>({{forloop.counter}})</b>{% endcomment %}
+                    </a>
+                    {% comment %} {% endfor %} {% endcomment %}
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">{{ post.date }}</small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock content %}
