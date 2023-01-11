@@ -15,3 +15,5 @@
 **0006** - **patrol app complete**</br>
 
 **0007** - **member app complete**</br>
+
+**0008** - **installed  django_plotly_dash**</br>

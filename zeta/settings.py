@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     "crispy_bootstrap5",
     "bootstrap_datepicker_plus",
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
 
     # user model
     'core.apps.CoreConfig',
@@ -70,6 +71,8 @@ INSTALLED_APPS = [
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
