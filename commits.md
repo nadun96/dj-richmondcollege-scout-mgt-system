@@ -17,3 +17,5 @@
 **0007** - **member app complete**</br>
 
 **0008** - **installed  django_plotly_dash**</br>
+**0008** - **django downgraded to 3.2 LTS**</br>
+**0008** - **installed numpy**</br>
