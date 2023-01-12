@@ -295,7 +295,7 @@
         <!-- view pane tabs -->
         <div class="col-lg-4 col-md-4 col-sm-12">
 
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="patrols-tab" data-bs-toggle="tab"
                         data-bs-target="#patrols-tab-pane" type="button" role="tab" aria-controls="home"

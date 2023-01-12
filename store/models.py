@@ -52,4 +52,4 @@ class Lend(models.Model):
     date_returned_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
-        return (self.item.item_name)
+        return (f'({self.id}){self.item.item_name}-{self.user.user.username}')

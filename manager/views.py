@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 import datetime
 from django.db import connection, transaction
 from django.http import JsonResponse, HttpResponse
@@ -15,6 +16,7 @@ User = get_user_model()
 """ manage roles """
 
 
+@ login_required
 def manage_roles(request):
     activate_form = AssignRoleForm()
 
@@ -29,6 +31,7 @@ def manage_roles(request):
 """ manage leaders """
 
 
+@ login_required
 def manage_leaders(request):
 
     leader_form = AssignLeaderForm()
@@ -263,6 +266,54 @@ def get_roles(request):
 """ ajax add role to role list """
 
 
+def set_auth_role(profile, role):
+    try:
+        #user = User.objects.get(id=profile.user)
+        user = profile.user
+        print('user is - ' + str(user))
+
+        mr = MemberRole.objects.get(profile=profile, role=role)
+
+        print(mr.pk)
+
+        print(f'mr is - {str(mr.pk)} \t {mr.role} \t {mr.active}')
+
+        active = mr.active
+        if (role == 1):
+            if (active):
+                user.is_staff = True
+                print('is_admin')
+            else:
+                user.is_staff = False
+
+        elif (role == 2):
+            if (active):
+                user.is_mem = True
+                print('is_mem')
+            else:
+                user.is_mem = False
+
+        elif (role == 3):
+            if (active):
+                user.is_sec = True
+                print('is_sec')
+            else:
+                user.is_sec = False
+
+        elif (role == 4):
+            if (active):
+                user.is_skr = True
+                print('is_skr')
+            else:
+                user.is_skr = False
+
+        user.save()
+
+    except Exception as e:
+        print(e)
+        print('error')
+
+
 def toggle_role(request):
     if request.method == 'POST':
 
@@ -271,7 +322,13 @@ def toggle_role(request):
         role = request.POST.get('role')
         form = AssignRoleForm(request.POST)
         if form.is_valid():
+            print('form is valid')
+
             profile = Profile.objects.get(id=profile)
+
+            val = Profile.objects.filter(id=profile.id).values()
+
+            print(val)
 
             exist = MemberRole.objects.filter(
                 profile=profile, role=role)\
@@ -282,13 +339,15 @@ def toggle_role(request):
                 mr.active = not mr.active
                 response_data['result'] = 'exist'
                 mr.save()
+
                 print(f'Object Exist \
                     {mr.pk}-{mr.role}-{mr.profile}-{mr.active}')
+
+                set_auth_role(profile=mr.profile, role=mr.role)
             else:
                 mr = MemberRole.objects.create(profile=profile, role=role)
                 mr.save()
-
-            print('form is valid')
+                set_auth_role(profile=mr.profile, role=mr.role)
 
             response_data['result'] = 'success'
 
@@ -481,7 +540,9 @@ def add_post(request):
 """ ajax add hike """
 
 
+@ login_required
 def add_hike(request):
+    response_data['result'] = 'not loaded'
     if request.method == 'POST':
         response_data = {}
         form = HikeForm(request.POST)
@@ -494,10 +555,11 @@ def add_hike(request):
         )
     else:
         response_data['result'] = 'error'
-        return HttpResponse(
-            JsonResponse(response_data),
 
-        )
+    return HttpResponse(
+        JsonResponse(response_data),
+
+    )
 
 
 """ ajax add camp """
@@ -621,17 +683,22 @@ def manage_member(request):
     fees = MembershipFeeForm()
     pays = MembershipFee.objects.all().select_related('member').select_related('member__user').values(
         'id', 'member__user__username', 'for_year', 'member__user__is_active', 'is_paid')
+    users = User.objects.all().values(
+        'id', 'username', 'is_active', 'is_skr', 'is_mem', 'is_sec', 'is_ldr', 'is_exa', 'last_login')
+
     """ .select_related(
         'user').values_list('id', 'member__user_user', 'for_year', 'member__user__is_active', 'is_paid')
     #is_superuser, last_login, last_name, leader, logentry, message, password, profile, receiver, user_permissions, #username
     date_joined, email, first_name, groups, id, is_active, is_exa, is_ldr, is_mem, is_sec, is_skr, is_staff,
     print(profiles.values_list()) """
+
     context = {
         'title': 'manage_member',
         'profiles': profiles,
         'activate': activate,
         'fees': fees,
         'pays': pays,
+        'users': users,
     }
 
     return render(request, 'manager/manage_member', context)

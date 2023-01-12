@@ -57,6 +57,9 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "bootstrap_datepicker_plus",
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    # 'channels',
+    # 'channels_redis',
+
 
     # user model
     'core.apps.CoreConfig',

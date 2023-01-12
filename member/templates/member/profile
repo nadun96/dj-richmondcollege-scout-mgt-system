@@ -45,7 +45,7 @@
         <div class="col-sm-9">
 
             <nav class="mt-2">
-                <div class="nav nav-fill nav-tabs" id="nav-tab" role="tablist">
+                <div class="nav nav-fill nav-pills nav-item" id="nav-tab" role="tablist">
 
                     <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#view-tab"
                         type="button" role="tab" aria-controls="nav-view" aria-selected="true">

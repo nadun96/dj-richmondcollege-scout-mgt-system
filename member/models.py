@@ -11,7 +11,7 @@ class Hike(models.Model):
     year = models.DateField(blank=False)
     date = models.DateField(blank=False)
     time = models.TimeField(blank=False)
-    nights = models.PositiveIntegerField(blank=True)
+    nights = models.PositiveIntegerField(blank=True, default=0)
     is_day = models.BooleanField(default=True)
     location = models.CharField(max_length=50)
 

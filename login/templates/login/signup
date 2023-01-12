@@ -222,7 +222,7 @@
                                 .then((data) => {
                                     console.log(data);
                                     if (data.result == 'success') {
-                                        $('.modal-body').html('Form submission was successful!');
+                                        $('.modal-body').html('Form submission was successful!<br>Thank you for registering with us.<br> pay membership fee to the Secretary and activate Your Account.');
                                         $('#modal-dialog').modal('show');
                                         regForm.reset();
                                     } else {

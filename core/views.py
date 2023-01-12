@@ -20,7 +20,7 @@ def session_processor(request):
 
     # use the profile id to get the leader object
     is_leader = Leader.objects.filter(
-        name=profile.id, is_active=True).exists()
+        name=profile.id).exists()
     if (is_leader):
         request.session['is_leader'] = True
 

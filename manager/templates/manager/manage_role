@@ -5,35 +5,6 @@
 {% load widget_tweaks %}
 {% load crispy_forms_tags %}
 
-<!-- close modal because I prevented default -->
-<script>
-    $(document).ready(function () {
-        $('#close-modal').on('click', function () {
-            $('#modal-dialog').modal('hide');
-        });
-    });
-</script>
-
-<!-- jason model dialog box -->
-<div class="modal" tabindex="-1" role="dialog" id="modal-dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Feedback</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Modal content goes here -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="container">
     <div class="row">
 
@@ -66,7 +37,6 @@
                 fetch("{% url 'manager:toggle_roles' %}", {
                     method: 'POST',
                     body: addRoleFormData
-
                 })
                     .then((response) => response.json())
                     .then((data) => {
@@ -157,4 +127,39 @@
     </div>
 </div>
 
+<!-- selectize -->
+<script>
+    $(document).ready(function () {
+        $('.selectize').selectize();
+    });
+</script>
+
+<!-- close modal because I prevented default -->
+<script>
+    $(document).ready(function () {
+        $('#close-modal').on('click', function () {
+            $('#modal-dialog').modal('hide');
+        });
+    });
+</script>
+
+<!-- jason model dialog box -->
+<div class="modal" tabindex="-1" role="dialog" id="modal-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal content goes here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 {%endblock %}

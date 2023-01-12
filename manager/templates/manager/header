@@ -40,8 +40,9 @@
                     Menu
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    {% comment %} <li><a class="dropdown-item small" href="#">Media</a></li>
-                    <li><a class="dropdown-item small" href="#">Product Two</a></li> {% endcomment %}
+                    {% if request.session.is_admin %}
+                    <li><a class="dropdown-item small" href="{% url 'patrol:examine_tab' user_id=request.user.id %}">Patrol</a></li>
+                    {% endif %}
 
                     <li><a class="dropdown-item small" href={% url 'home:logout' %}>Log out</a></li>
                 </ul>

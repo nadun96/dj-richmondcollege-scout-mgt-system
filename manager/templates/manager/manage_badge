@@ -4,27 +4,6 @@
 {% load widget_tweaks %}
 {% load crispy_forms_tags %}
 
-
-<script>
-
-    $(document).ready(function () {
-        $('').select2();
-    });
-
-    $(document).ready(function () {
-        $('#id_patrol').select2();
-    });
-
-    /** $(document).ready(function () {
-         $('select').selectize({
-             sortField: 'text'
-         });
-     });**/
-
-
-</script>
-
-
 <div class="container">
 
     <div class="row">
@@ -253,7 +232,7 @@
         <!-- tab nav buttons -->
         <div class="col-lg-8 col-md-12 col-sm-12">
 
-            <ul class="nav nav-tabs" id="badges-tabs" role="tablist">
+            <ul class="nav nav-pills nav-fill mb-2" id="badges-tabs" role="tablist">
 
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="badges-tab" data-bs-toggle="tab"
@@ -380,7 +359,12 @@
 </div>
 
 
-
+<!-- selectize -->
+<script>
+    $(document).ready(function () {
+        $('.selectize').selectize();
+    });
+</script>
 
 
 <!-- close modal because I prevented default -->

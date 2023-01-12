@@ -1,3 +1,4 @@
+from bootstrap_datepicker_plus.widgets import DatePickerInput
 from member.models import Camp, Project, Hike, Badge, Requirement
 from core.models import Profile, MembershipFee, MemberRole, Leader
 from bootstrap_datepicker_plus.widgets import YearPickerInput
@@ -13,7 +14,7 @@ class RequirementForm(forms.ModelForm):
 
     badge = forms.ModelChoiceField(queryset=Badge.objects.all(),
                                    widget=forms.Select(
-        attrs={'class': 'form-control py-3  select2 col-lg-12 col-md-12 col-sm-12 col-xs-12'}))
+        attrs={'class': 'form-control selectize', 'placeholder': 'Select the badge'}))
 
     description = forms.CharField(widget=forms.Textarea(
         attrs={'rows': 3, 'class': 'py-2'}))
@@ -63,8 +64,8 @@ class ProjectForm(forms.ModelForm):
         fields = ['title', 'description', 'date', 'time', 'location']
 
         widgets = {
-            'date': forms.DateInput(format='%Y/%m/%d', attrs={'type': 'date'}),
-            'time': forms.TimeInput(format='%H', attrs={'type': 'time'}),
+            'date': forms.DateInput(format='%Y/%m/%d', attrs={'type': 'date', 'class': 'form-control'}),
+            'time': forms.TimeInput(format='%H', attrs={'type': 'time', 'class': 'form-control'}),
         }
 
 
@@ -89,10 +90,10 @@ class UploadPhotoForm(forms.ModelForm):
 
     class Meta:
         model = Photo
-        fields = '__all__'
+        fields = ['title', 'description', 'date', 'location', 'file',]
         widgets = {
-            'photo_description': forms.Textarea(attrs={'rows': 3}),
-            'photo_date': forms.DateInput(
+            'description': forms.Textarea(attrs={'rows': 3}),
+            'date': forms.DateInput(
                 format='%Y/%m/%d', attrs={'type': 'date'})
         }
 
@@ -129,10 +130,10 @@ class AnnounceForm(forms.ModelForm):
 class AssignPatrolForm(forms.Form):
     member = forms.ModelChoiceField(queryset=Profile.objects.all(),
                                     widget=forms.Select(
-                                        attrs={'class': 'form-control  col-lg-12 col-md-12 col-sm-12', 'readonly': False}), initial={''})
+                                        attrs={'class': 'form-control selectize', 'placeholder': 'select member'}))
     patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(),
                                     widget=forms.Select(
-                                        attrs={'id': 'assign_patrol', 'class': 'form-control  col-lg-12 col-md-12 col-sm-12', 'readonly': False}), initial={''})
+                                        attrs={'id': 'assign_patrol', 'class': 'form-control selectize', 'placeholder': 'select patrol'}))
 
 
 """ Member Activation / Deactivate form """
@@ -141,8 +142,7 @@ class AssignPatrolForm(forms.Form):
 class ActivateMemberForm(forms.Form):
     member = forms.ModelChoiceField(queryset=User.objects.all(),
                                     widget=forms.Select(
-                                        attrs={'class': 'form-control  select2 search-input col-lg-12 col-md-12 col-sm-12', 'readonly': False, 'id': 'a_m_member'}),
-                                    initial={''}
+                                        attrs={'class': 'form-control selectize ', 'placeholder': 'select member'})
                                     )
 
     active = forms.BooleanField(required=False, widget=forms.CheckboxInput(
@@ -158,9 +158,9 @@ class MembershipFeeForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'member': forms.Select(
-                attrs={'id': 'a_f_member', 'class': 'form-control select2  col-lg-12 col-md-12 col-sm-12', 'readonly': False}),
+                attrs={'id': 'a_f_member', 'class': 'form-control  selectize ', 'placeholder': 'select member'}),
             'for_year': YearPickerInput(),
-            'amount': forms.NumberInput(attrs={'class': 'form-control', 'min': 0}),
+            'amount': forms.NumberInput(attrs={'class': 'form-control', 'min': 0, 'placeholder': 'Rs.100'}),
         }
         initial = {'member': ''}
 
@@ -174,9 +174,9 @@ class AssignRoleForm(forms.ModelForm):
         fields = ['role', 'profile']
         widgets = {
 
-            'role': forms.Select(attrs={'id': 'rf_select_role', 'class': 'form-control select2  col-lg-12 col-md-12 col-sm-12'}),
+            'role': forms.Select(attrs={'id': 'rf_select_role', 'class': 'form-control selectize ', 'placeholder': 'select role'}),
 
-            'profile': forms.Select(attrs={'id': 'rf_select_profile', 'class': 'form-control select2  col-lg-12 col-md-12 col-sm-12'}),
+            'profile': forms.Select(attrs={'id': 'rf_select_profile', 'class': 'form-control selectize ', 'placeholder': 'select profile'}),
 
         }
 
@@ -192,9 +192,9 @@ class AssignLeaderForm(forms.ModelForm):
         fields = ['name', 'patrol']
         widgets = {
 
-            'name': forms.Select(attrs={'class': 'form-control select2  col-lg-12 col-md-12 col-sm-12'}),
+            'name': forms.Select(attrs={'class': 'form-control selectize', 'placeholder': 'select member'}),
 
-            'patrol': forms.Select(attrs={'class': 'form-control select2  col-lg-12 col-md-12 col-sm-12'}),
+            'patrol': forms.Select(attrs={'class': 'form-control selectize', 'placeholder': 'select patrol'}),
 
         }
 
@@ -213,4 +213,4 @@ class AddPatrolForm(forms.ModelForm):
 class EndPatrolForm(forms.Form):
     patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(),
                                     widget=forms.Select(
-                                        attrs={'class': 'form-control ', 'id': 'end-form-select-patrol', 'readonly': False}), initial={})
+                                        attrs={'class': 'form-control selectize ', 'id': 'end-form-select-patrol', 'placeholder': 'select patrol'}))

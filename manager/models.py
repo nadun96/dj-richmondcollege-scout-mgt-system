@@ -7,7 +7,7 @@ from django.db import models
 class Photo(models.Model):
     """  home photo page """
     title = models.CharField(max_length=50, blank=False)
-    description = models.CharField(max_length=50, blank=False)
+    description = models.TextField()
     date = models.DateField(blank=False)
     location = models.CharField(max_length=50, blank=False)
     file = models.ImageField(upload_to='photos', blank=False)

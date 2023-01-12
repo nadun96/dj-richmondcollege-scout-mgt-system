@@ -9,8 +9,8 @@ from manager.models import Patrol, Communication
 class User(AbstractUser):
     is_active = models.BooleanField(default=True)
     is_mem = models.BooleanField(default=False)
-    is_skr = models.BooleanField(default=False)
     is_sec = models.BooleanField(default=False)
+    is_skr = models.BooleanField(default=False)
     is_ldr = models.BooleanField(default=False)
     is_exa = models.BooleanField(default=False)
 

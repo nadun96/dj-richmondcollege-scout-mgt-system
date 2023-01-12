@@ -1,61 +1,66 @@
 <!-- Footer -->
-<footer class="bg-primary text-center text-white ftc">
-    <!-- Grid container -->
-    <div class="container p-4">
-        <!-- Section: Links -->
-        <section class="">
-            <!--Grid row-->
-            <div class="row">
-                 {% for g in group %}
-                <!--Grid column-->
-              
-                <div class="col-lg-4 col-md-4  mb-md-0">
-        
-        
-                    <ul class="list-unstyled mb-0">
-                        <li class="">
-                           <i class="fas fa-address-card p-1"></i>{{g.address}}
-                        </li>
-                    </ul>
+<div class="row">
+    <footer class="bg-primary text-center text-white ftc">
+        <!-- Grid container -->
+        <div class="container">
+            <!-- Section: Links -->
+            <section class="font-monospace">
+                <!--Grid row-->
+                <div class="row p-1">
+                    {% for g in group %}
+                    <!--Grid column-->
 
+                    <div class="col-lg-4 col-md-4  mb-md-0">
+
+
+                        <ul class="list-unstyled mb-0">
+                            <i class="fas fa-address-card p-1"></i>
+                            <li class="">
+                                {{g.address}}
+                            </li>
+                        </ul>
+
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-4 col-md-4  mb-md-0">
+
+
+                        <ul class="list-unstyled mb-0">
+                            <i class="fa fa-phone p-1" aria-hidden="true"></i>
+                            <li>
+                                {{g.telephone}}
+                            </li>
+
+                        </ul>
+
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-4 col-md-4  mb-md-0">
+
+                        <ul class="list-unstyled mb-0">
+                            <i class="fa fa-envelope p-1" aria-hidden="true"></i>
+                            <li>
+                                {{g.email}}
+                            </li>
+                        </ul>
+
+                    </div>
+                    <!--Grid column-->
+
+                    {% endfor %}
                 </div>
-                <!--Grid column-->
+                <!--Grid row-->
+            </section>
+            <!-- Section: Links -->
 
-                <!--Grid column-->
-                <div class="col-lg-4 col-md-4  mb-md-0">
-                    
+        </div>
+        <!-- Grid container -->
 
-                    <ul class="list-unstyled mb-0">
-                        <li>
-                           <i class="fa fa-phone p-1" aria-hidden="true"></i>{{g.telephone}}
-                        </li>
+    </footer>
+    <!--  end Footer -->
 
-                    </ul>
-
-                </div>
-                <!--Grid column-->
-
-                <!--Grid column-->
-                <div class="col-lg-4 col-md-4  mb-md-0">
-                    
-
-                    <ul class="list-unstyled mb-0">
-                        <li>
-                            <i class="fa fa-envelope p-1" aria-hidden="true"></i>{{g.email}}
-                        </li>
-                    </ul>
-
-                </div>
-                <!--Grid column-->
-
-                {% endfor %}
-            </div>
-            <!--Grid row-->
-        </section>
-        <!-- Section: Links -->
-
-    </div>
-    <!-- Grid container -->
-
-</footer>
-<!--  end Footer -->
+</div>

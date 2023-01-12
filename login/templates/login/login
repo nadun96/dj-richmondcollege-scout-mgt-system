@@ -13,7 +13,7 @@
                     <div class="col-md m-1">
                         <h1>About Us</h1>
                         {% for g in group %}
-                        <p>{{g.about}}</p>
+                        <p id="about" class="small">{{g.about}}</p>
                         {% endfor %}
 
                     </div>
@@ -25,8 +25,8 @@
                                 <div class="row">
 
                                     <!-- start login form  -->
-                                    <form method="post" action="{% url 'home:login' %}"
-                                        class="form-horizontal" role="form">
+                                    <form method="post" action="{% url 'home:login' %}" class="form-horizontal"
+                                        role="form">
 
                                         {% csrf_token %}
                                         <div class="form-group p-1 m-1">
@@ -95,12 +95,10 @@
                     </div>
                 </div>
             </div>
-
         </div>
+    </section>
+</div>
 
-</div>
-</section>
-</div>
 
 <!-- alert section -->
 <div id="alert-box"></div>

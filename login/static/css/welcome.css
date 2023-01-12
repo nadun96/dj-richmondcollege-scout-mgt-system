@@ -66,3 +66,11 @@ p{
     
 }
 
+#about{
+    /* font-family: 'Robato', sans-serif; */
+    padding-bottom: 10px;
+}
+
+table {
+    font-family: 'Inter', monospace;
+}

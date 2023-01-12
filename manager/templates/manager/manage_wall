@@ -2,26 +2,17 @@
 {{title}}
 {% block content %}
 {% load widget_tweaks %}
-{% load crispy_forms_tags %}
-<script>
-    /**
-    $(document).ready(function () {
-         $('select').selectize({
-             sortField: 'text'
-         });
-     }); 
-     **/
-</script>
+
 <div class="container">
     <div class="row">
+        {% load crispy_forms_tags %}
         <div class="col-lg-6 col-md-6 col-sm-12 p-4 ">
             <div class="bg-info px-4 py-2 rounded-2">
                 <h3 class="text-center">Upload event photo to home</h3>
             </div>
 
             {{ photo.media }}
-            <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" id="photo_form"
-                onsubmit="">
+            <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" id="photo_form" onsubmit="">
                 {% csrf_token %}
                 {{photo|crispy}}
                 <input type="submit" value="Add" class="btn btn-primary btn-lg">

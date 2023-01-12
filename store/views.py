@@ -12,7 +12,7 @@ import datetime
 from django.db import transaction
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
-from .forms import LendForm
+from .forms import LendForm, ReturnLendForm
 
 
 # view main items screen
@@ -42,6 +42,7 @@ def items(request):
 
 # view lend items screen
 lend_form = LendForm()
+return_form = ReturnLendForm()
 
 
 @login_required()
@@ -50,6 +51,7 @@ def lend(request):
     context = {
         'title': 'lend',
         'lends': lend_form,
+        'returns': return_form,
         'items': items,
     }
     return render(request, 'store/lend', context)
@@ -307,170 +309,163 @@ def add_repaired(request):
 # add items to the lend list
 @ login_required()
 def add_lend(request):
-    exist = Lend.objects.filter(item_is_lent=True).exists()
-    if exist:
-        items = Lend.objects.filter(item_is_lent=True)
-    context = {'lends': lend_form, 'message': '', 'title': 'lend'}
-    try:
-        if request.method == 'POST':
-            user = request.POST.get('user')
-            item = request.POST.get('item')
-            item = int(item.lstrip('0'))
-            print(item)  # Output: 1
-            qty = int(request.POST.get('item_quantity_lent'))
+    context = {'result': 'not loaded'}
+    if request.method == 'POST':
+        user = request.POST.get('user')
+        item = request.POST.get('item')
+        item = int(item.lstrip('0'))
+        qty = int(request.POST.get('item_quantity_lent'))
 
-            # get users list from users table
-            exist_user = Profile.objects.filter(
-                Q(id=user)).exists()
+        print(item)  # Output: 1
 
-            # check availability of items
-            exist_available_items = Item.objects.filter(
-                Q(id=item) & Q(item_quantity_available__gte=qty)).exists()
+        # get users list from users table
+        exist_user = Profile.objects.filter(
+            Q(id=user)).exists()
 
-            print(exist_available_items)
+        # check availability of items
+        exist_items = Item.objects.filter(
+            Q(id=item) & Q(item_quantity_available__gte=qty)).exists()
 
-            # exist_available_items = Item.objects.filter(
-            #     Q(id=item) & Q(item_quantity_available__gte=qty)).get()
+        print(f'item - {exist_items}, user - {exist_user}')
 
-            print(exist_available_items)
-            # if all ok add to lend table
-            if (exist_user and exist_available_items):
-                with transaction.atomic():
-                    exist_available_items = Item.objects.filter(
-                        Q(id=item) & Q(item_quantity_available__gte=qty)).get()
-                    user = Profile.objects.get(id=user)
-                    item = Item.objects.get(id=item)
-                    # add to lend table
-                    ln = Lend.objects.create(
-                        user=user,
-                        item=item,
-                        item_quantity_lent=qty,
-                        # set is lent to true
-                        item_is_lent=True,
-                        # add lend date
-                        # item_lent_date=datetime.datetime.now(),
-                    )
-                    ln.save()
+        # if all ok add to lend table
+        if (exist_user and exist_items):
+            user = Profile.objects.get(id=user)
+            item = Item.objects.get(id=item)
 
-                    # reduce from items table
-                    item.item_quantity_available = item.item_quantity_available = item.item_quantity_available - \
-                        qty
+            # add to lend table
+            ln = Lend.objects.create(
+                user=user,
+                item=item,
+                item_quantity_lent=qty,
+                # set is lent to true
+                item_is_lent=True,
+            )
 
-                    item.save()
+            # reduce from item
+            item.item_quantity_available = item.item_quantity_available = item.item_quantity_available - \
+                qty
 
-                    context = {
+            with transaction.atomic():
+                ln.save()
+                item.save()
+                context = {'result': 'success'}
+        else:
+            print('not valid')
+            context = {'result': 'exceeded'}
 
-                    }
+    return HttpResponse(JsonResponse(context))
 
-                    # render page
-                    context = {
-                        'title': 'lend',
-                        'items': items,
-                        'lends': lend_form,
-                        'message': 'item lent',
-                    }
-
-                return render(request, 'store/lend', context)
-
-            else:
-                context = {
-                    'title': 'lend',
-                    'items': items,
-                    'lends': lend_form,
-                    'message': 'items not available',
-                }
-
-                return render(request, 'store/lend', context)
-
-    except Exception as e:
-        print(e)
-        context = {
-            'title': 'lend',
-            'items': items,
-            'lends': lend_form,
-            'message': 'item not added',
-        }
-        return render(request, 'store/lend', context)
-
-
-# mark items received from lend list
 
 @ login_required()
 def return_lend(request):
-
-    items = Lend.objects.filter(item_is_lent=True)
-
-    try:
-        if request.method == 'POST':
-            user = int(request.POST.get('user'))
-            item = request.POST.get('item')
-
-            # item = int(item.lstrip('0'))
-            print(item)  # Output: 1
-
-            # for query
-            item = Item.objects.get(id=item)
-            user = Profile.objects.get(id=user)
-
-            # if exist get the latest record that matches item and quantity from lend table
-            exist_available_lend = Lend.objects.filter(
-                Q(item=item) & Q(user=user) & Q(item_is_lent=True)).exists()
-            # print(exist_available_lend)
+    context = {'result': 'not loaded'}
+    if request.method == 'POST':
+        form = ReturnLendForm(request.POST)
+        valid = form.is_valid()
+        if (valid):
+            lend = request.POST.get('lend')
+            lend = Lend.objects.get(id=lend)
+            item = Item.objects.get(id=lend.item_id)
 
             # check if item available is greater than quantity lent
             if (item.item_quantity_available < item.item_quantity_received):
                 less = True
 
-            # if available add to items to lend table
-            if (exist_available_lend == True and less == True):
+            if (less):
+                lend.item_is_lent = False
+                lend.date_returned_date = datetime.datetime.now()
+                item.item_quantity_available = item.item_quantity_available\
+                    + lend.item_quantity_lent
 
                 with transaction.atomic():
+                    item.save()
+                    lend.save()
+                    context = {'result': 'success'}
 
-                    # update lend table
-                    ln = Lend.objects.filter(item=item).filter(
-                        user=user).filter(item_is_lent=True)\
-                        .latest('id')
+        else:
+            print('not valid')
+            context = {'result': 'fail'}
 
-                    ln.item_is_lent = False
+    return HttpResponse(JsonResponse(context))
 
-                    ln.date_returned_date = datetime.datetime.now()
 
-                    ln.save()
+# @ login_required()
+# def return_lend(request):
 
-                    # add back to items availability
-                    it = Item.objects.get(id=item.id)
+#     items = Lend.objects.filter(item_is_lent=True)
 
-                    it.item_quantity_available = it.item_quantity_available\
-                        + ln.item_quantity_lent
+#     try:
+#         if request.method == 'POST':
+#             user = int(request.POST.get('user'))
+#             item = request.POST.get('item')
 
-                    it.save()
+#             # item = int(item.lstrip('0'))
+#             print(item)  # Output: 1
 
-                context = {
-                    'title': 'lend',
-                    'items': items,
-                    'lends': lend_form,
-                    'message': 'record added',
-                }
-                return render(request, 'store/lend', context)
+#             # for query
+#             item = Item.objects.get(id=item)
+#             user = Profile.objects.get(id=user)
 
-            else:
-                context = {
-                    'title': 'lend',
-                    'items': items,
-                    'lends': lend_form,
-                    'message': 'record does not exist',
-                }
-                return render(request, 'store/lend', context)
+#             # if exist get the latest record that matches item and quantity from lend table
+#             exist_available_lend = Lend.objects.filter(
+#                 Q(item=item) & Q(user=user) & Q(item_is_lent=True)).exists()
+#             # print(exist_available_lend)
 
-    except Exception as e:
-        print(e)
-        context = {
-            'title': 'lend',
-            'items': items,
-            'lends': lend_form,
-            'message': 'record failed',
-        }
-        return render(request, 'store/lend', context)
+#             # check if item available is greater than quantity lent
+#             if (item.item_quantity_available < item.item_quantity_received):
+#                 less = True
+
+#             # if available add to items to lend table
+#             if (exist_available_lend == True and less == True):
+
+#                 with transaction.atomic():
+
+#                     # update lend table
+#                     ln = Lend.objects.filter(item=item).filter(
+#                         user=user).filter(item_is_lent=True)\
+#                         .latest('id')
+
+#                     ln.item_is_lent = False
+
+#                     ln.date_returned_date = datetime.datetime.now()
+
+#                     ln.save()
+
+#                     # add back to items availability
+#                     it = Item.objects.get(id=item.id)
+
+#                     it.item_quantity_available = it.item_quantity_available\
+#                         + ln.item_quantity_lent
+
+#                     it.save()
+
+#                 context = {
+#                     'title': 'lend',
+#                     'items': items,
+#                     'lends': lend_form,
+#                     'message': 'record added',
+#                 }
+#                 return render(request, 'store/lend', context)
+
+#             else:
+#                 context = {
+#                     'title': 'lend',
+#                     'items': items,
+#                     'lends': lend_form,
+#                     'message': 'record does not exist',
+#                 }
+#                 return render(request, 'store/lend', context)
+
+#     except Exception as e:
+#         print(e)
+#         context = {
+#             'title': 'lend',
+#             'items': items,
+#             'lends': lend_form,
+#             'message': 'record failed',
+#         }
+#         return render(request, 'store/lend', context)
 
 
 """ get items data from database  to  json"""
@@ -488,6 +483,7 @@ def get_items(request):
 def get_lends(request):
     lends = Lend.objects.all().select_related('user', 'user__user', 'item')\
         .values(
+            'id',
             'user__user__username',
             'user__surname',
             'user__patrol',

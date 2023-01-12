@@ -130,6 +130,14 @@
         </div>
     </div>
 </div>
+
+<!-- selectize -->
+<script>
+    $(document).ready(function () {
+        $('.selectize').selectize();
+    });
+</script>
+
 <!-- close modal because I prevented default -->
 <script>
     $(document).ready(function () {
