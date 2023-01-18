@@ -49,6 +49,7 @@ def manage_leaders(request):
 """ add membership fee """
 
 
+@login_required()
 def add_membership_fee(request):
     if request.method == 'POST':
         response_data = {}
@@ -86,6 +87,7 @@ def add_membership_fee(request):
 """ activate member """
 
 
+@login_required()
 def activate_member(request):
     if request.method == 'POST':
         response_data = {}
@@ -110,6 +112,7 @@ def activate_member(request):
 """ ajax get announcements """
 
 
+@login_required()
 def get_announce(request):
     announcements = Announcement.objects.all()
     announcements = list(announcements.values())
@@ -119,6 +122,7 @@ def get_announce(request):
 """ ajax add announcement """
 
 
+@login_required()
 def add_announce(request):
     if request.method == 'POST':
         response_data = {}
@@ -144,6 +148,7 @@ def add_announce(request):
 """ ajax assign patrol to member """
 
 
+@login_required()
 def assign_patrol(request):
     if request.method == 'POST':
         response_data = {}
@@ -169,6 +174,7 @@ def assign_patrol(request):
 """ ajax remove leader from leader list """
 
 
+@login_required()
 def rm_leader(request):
     if request.method == 'POST':
         response_data = {}
@@ -189,6 +195,7 @@ def rm_leader(request):
 """ ajax add leader to leader list or deactivate """
 
 
+@login_required()
 def toggle_leader(request):
     if request.method == 'POST':
 
@@ -257,6 +264,7 @@ def toggle_leader(request):
 """ get roles """
 
 
+@login_required()
 def get_roles(request):
     roles = MemberRole.objects.all()
     roles = list(roles.values())
@@ -266,6 +274,7 @@ def get_roles(request):
 """ ajax add role to role list """
 
 
+@login_required()
 def set_auth_role(profile, role):
     try:
         #user = User.objects.get(id=profile.user)
@@ -314,6 +323,7 @@ def set_auth_role(profile, role):
         print('error')
 
 
+@login_required()
 def toggle_role(request):
     if request.method == 'POST':
 
@@ -373,6 +383,7 @@ def toggle_role(request):
 """ ajax add patrol to patrol list """
 
 
+@login_required()
 def add_patrol(request):
     if request.method == 'POST':
         response_data = {}
@@ -394,6 +405,7 @@ def add_patrol(request):
 """ ajax get profiles """
 
 
+@login_required()
 def get_profiles(request):
     if request.method == 'POST':
         profiles = Profile.objects.all()
@@ -404,6 +416,7 @@ def get_profiles(request):
 """ delete patrol from patrol list """
 
 
+@login_required()
 def del_patrol(request):
     if request.method == 'POST':
 
@@ -428,6 +441,7 @@ def del_patrol(request):
 """ ajax view patrol in patrol table """
 
 
+@login_required()
 def get_patrol(request):
     patrols = Patrol.objects.all().values()
     return JsonResponse(list(patrols), safe=False)
@@ -436,6 +450,7 @@ def get_patrol(request):
 """ ajax add badge to badge list """
 
 
+@login_required()
 def add_badge(request):
     if request.method == 'POST':
         response_data = {}
@@ -456,6 +471,7 @@ def add_badge(request):
 """ ajax badges in badge table """
 
 
+@login_required()
 def get_badges(request):
     badges = Badge.objects.all().values()
     return JsonResponse(list(badges), safe=False)
@@ -464,6 +480,7 @@ def get_badges(request):
 """ ajax add requirement to requirement list """
 
 
+@login_required()
 def add_requirement(request):
     if request.method == 'POST':
         response_data = {}
@@ -485,6 +502,7 @@ def add_requirement(request):
 """ ajax requirements in requirements table """
 
 
+@login_required()
 def get_requirements(request):
     requirements = Requirement.objects.all().select_related('badge').values(
         'id', 'number', 'badge__name', 'name', 'description').order_by('badge__level', 'number')
@@ -494,6 +512,7 @@ def get_requirements(request):
 """ ajax add photo event to home wall """
 
 
+@login_required()
 def add_photo(request):
     if request.method == 'POST':
         response_data = {}
@@ -518,6 +537,7 @@ def add_photo(request):
 """ ajax add post to saturday wall """
 
 
+@login_required()
 def add_post(request):
     if request.method == 'POST':
         response_data = {}
@@ -565,6 +585,7 @@ def add_hike(request):
 """ ajax add camp """
 
 
+@login_required()
 def add_camp(request):
     if request.method == 'POST':
         response_data = {}
@@ -587,6 +608,7 @@ def add_camp(request):
 """ ajax add project """
 
 
+@login_required()
 def add_project(request):
     if request.method == 'POST':
         response_data = {}
@@ -610,6 +632,7 @@ def add_project(request):
 """ navbar view tab rendering """
 
 
+@login_required()
 def manage_view(request):
     hikes = Hike.objects.all()
     projects = Project.objects.all()
@@ -627,6 +650,7 @@ def manage_view(request):
 """ navbar edit tab rendering """
 
 
+@login_required()
 def manage_events(request):
     hikes = HikeForm()
     camps = CampForm()
@@ -643,6 +667,7 @@ def manage_events(request):
 """ navbar Uploads tab rendering """
 
 
+@login_required()
 def manage_wall(request):
     posts = UploadPostsForm()
     photo = UploadPhotoForm()
@@ -657,6 +682,7 @@ def manage_wall(request):
 """ navbar Home tab rendering """
 
 
+@login_required()
 def manage_patrols(request):
     add_patrol = AddPatrolForm()
     end_patrol = EndPatrolForm()
@@ -677,6 +703,7 @@ def manage_patrols(request):
 """ navbar Member tab rendering """
 
 
+@login_required()
 def manage_member(request):
     profiles = Profile.objects.all()
     activate = ActivateMemberForm()
@@ -707,6 +734,7 @@ def manage_member(request):
 """ navbar Announce tab rendering """
 
 
+@login_required()
 def manage_announcements(request):
     announce_form = AnnounceForm()
     announce_table = Announcement.objects.all()
@@ -721,6 +749,7 @@ def manage_announcements(request):
 """ manage badges tab render """
 
 
+@login_required()
 def manage_badges(request):
 
     context = {

@@ -109,9 +109,9 @@
                     <tr>
                         <td>{{apply.id}}</td>
                         <td>{{apply.user}}</td>
-                        <td>{{apply.applied}}</td>
                         <td>{{apply.requirement}}</td>
                         <td>{{apply.get_stage_display}}</td>
+                        <td>{{apply.applied}}</td>
                         <td>
                             {% if apply.applied == apply.completed %}
                             None

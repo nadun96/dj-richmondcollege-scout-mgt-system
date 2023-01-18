@@ -50,13 +50,14 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_extensions',
     'cryptography',
+    'report_builder',
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
 
     # apps installed for styling
     'widget_tweaks',
     'crispy_forms',
     "crispy_bootstrap5",
     "bootstrap_datepicker_plus",
-    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     # 'channels',
     # 'channels_redis',
 
@@ -109,6 +110,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.static',
             ],
         },
     },

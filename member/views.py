@@ -456,6 +456,6 @@ def view_announce(request):
         'title': 'messages'
     }
 
-    announcements = Announcement.objects.all()
+    #announcements = Announcement.objects.all()
 
     return render(request, 'member/messages', context)

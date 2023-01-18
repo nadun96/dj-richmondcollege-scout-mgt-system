@@ -6,17 +6,19 @@
             </li>
             
             <li class="px-2 {% if title == 'members' %} act   {% endif %} ">
-                <a class="" href={% url 'patrol:members_tab' %}>Members</a>
+                <a class="" href={% url 'patrol:contact_tab' %}>Contact</a>
             </li>
             
             <li class="px-2 {% if title == 'attendance' %} act   {% endif %}">
                 <a class="" href={% url 'patrol:attendance_tab' %}>Attendance</a>
             </li>
 
-            {% comment %}
-            <li class="px-2 {% if title == 'projects' %} act   rounded-2 {% endif %} ">
-                <a class="  " href={% url 'projects' %}>Projects</a>
+            
+            <li class="px-2 {% if title == 'profiles' %} act {% endif %} ">
+                <a class="  " href={% url 'patrol:profile_tab' %} >Profiles</a>
             </li>
+
+            {% comment %}
             <li class="px-2 {% if title == 'camps' %} act   rounded-2 {% endif %} ">
                 <a class=" " href={% url 'camps' %}>Camps</a>
             </li>

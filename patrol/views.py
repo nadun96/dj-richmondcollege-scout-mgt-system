@@ -2,11 +2,11 @@
 # from django.db.models import Max
 # from django.contrib.sessions.models import Session
 # from manager.models import Patrol
-from django.forms import modelform_factory
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from core.models import Complete, Profile, UserFile
-from .forms import ResultForm, AttendanceForm
+from .forms import ResultForm, AttendanceForm, SelectMember
 from .cryptography import encrypt_value, decrypt_value
 from django.http import JsonResponse
 from .models import Attendance
@@ -17,6 +17,7 @@ from datetime import date
 today = date.today()
 
 
+@ login_required()
 def add_attendance(request):
     """ ajax add Attendance """
     try:
@@ -34,7 +35,7 @@ def add_attendance(request):
 
             # check if already marked
             exist = Attendance.objects.filter(
-                title=title, marker=marker, member=member, date=today).exists()
+                title=title, member=member, date=today).exists()
 
             print('exist: ', exist)
 
@@ -83,6 +84,7 @@ def add_attendance(request):
         return HttpResponse(JsonResponse(context))
 
 
+@ login_required()
 def view_attendance(request):
     """ view tab for Attendance """
 
@@ -114,7 +116,8 @@ def view_attendance(request):
     return render(request, 'patrol/attendance', context)
 
 
-def view_members(request):
+@ login_required()
+def contact(request):
     """ view tab members """
 
     patrol = request.session.get('s_patrol_id')
@@ -130,6 +133,7 @@ def view_members(request):
     return render(request, 'patrol/members', context)
 
 
+@ login_required()
 def evaluate(request):
     """ pass fail or apply for badge """
     context = {
@@ -201,11 +205,13 @@ def evaluate(request):
         return HttpResponse(JsonResponse(context))
 
 
+@ login_required()
 def examine_form(request, pk):
     """ load examine form in a new tab after clicking on table link"""
 
     # get the object
     comp = Complete.objects.get(id=pk)
+
     # get the examiner
     examiner = Profile.objects.get(user=request.user)
     comp.examiner = examiner
@@ -216,9 +222,11 @@ def examine_form(request, pk):
         'title': 'examine',
         'form': form,
     }
+
     return render(request, 'patrol/examine', context)
 
 
+@ login_required()
 def view_examine(request, user_id):
     """ view tab badges """
 
@@ -235,6 +243,68 @@ def view_examine(request, user_id):
         'applies': applies,
     }
     return render(request, 'patrol/badges', context)
+
+
+""" view member profiles """
+
+
+def view_member(request, user_id):
+
+    profile = Profile.objects.get(user=user_id)
+    patrol_m = profile.patrol.id
+    patrol_l = request.session.get('s_patrol_id')
+    print(f'Patrol id is -- {patrol_l} and {patrol_m}')
+    valid = False
+    profiles = Profile.objects.filter(patrol=patrol_l).all()
+    form = SelectMember(initial={'members': profiles})
+
+    try:
+        if (patrol_m == patrol_l):
+            valid = True
+
+        if (valid):
+            # badges completed
+            badges = profile.badges.all()
+            # badges applied for
+            applies = Complete.objects.filter(stage=1).all()
+
+            context = {
+                'title': 'profiles',
+                'badges': badges,
+                'profile': profile,
+                'applies': applies,
+                'form': form,
+            }
+            return render(request, 'patrol/profile', context)
+
+        members = Profile.objects.filter(patrol=patrol_l).all()
+        # .select_related('badges').select_related('requirement').annotate(
+        #     max_level=Max('badge__level')).order_by('-level').first()
+
+        context = {
+            'title': 'profiles',
+            'members': members,
+            'form': form,
+        }
+        return render(request, 'patrol/profile', context)
+    except:
+        context = {
+            'title': 'profiles',
+            'members': members,
+            'form': form,
+        }
+        return render(request, 'patrol/profile', context)
+
+
+""" view prifile tab """
+
+
+def view_profile(request):
+    patrol_l = request.session.get('s_patrol_id')
+    profiles = Profile.objects.filter(patrol=patrol_l).all()
+    form = SelectMember(initial={'members': profiles})
+    context = {'title': 'profiles', 'form': form}
+    return render(request, 'patrol/profile', context)
 
 
 """ encrypt """

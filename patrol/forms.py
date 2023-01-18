@@ -35,3 +35,7 @@ class AttendanceForm(forms.ModelForm):
             'marker': forms.Select(attrs={'id': 'id_marker', 'class': 'form-control selectize col-lg-12 col-sm-12', 'disabled': True}),
             'member': forms.Select(attrs={'id': 'id_member', 'class': 'form-control selectize col-lg-12 col-sm-12', 'placeholder': 'Select a member'}),
         }
+
+
+class SelectMember(forms.Form):
+    member = forms.ModelChoiceField(queryset=Profile.objects.all(), widget=forms.Select(attrs={'class': 'form-control selectize col-lg-12 col-sm-12', 'placeholder': 'Select a member'}))

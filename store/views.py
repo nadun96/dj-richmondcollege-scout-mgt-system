@@ -471,6 +471,7 @@ def return_lend(request):
 """ get items data from database  to  json"""
 
 
+@ login_required()
 def get_items(request):
     items = Item.objects.all().values()
     context = {'items': items}
@@ -480,6 +481,7 @@ def get_items(request):
 """ get lends data from database  to  json """
 
 
+@ login_required()
 def get_lends(request):
     lends = Lend.objects.all().select_related('user', 'user__user', 'item')\
         .values(
@@ -499,6 +501,7 @@ def get_lends(request):
 """ grouped by patrol """
 
 
+@ login_required()
 def get_lends_patrol(request):
     lends = Lend.objects.all().select_related('user', 'user__user', 'item')\
         .values(
@@ -514,6 +517,7 @@ def get_lends_patrol(request):
 """ get broken items data from database  to  json """
 
 
+@ login_required()
 def get_broken(request):
     broken = Broken.objects.all().values()
     context = {'broken': broken}
@@ -528,6 +532,7 @@ def get_users_lends(request):
 """ export lend data to excel """
 
 
+@ login_required()
 def export_lend(request):
     # create a queryset of records to export
     records = Lend.objects.all().select_related('user', 'user__user', 'item')\
@@ -584,6 +589,7 @@ def export_lend(request):
 """ export items data to excel """
 
 
+@ login_required()
 def export_items(request):
     # create a queryset of records to export
     records = Item.objects.all().\

@@ -45,7 +45,7 @@ main{
 
 section.content{
     padding-top: 30px;
-    overflow: auto;
+    /*overflow: auto;*/
 }
 
 p{
