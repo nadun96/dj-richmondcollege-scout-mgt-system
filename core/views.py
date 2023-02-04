@@ -10,6 +10,15 @@ def session_processor(request):
     user_id = request.session.get('_auth_user_id')
     #print(f'User id is -- {user_id}')
 
+    try:
+        user = User.objects.get(id=user_id)
+        troop_leader = user.is_ldr
+        if (troop_leader):
+            request.session['is_troopleader'] = True
+        print(troop_leader)
+    except Exception as e:
+        print(e)
+
     # get the profile id
     profile = Profile.objects.get(user=user_id)
     #print(f'User id is -- {profile}')
@@ -50,7 +59,7 @@ def session_processor(request):
         if (is_admin):
             request.session['is_admin'] = True
 
-        print('This is working too!')
+        print('Roles Processed!')
 
         request.session['profile_roles_exist'] = True
 

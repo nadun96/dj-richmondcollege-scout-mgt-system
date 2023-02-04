@@ -1,0 +1,227 @@
+{% extends 'manager/base' %}
+{{title}}
+{% block content %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+<!-- selectize js api-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+    integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
+    integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+    
+<script>
+
+    $(document).ready(function () {
+        $('select').selectize({
+            sortField: 'text'
+        });
+    });
+
+</script>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="bg-info px-4 py-2 rounded-2">
+                <h3 class="text-center">Make an Announcement</h3>
+            </div>
+
+            <!-- announcement form -->
+            <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" id="announce_form">
+                {% csrf_token %}
+                {{announce_form|crispy}}
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </form>
+
+            <!-- table data load on submit and form data submit script -->
+
+            <script>
+
+                const announcementForm = document.querySelector('#announce_form');
+
+                announcementForm.addEventListener('submit', (event) => {
+
+
+                    event.preventDefault();
+
+                    const announcementFormData = new FormData(announcementForm);
+
+                    announcementFormData.forEach((value, key) => {
+                        console.log(key + ': ' + value);
+                    });
+
+                    console.log(announcementFormData);
+
+
+                    fetch("{% url 'manager:add_announce' %}", {
+                        method: 'POST',
+                        body: announcementFormData
+
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+
+                            console.log(data);
+
+                            if (data.result == 'success') {
+
+                                $('.modal-body').html('Form submission was successful!');
+                                $('#modal-dialog').modal('show');
+
+                                announcementForm.reset();
+
+                                {% comment %}
+                                $.ajax({
+                                    url: "{% url 'manager:get_announce'  %}",
+                                    type: 'GET',
+                                    dataType: 'json',
+                                    success: function (data) {
+
+                                        console.log(data)
+
+                                        var table = $('#announce-table tbody');
+
+                                        index = data.length - 1;
+
+                                        var row = '<tr>';
+                                        row += '<td>' + data[index].id + '</td>';
+                                        row += '<td>' + data[index].title + '</td>';
+                                        row += '<td><p>' + data[index].content + '</p></td>';
+                                        row += '<td>' + data[index].date + '</td>';
+                                        row += '<td>';
+                                        if (data[index].file == null || data[index].file == 0) {
+                                            row += 'No file attached';
+                                        } else {
+                                            row += '<a href={{ MEDIA_URL }}/media/' + data[index].file + '>Download</a>';
+                                        }
+
+                                        row + ' </td > ';
+                                        row += '</tr>';
+                                        table.append(row);
+
+
+                                    }
+                                });
+                                {% endcomment %}
+
+
+
+                            } else {
+
+                                $('.modal-body').html('There was an error with the form submission.');
+                                $('#modal-dialog').modal('show');
+                            }
+
+                        });
+
+                });
+
+            </script>
+
+
+
+            <!-- page ready table load -->
+            <script>
+
+                $.ajax({
+                    url: "{% url 'manager:get_announce'  %}",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+
+                        console.log(data)
+
+                        var table = $('#announce-table tbody');
+                        for (var i = 0; i < data.length; i++) {
+                            var row = '<tr>';
+                            row += '<td>' + data[i].id + '</td>';
+                            row += '<td>' + data[i].title + '</td>';
+                            row += '<td>' + data[i].content + '</td>';
+                            row += '<td>' + data[i].date + '</td>';
+                            row += '<td>';
+                            if (data[i].file == null || data[i].file == 0) {
+                                row += 'No file attached';
+                            } else {
+                                row += '<a href={{ MEDIA_URL }}/media/' + data[i].file + '>Download</a>';
+                            }
+
+                            row + ' </td > ';
+                            row += '</tr>';
+                            table.append(row);
+                        }
+                    }
+                });
+
+            </script>
+        </div>
+
+
+        <!-- table container -->
+        <div class="col-lg-8 col-md-8 col-sm-12">
+            <div class="container">
+                <div class="container-fluid py-3 border-bottom">
+                    <div class="row">
+                        <div class="col-sm my-1">
+                            <div class="input-group">
+                                <input type="search" class="form-control rounded-left search-input" placeholder="Search"
+                                    aria-label="Search" data-table="announce-table-cls"
+                                    aria-describedby="search-addon" />
+                                <button type="button" class="btn btn-outline-primary ">Filter</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped-columns table-striped table-bordered sortable announce-table-cls"
+                        id="announce-table">
+                        <thead class="bg-success">
+                            <tr>
+                                <th>#</th>
+                                <th>title</th>
+                                <th>content</th>
+                                <th>date</th>
+                                <th>file</th>
+
+                            </tr>
+
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- close modal because I prevented default -->
+<script>
+    $(document).ready(function () {
+        $('#close-modal').on('click', function () {
+            $('#modal-dialog').modal('hide');
+        });
+    });
+</script>
+
+<!-- jason model dialog box -->
+<div class="modal" tabindex="-1" role="dialog" id="modal-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal content goes here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock %}

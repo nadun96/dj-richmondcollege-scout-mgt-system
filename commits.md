@@ -21,3 +21,5 @@
 **inf** - **installed numpy**</br>
 **inf** - **installed  django-report-builder**</br>
 **inf** - **installed pygal, lxml, cairosvg, tinycss, cssselect to render png.**</br>
+
+**0009** - **installed pandas and added troop app**</br>

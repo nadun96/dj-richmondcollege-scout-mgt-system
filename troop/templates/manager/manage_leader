@@ -1,0 +1,169 @@
+{% extends 'manager/base' %}
+{{title}}
+
+{% block content %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+<div class="container">
+    <div class="row">
+
+        <div class="col-lg-4">
+            <div class="bg-info px-4 py-2 rounded-2">
+                <h3 class="text-center ">Assign or Toggle Leader</h3>
+            </div>
+            {{leader_form.media}}
+            <form action="" method="post" id="assign_leader_form" class="form px-2 py-3">
+                {% csrf_token %}
+                {{leader_form | crispy}}
+                <input type="submit" value="Submit/Change" class="btn btn-primary">
+            </form>
+        </div>
+
+        <!-- Add patrol form script to save data -->
+        <script>
+            const addLeaderForm = document.querySelector('#assign_leader_form');
+
+            addLeaderForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                const addLeaderFormData = new FormData(addLeaderForm);
+
+                addLeaderFormData.forEach((value, key) => {
+                    console.log(key + ': ' + value);
+                });
+
+                console.log(addLeaderFormData);
+
+                fetch("{% url 'manager:toggle_leaders' %}", {
+                    method: 'POST',
+                    body: addLeaderFormData
+
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+
+                        console.log(data);
+
+                        if (data.result == 'success') {
+                            $('.modal-body').html('Form submission was successful!');
+                            $('#modal-dialog').modal('show');
+                            addLeaderForm.reset();
+
+                            /**
+                            add data to table ajax
+                            $.ajax({
+                                url: "{% url 'manager:get_patrol'  %}",
+                                type: 'GET',
+                                dataType: 'json',
+                                success: function (data) {
+
+                                    console.log(data)
+
+                                    var table = $('#patrols-table tbody');
+                                    index = data.length - 1;
+
+                                    var row = '<tr>';
+                                    row += '<td>' + data[index].name + '</td>';
+                                    row += '</tr>';
+                                    table.append(row);
+
+                                }
+                            });
+                            **/
+
+
+                        } else {
+
+                            $('.modal-body').html('There was an error with the form submission.');
+                            $('#modal-dialog').modal('show');
+                        }
+
+                    });
+            });
+
+        </script>
+
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col">
+                    <div class="container-fluid py-3 border-bottom">
+                        <div class="row">
+                            <div class="col-sm my-1">
+                                <div class="input-group">
+                                    <input type="search" class="form-control rounded-left search-input"
+                                        placeholder="Search" aria-label="Search" data-table="patrol-leaders"
+                                        aria-describedby="search-addon" />
+                                    <button type="button" class="btn btn-outline-primary ">Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="roles-table"
+                            class="table table-striped table-bordered table-hover patrol-leaders sortable"
+                            id="patrols-table">
+                            <thead class="bg-success">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Patrol</th>
+                                    <th>Leader</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for leader in leaders %}
+                                <tr>
+                                    {% if leader.is_active %}
+                                    <td>{{leader.id}}</td>
+                                    <td>{{leader.patrol}}</td>
+                                    <td>{{leader.name}}</td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- selectize -->
+<script>
+    $(document).ready(function () {
+        $('.selectize').selectize();
+    });
+</script>
+
+<!-- close modal because I prevented default -->
+<script>
+    $(document).ready(function () {
+        $('#close-modal').on('click', function () {
+            $('#modal-dialog').modal('hide');
+        });
+    });
+</script>
+
+<!-- jason model dialog box -->
+<div class="modal" tabindex="-1" role="dialog" id="modal-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal content goes here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock %}

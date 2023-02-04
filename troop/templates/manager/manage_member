@@ -1,0 +1,323 @@
+{% extends 'manager/base' %}
+{{title}}
+{% block content %}
+{% load widget_tweaks %}
+
+<!--  containers -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6 col-md-12">
+            <!-- activate member form -->
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="bg-info px-4 py-1 rounded-2">
+                        <h3 class="text-center">Activate Member</h3>
+                    </div>
+                    {%load crispy_forms_tags %}
+                    {{activate.media}}
+                    <form action="" method="POST" class="p-2 m-1 py-4" id="activate_member">
+                        {% csrf_token %}
+                        {{ activate|crispy }}
+                        <input type="Submit" value="Toggle" class="btn btn-primary">
+                    </form>
+                </div>
+
+                <!-- activate member script -->
+                <script>
+                    const activateForm = document.querySelector('#activate_member');
+
+                    activateForm.addEventListener('submit', (event) => {
+                        event.preventDefault();
+
+                        const activateFormData = new FormData(activateForm);
+
+                        activateFormData.forEach((value, key) => {
+                            console.log(key + ': ' + value);
+                        });
+
+                        console.log(activateFormData);
+
+                        fetch("{% url 'manager:activate_member' %}", {
+                            method: 'POST',
+                            body: activateFormData
+
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+
+                                console.log(data);
+
+                                if (data.result == 'success') {
+                                    $('.modal-body').html('Form submission was successful!');
+                                    $('#modal-dialog').modal('show');
+                                    activateForm.reset();
+
+                                } else {
+
+                                    $('.modal-body').html('There was an error with the form submission.');
+                                    $('#modal-dialog').modal('show');
+                                }
+
+                            });
+
+                    });
+                </script>
+
+                <div class="col-lg-6">
+                    <div class="bg-info px-4 py-1 rounded-2">
+                        <h3 class="text-center">Membership Fee Payment</h3>
+                    </div>
+                    {%load crispy_forms_tags %}
+                    {{fees.media}}
+                    <form action="" method="POST" class="p-2 m-1 py-4" id="membership_fee">
+                        {% csrf_token %}
+                        {{ fees|crispy }}
+                        <input type="Submit" value="Submit" class="btn btn-primary">
+                    </form>
+                </div>
+
+                <!--  membership fee from submit script -->
+                <script>
+                    const membershipFeeForm = document.querySelector('#membership_fee');
+
+                    membershipFeeForm.addEventListener('submit', (event) => {
+                        event.preventDefault();
+
+                        const membershipFeeFormData = new FormData(membershipFeeForm);
+
+                        membershipFeeFormData.forEach((value, key) => {
+                            console.log(key + ': ' + value);
+                        });
+
+                        console.log(membershipFeeFormData);
+
+                        fetch("{% url 'manager:add_membership_fee' %}", {
+                            method: 'POST',
+                            body: membershipFeeFormData
+
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+
+                                console.log(data);
+
+                                if (data.result == 'success') {
+                                    $('.modal-body').html('Form submission was successful!');
+                                    $('#modal-dialog').modal('show');
+                                    membershipFeeForm.reset();
+
+
+                                } else if (data.result == 'exist') {
+
+                                    $('.modal-body').html('User has already Paid for this year!');
+                                    $('#modal-dialog').modal('show');
+
+                                } else {
+
+                                    $('.modal-body').html('There was an error with the form submission.');
+                                    $('#modal-dialog').modal('show');
+                                }
+
+                            });
+
+                    });
+                </script>
+            </div>
+
+        </div>
+        <div class="col-lg-6 col-md-12">
+
+            <ul class="nav nav-pills nav-fill mb-3" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="patrols-tab" data-bs-toggle="tab"
+                        data-bs-target="#patrols-tab-pane" type="button" role="tab" aria-controls="home"
+                        aria-selected="true">Membership Fee</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#members-tab-pane"
+                        type="button" role="tab" aria-controls="profile" aria-selected="false">All Members</button>
+                </li>
+
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="patrols-tab-pane" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="container">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-sm my-1">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control rounded-left search-input"
+                                            placeholder="Search" aria-label="Search" data-table="membership"
+                                            aria-describedby="search-addon" />
+                                        <button type="button" class="btn btn-outline-primary ">Filter</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm my-1">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control rounded-left search-input"
+                                            placeholder="Search" aria-label="Search" data-table="membership"
+                                            aria-describedby="search-addon" />
+                                        <button type="button" class="btn btn-outline-primary ">Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="mt-3 table-responsive">
+
+                                <table
+                                    class="table table-striped-olumns table-striped table-bordered sortable membership ">
+                                    <thead class="bg-success">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>username</th>
+                                            <th>year</th>
+                                            <th>active</th>
+                                            <th>Paid</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for pay in pays %}
+                                        <tr>
+                                            <td>{{pay.id}}</td>
+                                            <td>{{pay.member__user__username}}</td>
+                                            <td>{{pay.for_year|date:"Y"}}</td>
+                                            <td>
+                                                {% if pay.member__user__is_active %}
+                                                Yes
+                                                {% else %}
+                                                No
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if pay.is_paid %}
+                                                Yes
+                                                {% else %}
+                                                No
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="members-tab-pane" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="container">
+
+
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-sm my-1">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control rounded-left search-input"
+                                            placeholder="Search" aria-label="Search" data-table="membership"
+                                            aria-describedby="search-addon" />
+                                        <button type="button" class="btn btn-outline-primary ">Filter</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm my-1">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control rounded-left search-input"
+                                            placeholder="Search" aria-label="Search" data-table="membership"
+                                            aria-describedby="search-addon" />
+                                        <button type="button" class="btn btn-outline-primary ">Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="mt-3 table-responsive">
+
+                                <table
+                                    class="table table-striped-olumns table-striped table-bordered sortable membership ">
+                                    <thead class="bg-success">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>username</th>
+                                            <th>active</th>
+                                            <th>Last login</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for user in users %}
+                                        <tr>
+                                            <td>{{user.id}}</td>
+                                            <td>{{user.username}}</td>
+                                            <td>
+                                                {% if user.is_active %}
+                                                Yes
+                                                {% else %}
+                                                No
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ user.last_login|date:"Y-m-d H:i" }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+<!-- selectize -->
+<script>
+    $(document).ready(function () {
+        $('.selectize').selectize();
+    });
+</script>
+
+<!-- close modal because I prevented default -->
+<script>
+    $(document).ready(function () {
+        $('#close-modal').on('click', function () {
+            $('#modal-dialog').modal('hide');
+        });
+    });
+</script>
+
+<!-- jason model dialog box -->
+<div class="modal" tabindex="-1" role="dialog" id="modal-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal content goes here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock %}

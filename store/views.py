@@ -13,7 +13,7 @@ from django.db import transaction
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .forms import LendForm, ReturnLendForm
-
+import pandas as pd
 
 # view main items screen
 

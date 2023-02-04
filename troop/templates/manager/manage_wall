@@ -1,0 +1,137 @@
+{% extends 'manager/base' %}
+{{title}}
+{% block content %}
+{% load widget_tweaks %}
+
+<div class="container">
+    <div class="row">
+        {% load crispy_forms_tags %}
+        <div class="col-lg-6 col-md-6 col-sm-12 p-4 ">
+            <div class="bg-info px-4 py-2 rounded-2">
+                <h3 class="text-center">Upload event photo to home</h3>
+            </div>
+
+            {{ photo.media }}
+            <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" id="photo_form" onsubmit="">
+                {% csrf_token %}
+                {{photo|crispy}}
+                <input type="submit" value="Add" class="btn btn-primary btn-lg">
+            </form>
+
+
+            <script>
+                const photoForm = document.querySelector('#photo_form');
+
+                console.log(photoForm.values);
+
+                photoForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+
+                    const photoFormData = new FormData(photoForm);
+
+                    photoFormData.forEach((value, key) => {
+                        console.log(key + ': ' + value);
+                    });
+
+                    fetch("{% url 'manager:add_photo' %}", {
+                        method: 'POST',
+                        body: photoFormData,
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+
+                            console.log(data);
+
+                            if (data.result == 'success') {
+                                $('.modal-body').html('Form submission was successful!');
+                                $('#modal-dialog').modal('show');
+                                photoForm.reset();
+
+                            } else {
+
+                                $('.modal-body').html('There was an error with the form submission.');
+                                $('#modal-dialog').modal('show');
+                            }
+
+                        });
+                });
+
+            </script>
+
+
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 p-4 ">
+            <div class="bg-info px-4 py-2 rounded-2">
+                <h3 class="text-center">Upload post to saturday meeting</h3>
+            </div>
+
+            <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" id="post_form">
+                {% csrf_token %}
+                {{posts|crispy}}
+                <input type="submit" value="Add" class="btn btn-primary btn-lg">
+            </form>
+
+            <script>
+                const postForm = document.querySelector('#post_form');
+                postForm.addEventListener('submit', (event) => {
+
+                    event.preventDefault();
+
+                    const postFormData = new FormData(postForm);
+
+                    console.log(postFormData);
+                    fetch("{% url 'manager:add_post' %}", {
+                        method: 'POST',
+                        body: postFormData,
+
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            console.log(data);
+                            $('#modal-dialog').modal('hide');
+                            if (data.result == 'success') {
+                                $('#modal-body').html('Form submission was successful!');
+                                $('#modal-dialog').modal('show');
+                                projectForm.reset();
+                            } else {
+                                $('#modal-body').html('There was an error with the form submission.');
+                                $('#modal-dialog').modal('show');
+                            }
+                        });
+                });
+            </script>
+
+        </div>
+    </div>
+</div>
+
+<!-- close modal because I prevented default -->
+<script>
+    $(document).ready(function () {
+        $('#close-modal').on('click', function () {
+            $('#modal-dialog').modal('hide');
+        });
+    });
+</script>
+
+<!-- jason model dialog box -->
+<div class="modal" tabindex="-1" role="dialog" id="modal-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="model-body">
+                <!-- Modal content goes here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock %}
