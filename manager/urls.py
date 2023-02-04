@@ -57,5 +57,7 @@ urlpatterns = [
 
     path('get/profiles/', views.get_profiles, name='get_profiles'),
 
+    path('view/attendance/', views.view_attendance, name='attendance_tab'),
+    path('add/attendance/', views.add_attendance, name='add_attendance'),
 
 ]

@@ -16,7 +16,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
 
-    path('api-auth/', include('rest_framework.urls')),
+    #path('api-auth/', include('rest_framework.urls')),
 
     path('member/', include('member.urls')),
 
@@ -28,7 +28,7 @@ urlpatterns = [
 
     path('__debug__/', include('debug_toolbar.urls')),
 
-    path('django_plotly_dash/', include('django_plotly_dash.urls')),
+    #path('django_plotly_dash/', include('django_plotly_dash.urls')),
 
     path('report_builder/', include('report_builder.urls')),
 

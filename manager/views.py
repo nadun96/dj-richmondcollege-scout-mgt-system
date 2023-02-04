@@ -1,16 +1,116 @@
 from django.contrib.auth.decorators import login_required
 import datetime
+from datetime import date
 from django.db import connection, transaction
 from django.http import JsonResponse, HttpResponse
 from core.models import Profile, MemberRole, Complete, Patrol, Communication, User, MembershipFee, Leader
-from member.models import Hike, Camp, Project, Badge, Requirement
 from django.shortcuts import render
+from member.models import Hike, Camp, Project, Badge, Requirement
 from .models import Photo, Post, Announcement, Patrol
+from patrol.models import Attendance
+from patrol.forms import AttendanceForm
 from .forms import CampForm, ProjectForm, HikeForm, UploadPostsForm, UploadPhotoForm, AnnounceForm, RequirementForm, BadgeForm, AddPatrolForm, EndPatrolForm, AssignPatrolForm, ActivateMemberForm, MembershipFeeForm, AssignRoleForm, AssignLeaderForm
 from django.db.models import Q, F
 """ get current active user model, current is core.User"""
 from django.contrib.auth import get_user_model
 User = get_user_model()
+
+today = date.today()
+
+""" Add Attendance """
+
+
+@ login_required()
+def add_attendance(request):
+    """ ajax add Attendance """
+    try:
+        if request.method == 'POST':
+            # check and get variables
+            print("Form submitted:")
+            print("----------------")
+            title = request.POST.get('title')
+            # marker = request.POST.get('marker')
+            marker = request.session.get('_auth_user_id')
+            print(f'marker is {marker}')
+            member = request.POST.get('member')
+            print(f'member is {member}')
+            print("----------------")
+
+            # check if already marked
+            exist = Attendance.objects.filter(
+                title=title, member=member, date=today).exists()
+
+            print('exist: ', exist)
+
+            # validate form
+            form = AttendanceForm(request.POST)
+            valid = form.is_valid()
+
+            print("form is valid: ", valid)
+
+            # check user == examiner
+            if (marker == member or exist):
+                valid = False
+
+            if (valid):
+
+                # get the object
+                marker = Profile.objects.get(id=marker)
+                member = Profile.objects.get(id=member)
+
+                # create the object
+                attend = Attendance.objects.create(
+                    marker=marker, member=member, title=title)
+
+                print("-------------------------")
+                print(f"Attendance object marker: {attend.marker}")
+                print(f"Attendance object member: {attend.member}")
+                print(f"Attendance object date: {attend.date}")
+                print(f"Attendance object time: {attend.time}")
+                print("-------------------------")
+
+                context = {
+                    'result': 'success',
+                }
+                return HttpResponse(JsonResponse(context))
+            else:
+                context = {
+                    'result': 'exist',
+                }
+                return HttpResponse(JsonResponse(context))
+
+    except Exception as e:
+        print(e)
+        context = {
+            'result': 'error',
+        }
+        return HttpResponse(JsonResponse(context))
+
+
+""" view tab for Attendance """
+
+
+@ login_required()
+def view_attendance(request):
+    profile = Profile.objects.get(user=request.user)
+    members = Profile.objects.filter().all()
+    attends = Attendance.objects.filter(
+        member__in=members).select_related('user')\
+        .values(
+            'title', 'marker__user__username', 'date', 'member__user__username', 'time'
+    )\
+        .order_by('-date')
+
+    form = AttendanceForm(
+        initial={'marker': profile, 'member': members})
+
+    context = {
+        'title': 'attendance',
+        'attends': attends,
+        'form': form,
+    }
+
+    return render(request, 'manager/attendance', context)
 
 
 """ manage roles """
@@ -274,7 +374,6 @@ def get_roles(request):
 """ ajax add role to role list """
 
 
-@login_required()
 def set_auth_role(profile, role):
     try:
         #user = User.objects.get(id=profile.user)
@@ -326,7 +425,6 @@ def set_auth_role(profile, role):
 @login_required()
 def toggle_role(request):
     if request.method == 'POST':
-
         response_data = {}
         profile = int(request.POST.get('profile'))
         role = request.POST.get('role')

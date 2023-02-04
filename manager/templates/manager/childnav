@@ -4,21 +4,27 @@
             <li class="px-2 {% if title == 'manage_view' %} act   {% endif %}">
                 <a class="" href={% url 'manager:main' %}>View</a>
             </li>
+            
             <li class="px-2 {% if title == 'manage_edit' %} act   {% endif %} ">
                 <a class="" href={% url 'manager:events' %}>Events</a>
             </li>
+
             <li class="px-2 {% if title == 'manage_wall' %} act   {% endif %}">
                 <a class="" href={% url 'manager:manage_wall' %}>Uploads</a>
             </li>
+
             <li class="px-2 {% if title == 'manage_patrols' %} act   {% endif %} ">
                 <a class="  " href={% url 'manager:manage_patrols' %}>Patrols</a>
             </li>
+
             <li class="px-2 {% if title == 'manage_member' %} act   {% endif %} ">
                 <a class=" " href={% url 'manager:manage_member' %}>Membership</a>
             </li>
+
             <li class="px-2 {% if title == 'manage_announce' %} act  {% endif %} ">
                 <a class=" " href={% url 'manager:manage_announce' %}>Announce</a>
             </li>
+
             <li class="px-2 {% if title == 'manage_badges' %} act   {% endif %} ">
                 <a class=" " href={% url 'manager:manage_badges' %}>Badges</a>
             </li>
@@ -29,6 +35,10 @@
 
             <li class="px-2 {% if title == 'manage_leaders' %} act   {% endif %} ">
                 <a class=" " href={% url 'manager:manage_leaders' %}>Leaders</a>
+            </li>
+
+            <li class="px-2 {% if title == 'attendance' %} act   {% endif %} ">
+                <a class=" " href={% url 'manager:attendance_tab' %}>Attendance</a>
             </li>
 
         </ul>

@@ -6,7 +6,7 @@
         <div class="mx-auto d-block" style="width: 60%;">
 
             <div class="mx-auto d-block">
-                <div class="row bg-success">
+                <div class="row bg-warning rounded-3">
 
                     <div id="minutes" class="col mx-auto text-center fw-bold rounded" style="font-size: 36px; "></div>
                     <div class="col mx-auto text-center" style="font-size: 36px; ">:</div>
@@ -75,6 +75,7 @@
         </div>
     </div>
 </div>
+
 <!-- selectize -->
 <script>
     $(document).ready(function () {

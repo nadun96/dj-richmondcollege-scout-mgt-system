@@ -2,10 +2,12 @@
 # from django.db.models import Max
 # from django.contrib.sessions.models import Session
 # from manager.models import Patrol
+from member.models import Camp
+from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from core.models import Complete, Profile, UserFile
+from core.models import Complete, Profile, UserFile, User
 from .forms import ResultForm, AttendanceForm, SelectMember
 from .cryptography import encrypt_value, decrypt_value
 from django.http import JsonResponse
@@ -227,19 +229,14 @@ def examine_form(request, pk):
 
 
 @ login_required()
-def view_examine(request, user_id):
+def view_examine(request):
     """ view tab badges """
 
-    profile = Profile.objects.get(user=user_id)
-    # badges completed
-    badges = profile.badges.all()
     # badges applied for
     applies = Complete.objects.filter(stage=1).all()
 
     context = {
         'title': 'examine',
-        'badges': badges,
-        'profile': profile,
         'applies': applies,
     }
     return render(request, 'patrol/badges', context)
@@ -248,6 +245,7 @@ def view_examine(request, user_id):
 """ view member profiles """
 
 
+@ login_required()
 def view_member(request, user_id):
 
     profile = Profile.objects.get(user=user_id)
@@ -300,10 +298,47 @@ def view_member(request, user_id):
 
 
 def view_profile(request):
+
     patrol_l = request.session.get('s_patrol_id')
     profiles = Profile.objects.filter(patrol=patrol_l).all()
     form = SelectMember(initial={'members': profiles})
-    context = {'title': 'profiles', 'form': form}
+
+    try:
+        name = request.GET.get('member')
+        profile = Profile.objects.get(pk=name)
+        user = profile.user
+        files = UserFile.objects.get(user=user)
+        hikes = profile.hikes.all()
+        camps = profile.camps.all()
+        projects = profile.projects.all()
+        nights = Camp.objects.filter(id__in=camps).aggregate(
+            Sum('nights'))['nights__sum']
+
+    except Exception as e:
+        print(e)
+        print("no profile")
+        user = None
+        files = None
+        camps = None
+        nights = None
+        profile = None
+        hikes = None
+        projects = None
+        camps = None
+        files = None
+
+    context = {
+        'title': 'profiles',
+        'files': files,
+        'profile': profile,
+        'nights': nights,
+        'form': form,
+        'camps': camps,
+        'hikes': hikes,
+        'projects': projects,
+        'files': files,
+    }
+
     return render(request, 'patrol/profile', context)
 
 

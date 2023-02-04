@@ -42,7 +42,7 @@
         
                     
                     {% if request.session.is_admin %}
-                    <li><a class="dropdown-item small" href="{% url 'patrol:examine_tab' user_id=request.user.id %}">Patrol</a></li>
+                    <li><a class="dropdown-item small" href="{% url 'patrol:examine_tab' %}">Patrol</a></li>
                     {% endif %}
                     
 

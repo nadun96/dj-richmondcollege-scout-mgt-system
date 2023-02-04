@@ -2,7 +2,7 @@
     <nav class="new">
         <ul>
             <li class="px-2 {% if title == 'examine' %} act   {% endif %}">
-                <a class="" href={% url 'patrol:examine_tab' user_id=1 %}>Examine</a>
+                <a class="" href={% url 'patrol:examine_tab' %}>Examine</a>
             </li>
             
             <li class="px-2 {% if title == 'members' %} act   {% endif %} ">
