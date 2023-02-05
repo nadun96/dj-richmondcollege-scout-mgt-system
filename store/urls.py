@@ -30,6 +30,10 @@ urlpatterns = [
 
     path('exp/item/', views.export_items, name='exp_item'),
 
+    path('exp/item/form/', views.export_items_form, name='exp_item_rex'),
+
+    path('exp/lend/form/', views.export_lends_form, name='exp_lend_rex'),
+
     path('exp/broken/', views.export_broken, name='exp_broken'),
 
 ]
