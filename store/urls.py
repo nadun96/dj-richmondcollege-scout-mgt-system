@@ -30,9 +30,11 @@ urlpatterns = [
 
     path('exp/item/', views.export_items, name='exp_item'),
 
-    path('exp/item/form/', views.export_items_form, name='exp_item_rex'),
+    path('exp/item/rex/', views.export_items_rex, name='exp_item_rex'),
 
-    path('exp/lend/form/', views.export_lends_form, name='exp_lend_rex'),
+    path('exp/lend/rex/', views.export_lends_rex, name='exp_lend_rex'),
+
+    path('exp/broken/rex/', views.export_broken_rex, name='exp_broken_rex'),
 
     path('exp/broken/', views.export_broken, name='exp_broken'),
 

@@ -7,6 +7,10 @@
 {% endif %}
 <!-- content -->
 <div class="container mt-1">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 p-3">
+            <h3>Export Raw Data as Excel Documents</h3>
+    </div>
     <div class="row p-3">
         <div class="col-lg-4 col-md-3 col-sm-12 p-3">
             <button class="btn btn-secondary mx-auto" id="exp-lend" onclick="exportLends()">Export Lend Data</button>
@@ -73,34 +77,75 @@
             }
         </script>
     </div>
-    <h2>Striped Rows</h2>
-    <p>The .table-striped class adds zebra-stripes to a table:</p>
-    <table class="table table-striped">
-        {{users}}
-        <br>
-        {{day}}
-        <thead>
-            <tr>
-                <th>Field</th>
-                <th>Value</th>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 p-3">
+            <h3>Export Reports as Excel Documents</h3>
+    </div>
+    <div class="row p-3">
+        <div class="col-lg-4 col-md-3 col-sm-12 p-3">
+            <button class="btn btn-primary mx-auto" id="exp-lend" onclick="exportLendsReport()">Lend Report</button>
+        </div>
 
-        </thead>
-        <tbody>
-            <tr>
-                <td>Member</td>
-                <td>Count</td>
+        <!-- script to export lends -->
+        <script>
+            function exportLendsReport() {
+                console.log('called')
+                $.ajax({
+                    url: "{% url 'store:exp_lend_rex' %}",
+                    type: 'GET',
+                    success: function (response) {
+                        // do something with the response
+                        window.location = "{% url 'store:exp_lend_rex' %}";
+                    },
+                    error: function (error) {
+                        // handle the error
+                    }
+                });
+            }
+        </script>
 
-            </tr>
-            <tr>
-                <td>Team</td>
-                <td>Count/td>
+        <div class="col-lg-4 col-md-3 col-sm-12 p-3">
+            <button class="btn btn-primary mx-auto" id="exp-item" onclick="exportItemsReport()">Items Report</button>
+        </div>
 
-            </tr>
-            <tr>
-                <td>Day</td>
-                <td>Count</td>
-            </tr>
-        </tbody>
-    </table>
+        <!-- script to export items -->
+        <script>
+            function exportItemsReport() {
+                console.log('called')
+                $.ajax({
+                    url: "{% url 'store:exp_item_rex' %}",
+                    type: 'GET',
+                    success: function (response) {
+                        // do something with the response
+                        window.location = "{% url 'store:exp_item_rex' %}";
+                    },
+                    error: function (error) {
+                        // handle the error
+                    }
+                });
+            }
+        </script>
+        <div class="col-lg-4 col-md-3 col-sm-12 p-3">
+            <button class="btn btn-primary mx-auto" id="exp-broke" onclick="exportBrokenReport()">Broken Items
+                Report</button>
+        </div>
+        <!-- script to export broken -->
+        <script>
+            function exportBrokenReport() {
+                console.log('called')
+                $.ajax({
+                    url: "{% url 'store:exp_broken_rex' %}",
+                    type: 'GET',
+                    success: function (response) {
+                        // do something with the response
+                        window.location = "{% url 'store:exp_broken_rex' %}";
+                    },
+                    error: function (error) {
+                        // handle the error
+                    }
+                });
+            }
+        </script>
+    </div>
 </div>
 {% endblock %}

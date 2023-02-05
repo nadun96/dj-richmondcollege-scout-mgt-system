@@ -23,3 +23,5 @@
 **inf** - **installed pygal, lxml, cairosvg, tinycss, cssselect to render png.**</br>
 
 **0009** - **installed pandas and added troop app**</br>
+
+**0010** - **inventory reports added**</br>

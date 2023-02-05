@@ -716,7 +716,7 @@ def export_broken(request):
 
 
 @login_required()
-def export_items_form(request):
+def export_items_rex(request):
 
     # group info
     group = Group.objects.get(id=1)
@@ -809,11 +809,11 @@ def export_items_form(request):
         # set the cell background color for alternating rows
         if i % 2 == 0:
             for row in ws.iter_rows(min_row=i+current_max_row, max_col=7):
-                for cell in row:
+                for j, cell in enumerate(row):
                     cell.fill = PatternFill("solid", fgColor="f2f2f2")
         else:
             for row in ws.iter_rows(min_row=i+current_max_row, max_col=7):
-                for cell in row:
+                for j, cell in enumerate(row):
                     cell.fill = PatternFill("solid", fgColor="ffffff")
 
     # current max row
@@ -839,10 +839,6 @@ def export_items_form(request):
 
     # increase height of merged cells
     ws.row_dimensions[merge_start_row].height = 20
-
-    # colour merged cells
-    # merged_cell = ws.cell(row=merge_start_row, column=1)
-    # merged_cell.fill = PatternFill("solid", fgColor="ffffff")
 
     # write footer
     footer_row = ws.max_row + 1
@@ -923,7 +919,7 @@ def export_items_form(request):
 
     # footer row 4 copyrights
     ws.cell(row=footer_row + 3, column=1,
-            value="© 2023 RCSG MIS developers").font = Font(italic=True, color="800000", size=10)
+            value=f"©{datetime.datetime.now().strftime('%Y')} RCSG MIS developers").font = Font(italic=True, color="800000", size=10)
     ws.cell(row=footer_row + 3, column=1).fill = PatternFill(
         "solid", fgColor="D3D3D3")
     ws.cell(row=footer_row + 3, column=1).alignment = Alignment(wrap_text=True,
@@ -940,7 +936,7 @@ def export_items_form(request):
     # create an HttpResponse object with the Excel file as an attachment
     response = HttpResponse(
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = f'attachment; filename=items data - {dt} .xlsx'
+    response['Content-Disposition'] = f'attachment; filename=Items Report - {dt} .xlsx'
     wb.save(response)
 
     return response
@@ -950,7 +946,7 @@ def export_items_form(request):
 
 
 @login_required()
-def export_lends_form(request):
+def export_lends_rex(request):
 
     # group info
     group = Group.objects.get(id=1)
@@ -1048,16 +1044,25 @@ def export_lends_form(request):
         # set the cell background color for alternating rows
         if i % 2 == 0:
             for row in ws.iter_rows(min_row=i+current_max_row, max_col=7):
-                for cell in row:
+                for j, cell in enumerate(row):
                     cell.fill = PatternFill("solid", fgColor="f2f2f2")
+                    if j == 6:
+                        cell.alignment = Alignment(
+                            horizontal="right")
         else:
             for row in ws.iter_rows(min_row=i+current_max_row, max_col=7):
-                for cell in row:
+                for j, cell in enumerate(row):
                     cell.fill = PatternFill("solid", fgColor="ffffff")
+                    if j == 6:
+                        cell.alignment = Alignment(
+                            horizontal="right")
         if is_lent:
             for row in ws.iter_rows(min_row=i+current_max_row, max_col=7):
-                for cell in row:
+                for j, cell in enumerate(row):
                     cell.fill = PatternFill("solid", fgColor=fill_color)
+                    if j == 6:
+                        cell.alignment = Alignment(
+                            horizontal="right")
 
     # current max row
     current_max_row = ws.max_row+1
@@ -1162,7 +1167,7 @@ def export_lends_form(request):
 
     # footer row 4 copyrights
     ws.cell(row=footer_row + 3, column=1,
-            value="© 2023 RCSG MIS developers").font = Font(italic=True, color="800000", size=10)
+            value=f"©{datetime.datetime.now().strftime('%Y')} RCSG MIS developers").font = Font(italic=True, color="800000", size=10)
     ws.cell(row=footer_row + 3, column=1).fill = PatternFill(
         "solid", fgColor="D3D3D3")
     ws.cell(row=footer_row + 3, column=1).alignment = Alignment(wrap_text=True,
@@ -1179,32 +1184,31 @@ def export_lends_form(request):
     # create an HttpResponse object with the Excel file as an attachment
     response = HttpResponse(
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = f'attachment; filename=items data - {dt} .xlsx'
+    response['Content-Disposition'] = f'attachment; filename= Lended Items Report - {dt} .xlsx'
     wb.save(response)
 
     return response
 
 
-""" Export Broken Items Details  -- not working -- not prepared yet"""
+""" Export Broken Items Details """
 
 
 @login_required()
-def export_broken_form(request):
+def export_broken_rex(request):
 
     # group info
     group = Group.objects.get(id=1)
     print(group)
 
     # create a queryset of records to export
-    records = Lend.objects.all().select_related('user', 'user__patrol', 'user__user', 'item')\
+    records = Broken.objects.all().select_related('item')\
         .values(
-            'user__user__username',
-            'user__surname',
-            'user__patrol__name',
+            'item__item_code',
             'item__item_name',
-            'item_lent_date',
-            'item_quantity_lent',
-            'item_is_lent'
+            'item_quantity_broken',
+            'item_broken_date',
+            'item_is_broken',
+            'date_repaired',
     ).all()
 
     workbook_name = f'items data - {datetime.datetime.now()}'
@@ -1212,7 +1216,7 @@ def export_broken_form(request):
     wb = openpyxl.Workbook(write_only=False)
 
     # set the active worksheet
-    ws = wb.create_sheet(title="Lends Report", index=0,)
+    ws = wb.create_sheet(title="Broken Items Report", index=0,)
     wb.active = ws
 
     # first cell in the first row organization
@@ -1225,10 +1229,10 @@ def export_broken_form(request):
     ws['C1'].font = Font(size=16, bold=True, color="00008B")
     ws['C1'].alignment = Alignment(horizontal="center", vertical="center")
     ws['C1'].fill = PatternFill("solid", fgColor="ADD8E6")
-    ws['C1'] = 'Lends Report as at {}'.format(
+    ws['C1'] = 'Broken Items Report as at {}'.format(
         datetime.datetime.now().strftime("%Y-%m-%d"))
     ws.row_dimensions[1].height = 50
-    ws.merge_cells("C1:G1")
+    ws.merge_cells("C1:F1")
     ws.merge_cells("A1:B1")
     ws.row_dimensions[2].height = 20
 
@@ -1236,25 +1240,26 @@ def export_broken_form(request):
     ws['A2'].font = Font(size=12, bold=True)
     ws['A2'].alignment = Alignment(horizontal="left", vertical="center")
     ws['A2'].fill = PatternFill("solid", fgColor="D3D3D3")
-    number_of_lends = Lend.objects.all().count()
-    ws['A2'] = 'Total Number of Lends: {}'.format(number_of_lends)
-    ws.merge_cells("A2:G2")
+
+    # count the number of items
+    number_of_broken = Broken.objects.all().count()
+    ws['A2'] = 'Total Number of Broken Items: {}'.format(number_of_broken)
+    ws.merge_cells("A2:F2")
 
     # write the field names to the second row
     ws.append([
-        'Username',
-        'Surname',
-        'Patrol',
-        'Item',
+        'Code',
+        'Item Name',
+        'Quantity broken',
         'Date',
-        'Quantity',
-        'Not Returned'
+        'Repaired',
+        'date_repaired',
     ])
 
     ws.row_dimensions[3].height = 20
 
     # set the font and cell background color for the field names
-    for row in ws.iter_rows(min_row=3, max_col=7):
+    for row in ws.iter_rows(min_row=3, max_col=6):
         for j, cell in enumerate(row):
             cell.font = Font(size=12, bold=True)
             cell.fill = PatternFill("solid", fgColor="FFA500")
@@ -1269,37 +1274,32 @@ def export_broken_form(request):
 
     # iterate over the records and write the data to the sheet
     for i, record in enumerate(records):
-        is_lent = record['item_is_lent']
-        if is_lent:
-            is_lent_text = "Yes"
-            fill_color = "ff9999"
+        if record['item_is_broken'] == True:
+            is_repaired = "No"
         else:
-            is_lent_text = "No"
+            is_repaired = "Yes"
         ws.append([
-            record['user__user__username'],
-            record['user__surname'],
-            record['user__patrol__name'],
+            record['item__item_code'],
             record['item__item_name'],
-            record['item_lent_date'],
-            record['item_quantity_lent'],
-            is_lent_text,
+            record['item_quantity_broken'],
+            record['item_broken_date'],
+            is_repaired,
+            record['date_repaired'],
         ])
-        # set the cell background color for alternating rows
-        if i % 2 == 0:
-            for row in ws.iter_rows(min_row=i+current_max_row, max_col=7):
-                for cell in row:
-                    cell.fill = PatternFill("solid", fgColor="f2f2f2")
+        if is_repaired == "Yes":
+            for row in ws.iter_rows(min_row=i+current_max_row, max_col=6):
+                for j, cell in enumerate(row):
+                    cell.fill = PatternFill("solid", fgColor="90EE90")
+                    if j == 4:
+                        cell.alignment = Alignment(
+                            horizontal="right")
         else:
-            for row in ws.iter_rows(min_row=i+current_max_row, max_col=7):
-                for cell in row:
-                    cell.fill = PatternFill("solid", fgColor="ffffff")
-        if is_lent:
-            for row in ws.iter_rows(min_row=i+current_max_row, max_col=7):
-                for cell in row:
-                    cell.fill = PatternFill("solid", fgColor=fill_color)
-
-    # current max row
-    current_max_row = ws.max_row+1
+            for row in ws.iter_rows(min_row=i+current_max_row, max_col=6):
+                for j, cell in enumerate(row):
+                    cell.fill = PatternFill("solid", fgColor="ff9999")
+                    if j == 4:
+                        cell.alignment = Alignment(
+                            horizontal="right")
 
     # set the column widths
     for i, column in enumerate(ws.columns):
@@ -1309,14 +1309,21 @@ def export_broken_form(request):
             i + 1)].width = column_width
 
     # add the filter command
-    ws.auto_filter.ref = "A3:G3"
+    ws.auto_filter.ref = "A3:F3"
 
     # merge row before footer
     merge_start_row = ws.max_row + 1
+
+    # count of repaired items
+    repaired_count = Broken.objects.filter(item_is_broken=False).count()
+
     ws.cell(row=merge_start_row, column=1).fill = PatternFill(
         "solid", fgColor="D3D3D3")
+    ws.cell(row=merge_start_row, column=1,
+            value=f"Total Number of repaired Items: {repaired_count}        Broken to Repaired Ratio:{ repaired_count /  number_of_broken }").font = Font(size=12, bold=True)
+
     ws.merge_cells(start_row=merge_start_row, start_column=1,
-                   end_row=merge_start_row, end_column=7)
+                   end_row=merge_start_row, end_column=6)
     ws.cell(row=merge_start_row, column=1)
 
     # increase height of merged cells
@@ -1343,16 +1350,16 @@ def export_broken_form(request):
     ws.cell(row=footer_row, column=3).alignment = Alignment(
         horizontal="center", vertical="top")
     ws.merge_cells(start_row=footer_row, start_column=3,
-                   end_row=footer_row, end_column=5)
+                   end_row=footer_row, end_column=4)
     # 3rd column
-    ws.cell(row=footer_row, column=6, value="Email").font = Font(italic=True,
+    ws.cell(row=footer_row, column=5, value="Email").font = Font(italic=True,
                                                                  size=11, bold=True)
-    ws.cell(row=footer_row, column=6).fill = PatternFill(
+    ws.cell(row=footer_row, column=5).fill = PatternFill(
         "solid", fgColor="ADD8E6")
-    ws.cell(row=footer_row, column=6).alignment = Alignment(
+    ws.cell(row=footer_row, column=5).alignment = Alignment(
         horizontal="center", vertical="top")
-    ws.merge_cells(start_row=footer_row, start_column=6,
-                   end_row=footer_row, end_column=7)
+    ws.merge_cells(start_row=footer_row, start_column=5,
+                   end_row=footer_row, end_column=6)
 
     ws.row_dimensions[footer_row].height = 20
 
@@ -1374,17 +1381,17 @@ def export_broken_form(request):
     ws.cell(row=footer_row + 1, column=3).alignment = Alignment(
         wrap_text=True, horizontal="center", vertical="center")
     ws.merge_cells(start_row=footer_row + 1, start_column=3,
-                   end_row=footer_row + 1, end_column=5)
+                   end_row=footer_row + 1, end_column=4)
 
     # 3rd column
-    ws.cell(row=footer_row + 1, column=6,
+    ws.cell(row=footer_row + 1, column=5,
             value=group.email).font = Font(size=11)
-    ws.cell(row=footer_row+1, column=6).fill = PatternFill(
+    ws.cell(row=footer_row+1, column=5).fill = PatternFill(
         "solid", fgColor="D3D3D3")
-    ws.cell(row=footer_row + 1, column=6).alignment = Alignment(
+    ws.cell(row=footer_row + 1, column=5).alignment = Alignment(
         wrap_text=True, horizontal="center", vertical="center")
-    ws.merge_cells(start_row=footer_row + 1, start_column=6,
-                   end_row=footer_row + 1, end_column=7)
+    ws.merge_cells(start_row=footer_row + 1, start_column=5,
+                   end_row=footer_row + 1, end_column=6)
 
     ws.row_dimensions[footer_row+1].height = 50
 
@@ -1397,20 +1404,20 @@ def export_broken_form(request):
     ws.cell(row=footer_row + 2, column=1).alignment = Alignment(wrap_text=True,
                                                                 horizontal="center", vertical="center")
     ws.merge_cells(start_row=footer_row + 2, start_column=1,
-                   end_column=7, end_row=footer_row + 2)
+                   end_column=6, end_row=footer_row + 2)
 
     # footer row 4 copyrights
     ws.cell(row=footer_row + 3, column=1,
-            value="© 2023 RCSG MIS developers").font = Font(italic=True, color="800000", size=10)
+            value=f"©{datetime.datetime.now().strftime('%Y')} RCSG MIS developers").font = Font(italic=True, color="800000", size=10)
     ws.cell(row=footer_row + 3, column=1).fill = PatternFill(
         "solid", fgColor="D3D3D3")
     ws.cell(row=footer_row + 3, column=1).alignment = Alignment(wrap_text=True,
                                                                 horizontal="center", vertical="center")
     ws.merge_cells(start_row=footer_row + 3, start_column=1,
-                   end_column=7, end_row=footer_row + 3)
+                   end_column=6, end_row=footer_row + 3)
 
     # set print area
-    ws.print_area = "A1:G" + str(ws.max_row)
+    ws.print_area = "A1:F" + str(ws.max_row)
 
     # set page orientation to landscape
 
@@ -1418,7 +1425,7 @@ def export_broken_form(request):
     # create an HttpResponse object with the Excel file as an attachment
     response = HttpResponse(
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = f'attachment; filename=lend data - {dt} .xlsx'
+    response['Content-Disposition'] = f'attachment; filename=Broken Items report - {dt} .xlsx'
     wb.save(response)
 
     return response
