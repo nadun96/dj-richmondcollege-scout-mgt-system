@@ -16,7 +16,7 @@
     color: #0a0907;
     text-decoration: none;
     position: relative;
-    padding: 15px 10px;
+    padding: 5px 5px;
     display: block;
 }
 
@@ -31,7 +31,7 @@
     bottom: 0px;
     width: 100%;
     height: .2rem;
-    background-color: #4d261b;
+    background-color: #7e4839;
     transform-origin: bottom right;
     transition: transform 0.5s ease;
     transform: scaleX(0);
@@ -43,7 +43,7 @@
 }
 
 .top-nav{
-    background: #60242a;
+    background: #7a5357;
 }
 
 .new{
@@ -77,4 +77,13 @@ h3{
 
 table{
     font-family:'Inter',monospace;
+}
+
+.nav-toggle{
+    background-color: #537FE7;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: #0a0907;
+    text-align: center;
+    padding: 5px 5px;    
 }

@@ -1,4 +1,5 @@
 <div class="container-fluid p-0 m-0">
+    <div class="nav-toggle"> Hide Navigation Tabs </div>
     <nav class="new">
         <ul>
             <li class="px-2 {% if title == 'manage_view' %} act   {% endif %}">
@@ -45,3 +46,16 @@
 
     </nav>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('.nav-toggle').click(function () {
+            $('.new').toggle();
+             if ($('.new').is(':visible')) {
+                $('.nav-toggle').text('Hide Navigation Tabs');
+             } else {
+                $('.nav-toggle').text('Show Navigation Tabs');
+             }
+        });
+    });
+</script>
