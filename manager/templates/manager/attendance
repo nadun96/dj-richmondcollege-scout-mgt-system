@@ -57,7 +57,7 @@
                         <tr>
 
                             <td>{{forloop.counter}}</td>
-                            <td>{{at.date|date:"Y-M-d"}}</td>
+                            <td>{{at.date|date:'j-m-Y(l)'}}</td>
                             <td>{{at.title}}</td>
                             <td>{{at.time|time:'g:i a'}}</td>
                             <td>{{at.marker__user__username}}</td>

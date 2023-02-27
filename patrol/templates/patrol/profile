@@ -21,7 +21,7 @@
 
             {{form|crispy}}
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">View</button>
         </form>
         <script>
 
@@ -154,8 +154,9 @@
                     <div class="row m-3">
                         <label for="colFormLabel" class="col-sm-2 col-form-label fw-bold">Address:</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="colFormLabel" placeholder="col-form-label"
-                                value="{{profile.address}}" readonly>
+                            <textarea type="text" class="form-control" id="colFormLabel" 
+                                value="{{profile.address}}" readonly> {{profile.address}}
+                            </textarea>
                         </div>
                     </div>
                     <div class="row m-3">
@@ -183,16 +184,16 @@
                     <div class="row m-3">
                         <label for="colFormLabel" class="col-sm-2 col-form-label fw-bold">Skills:</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="colFormLabel" placeholder="col-form-label"
-                                value="{{profile.skills}}" readonly>
+                            <textarea type="text" class="form-control" id="colFormLabel" 
+                                value="{{profile.skills}}" readonly>{{profile.skills}}</textarea>
                         </div>
                     </div>
 
                     <div class="row m-3">
                         <label for="colFormLabel" class="col-sm-2 col-form-label fw-bold">Sports:</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="colFormLabel" placeholder="col-form-label"
-                                value="{{profile.sports}}" readonly>
+                            <textarea type="text" class="form-control" id="colFormLabel" 
+                                value="{{profile.sports}}" readonly> {{profile.sports}} </textarea>
                         </div>
                     </div>
                     <div class="row m-3">

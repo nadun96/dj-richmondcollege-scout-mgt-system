@@ -55,6 +55,7 @@
                         <th>title</th>
                         <th>date</th>
                         <th>location</th>
+                        <th>nights</th>
                     </tr>
                 </thead>
                 {% for camp in user_camps %}
@@ -63,6 +64,7 @@
                     <td>{{ camp.title }}</td>
                     <td>{{ camp.date|date:"Y M d" }}</td>
                     <td>{{ camp.location }}</td>
+                    <td>{{ camp.nights }}</td>
                 </tr>
                 {% endfor %}
                 </tbody>

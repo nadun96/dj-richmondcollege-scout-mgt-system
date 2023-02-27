@@ -16,7 +16,7 @@
     color: #0a0907;
     text-decoration: none;
     position: relative;
-    padding: 15px 10px;
+    padding: 5px 5px;
     display: block;
 }
 
@@ -35,10 +35,6 @@
     transform-origin: bottom right;
     transition: transform 0.5s ease;
     transform: scaleX(0);
-    -webkit-transition:;
-    -moz-transition:;
-    -ms-transition:;
-    -o-transition:;
 }
 
 .new ul a:hover::after {
@@ -83,4 +79,13 @@ h3 {
 
 table {
     font-family: 'Inter', monospace;
+}
+
+.nav-toggle {
+    background-color: #537FE7;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: #0a0907;
+    text-align: center;
+    padding: 5px 5px;
 }

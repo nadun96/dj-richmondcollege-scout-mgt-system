@@ -25,13 +25,17 @@ def session_processor(request):
 
     #request.session['s_profile'] = profile
     request.session['s_profile_id'] = profile.id
-    request.session['s_patrol_id'] = profile.patrol.id
+    try:
+        request.session['s_patrol_id'] = profile.patrol.id
+    except Exception as e:
+        print("Not a patrol assigned user")
 
     # use the profile id to get the leader object
     is_leader = Leader.objects.filter(
         name=profile.id).exists()
     if (is_leader):
         request.session['is_leader'] = True
+        print(f"This is {is_leader} Leader")
 
     # use the profile object to get the member role object
     profile_roles_exist = MemberRole.objects.filter(

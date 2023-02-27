@@ -1420,7 +1420,39 @@ def export_broken_rex(request):
     ws.print_area = "A1:F" + str(ws.max_row)
 
     # set page orientation to landscape
+    """ header """
+    # center header
+    ws.oddHeader.center.text = "Broekn Items Report"
+    ws.oddHeader.center.size = 12
+    ws.oddHeader.center.font = "Tahoma,Bold"
+    ws.oddHeader.center.color = "CC3366"
+    ws.oddHeader.center.charSpace = 1
 
+    # left header
+    ws.oddHeader.left.text = "RCSG MIS"
+    ws.oddHeader.left.size = 12
+    ws.oddHeader.left.font = "Tahoma,Bold"
+    ws.oddHeader.left.color = "CC3366"
+    ws.oddHeader.left.charSpace = 1
+
+    # right header
+    ws.oddHeader.right.text = datetime.datetime.now().strftime("%Y-%m-%d")
+    ws.oddHeader.right.size = 12
+    ws.oddHeader.right.font = "Tahoma,Bold"
+    ws.oddHeader.right.color = "CC3366"
+    ws.oddHeader.right.charSpace = 1
+
+    """ end header """
+
+    """ footer """
+    # center footer
+    ws.oddFooter.center.text = f"©{datetime.datetime.now().strftime('%Y')} RCSG MIS developers Tel: {group.telephone}/Email: {group.email} Address: {group.address}"
+    ws.oddFooter.center.size = 10
+    ws.oddFooter.center.font = "Tahoma"
+    ws.oddFooter.center.color = "CC3366"
+    ws.oddFooter.center.charSpace = 1
+
+    """ end footer """
     dt = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     # create an HttpResponse object with the Excel file as an attachment
     response = HttpResponse(

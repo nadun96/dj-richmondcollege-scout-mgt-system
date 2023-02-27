@@ -65,7 +65,7 @@
                                                 <th>date</th>
                                                 <th>time</th>
                                                 <th>nights</th>
-                                                <th>is_day</th>
+                                                {% comment %} <th>is_day</th> {% endcomment %}
                                                 <th>location</th>
 
                                             </tr>
@@ -76,13 +76,13 @@
                                             <tr>
 
                                                 <td>{{hike.id }}</td>
-                                                <td>{{hike.title }}</td>
-                                                <td>{{hike.description }}</td>
+                                                <td>{{hike.title | safe }}</td>
+                                                <td>{{hike.description | safe }}</td>
                                                 <td>{{hike.year|date:"Y" }}</td>
                                                 <td>{{hike.date|date:"D j M Y" }}</td>
-                                                <td>{{hike.time|time:"g:i A" }}</td>
+                                                <td>{{hike.time|time:"g:iA" }}</td>
                                                 <td>{{hike.nights }}</td>
-                                                <td>{{hike.is_day }}</td>
+                                                {% comment %} <td>{{hike.is_day }}</td> {% endcomment %}
                                                 <td>{{hike.location }}</td>
 
 
@@ -135,7 +135,7 @@
                                             <th>date</th>
                                             <th>time</th>
                                             <th>nights</th>
-                                            <th>is_day</th>
+                                            {% comment %} <th>is_day</th> {% endcomment %}
                                             <th>location</th>
                                             <th>country</th>
 
@@ -153,7 +153,7 @@
                                             <td>{{camp.date|date:"D j M Y" }}</td>
                                             <td>{{camp.time|time:"g:i A" }}</td>
                                             <td>{{camp.nights }}</td>
-                                            <td>{{camp.is_day }}</td>
+                                            {% comment %} <td>{{camp.is_day }}</td> {% endcomment %}
                                             <td>{{camp.location }}</td>
                                             <td>
                                                 {% if camp.is_overseas %}

@@ -5,7 +5,7 @@ from django.db.models.signals import pre_save
 from django.db import models
 from login.utils import generate_username
 
-""" User = get_user_model()
+User = get_user_model()
 
 # auto username signal before save
 
@@ -17,4 +17,4 @@ def set_username(sender, instance, created, **kwargs):
         instance.save()
 
 
-models.signals.pre_save.connect(set_username, sender=User) """
+models.signals.pre_save.connect(set_username, sender=User)

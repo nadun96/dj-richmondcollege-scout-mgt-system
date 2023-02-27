@@ -262,7 +262,7 @@
                                                 No
                                                 {% endif %}
                                             </td>
-                                            <td>{{ user.last_login|date:"Y-m-d H:i" }}</td>
+                                            <td>{{ user.last_login|date:"Y-m-d H:i" }}h</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

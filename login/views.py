@@ -14,6 +14,7 @@ from django.core.files.storage import default_storage
 from django.views.generic import ListView
 from django.conf import settings
 from django.db.models import Max
+from django.db import transaction
 from django.contrib.auth import get_user_model
 User = get_user_model()
 # current active user model
@@ -47,72 +48,76 @@ def register(request):
     try:
         context = {}
         if request.method == "POST":
-            # variables request.POST
-            student_surname = request.POST.get('student_surname')
-            student_initials = request.POST.get('student_initials')
-            student_birthday = request.POST.get('student_birthday')
-            student_username = request.POST.get('student_username')
-            student_email = request.POST.get('student_email')
-            student_entrance = request.POST.get('student_entrance')
-            student_contact = request.POST.get('student_contact')
-            student_residence = request.POST.get('student_residence')
-            student_father = request.POST.get('student_father')
-            student_other_skills = request.POST.get('student_skills')
-            student_sports = request.POST.get('student_sports')
-            student_password = request.POST.get('student_password')
 
-            # variables request.FILES
-            student_letter = request.FILES['student_letter']
-            student_medical = request.FILES['student_medical']
-            student_photo = request.FILES['student_photo']
+            with transaction.atomic():
+                # variables request.POST
+                student_surname = request.POST.get('student_surname')
+                student_initials = request.POST.get('student_initials')
+                student_birthday = request.POST.get('student_birthday')
+                student_username = request.POST.get('student_username')
+                student_email = request.POST.get('student_email')
+                student_entrance = request.POST.get('student_entrance')
+                student_contact = request.POST.get('student_contact')
+                student_residence = request.POST.get('student_residence')
+                student_father = request.POST.get('student_father')
+                student_other_skills = request.POST.get('student_skills')
+                student_sports = request.POST.get('student_sports')
+                student_password = request.POST.get('student_password')
 
-            # validate files
-            image_validator = FileExtensionValidator(['jpg', 'jpeg', 'png'])
-            file_validator = FileExtensionValidator(
-                ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'])
-            image_validator(student_photo)
-            file_validator(student_letter)
-            file_validator(student_medical)
+                # variables request.FILES
+                student_letter = request.FILES['student_letter']
+                student_medical = request.FILES['student_medical']
+                student_photo = request.FILES['student_photo']
 
-            # Change the file name to a custom name with the same file type
-            _, file_extension = os.path.splitext(student_photo.name)
-            student_photo.name = repr(student_username) + file_extension
+                # validate files
+                image_validator = FileExtensionValidator(
+                    ['jpg', 'jpeg', 'png'])
+                file_validator = FileExtensionValidator(
+                    ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'])
+                image_validator(student_photo)
+                file_validator(student_letter)
+                file_validator(student_medical)
 
-            _, file_extension = os.path.splitext(student_letter.name)
-            student_letter.name = repr(student_username) + file_extension
+                # Change the file name to a custom name with the same file type
+                _, file_extension = os.path.splitext(student_photo.name)
+                student_photo.name = repr(student_username) + file_extension
 
-            _, file_extension = os.path.splitext(student_medical.name)
-            student_medical.name = repr(student_username) + file_extension
+                _, file_extension = os.path.splitext(student_letter.name)
+                student_letter.name = repr(student_username) + file_extension
 
-            # create user object
-            user = User.objects.create_user(
-                username=generate_username(),
-                email=student_email,
-                password=student_password
-            )
+                _, file_extension = os.path.splitext(student_medical.name)
+                student_medical.name = repr(student_username) + file_extension
 
-            # save user FILES object
-            user_files = UserFile.objects.create(
-                user=user, letter=student_letter, medical=student_medical, picture=student_photo)
+                # create user object
+                user = User.objects.create_user(
+                    username=generate_username(),
+                    email=student_email,
+                    password=student_password,
+                    is_active=False,
+                )
 
-            user_files.save()
+                # save user FILES object
+                user_files = UserFile.objects.create(
+                    user=user, letter=student_letter, medical=student_medical, picture=student_photo)
 
-            # instead of signals
-            student_profile = Profile.objects.create(
-                user=user,  # this is the foreign key
-                surname=student_surname,
-                initials=student_initials,
-                entrance_number=student_entrance,
-                email=student_email,
-                father=student_father,
-                skills=student_other_skills,
-                sports=student_sports,
-                birthday=student_birthday,
-                contact=student_contact,
-                address=student_residence,
-            )
+                user_files.save()
 
-            student_profile.save()
+                # instead of signals
+                student_profile = Profile.objects.create(
+                    user=user,  # this is the foreign key
+                    surname=student_surname,
+                    initials=student_initials,
+                    entrance_number=student_entrance,
+                    email=student_email,
+                    father=student_father,
+                    skills=student_other_skills,
+                    sports=student_sports,
+                    birthday=student_birthday,
+                    contact=student_contact,
+                    address=student_residence,
+                )
+
+                student_profile.save()
 
             context['result'] = 'success'
             return HttpResponse(

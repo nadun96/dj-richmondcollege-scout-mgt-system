@@ -99,7 +99,7 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table id="roles-table" class="table table-striped table-bordered table-hover group-roles"
+                        <table id="roles-table" class="table table-striped sortable table-bordered table-hover group-roles"
                             id="patrols-table">
                             <thead class="bg-success">
                                 <tr>

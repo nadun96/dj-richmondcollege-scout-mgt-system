@@ -27,7 +27,7 @@
 
 
                     {% if request.session.is_admin %}
-                    <li><a class="dropdown-item small" href="/admin/login/">Admin</a></li>
+                    <li><a class="dropdown-item small" href="/admin/login/" target-"_blank">Admin</a></li>
                     {% endif %}
 
                 </ul>
@@ -41,9 +41,10 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         
                     
-                    {% if request.session.is_admin %}
+                    {% if request.session.is_leader %}
                     <li><a class="dropdown-item small" href="{% url 'patrol:examine_tab' %}">Patrol</a></li>
                     {% endif %}
+                    
                     
 
                     <li><a class="dropdown-item small" href={% url 'home:logout' %}>Log out</a></li>

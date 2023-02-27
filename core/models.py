@@ -4,15 +4,26 @@ from django.contrib.auth.models import AbstractUser
 from member.models import Camp, Project, Hike, Requirement
 from django.utils.translation import gettext as _
 from manager.models import Patrol, Communication
+from django.core.validators import RegexValidator
 
 
 class User(AbstractUser):
+    username_validator = RegexValidator('^.*$', 'Invalid username')
+    username = models.CharField(
+        max_length=150,
+        unique=True,
+        validators=[username_validator],
+        error_messages={
+            'unique': 'A user with that username already exists.',
+        },
+    )
     is_active = models.BooleanField(default=True)
     is_mem = models.BooleanField(default=False)
     is_sec = models.BooleanField(default=False)
     is_skr = models.BooleanField(default=False)
     is_ldr = models.BooleanField(default=False)
     is_exa = models.BooleanField(default=False)
+    # username = models.CharField(max_length=50, validators=None, unique=True)
 
     def __str__(self):
         return self.username
@@ -68,14 +79,15 @@ ROLES = {
 
 
 class MemberRole(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(
+        Profile, on_delete=models.SET_DEFAULT, default=2)
     role = models.IntegerField(choices=ROLES, blank=True)
     active = models.BooleanField(default=True)
     start = models.DateField(auto_now_add=True, blank=True)
     end = models.DateField(auto_now=True, null=True, blank=True)
 
     def __str__(self):
-        return self.role
+        return self.role.__str__() + ' | ' + self.profile.user.username
 
 
 """  user files """
@@ -133,7 +145,7 @@ class Leader(models.Model):
     start = models.DateField(auto_now_add=True, blank=False)
     end = models.DateField(blank=True, null=True)
     patrol = models.ForeignKey(
-        Patrol, on_delete=models.CASCADE, null=True, blank=True)
+        Patrol, on_delete=models.SET_NULL, null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):

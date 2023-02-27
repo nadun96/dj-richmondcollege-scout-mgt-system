@@ -40,7 +40,7 @@
                     Menu
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    {% if request.session.is_admin %}
+                    {% if request.session.is_leader %}
                     <li><a class="dropdown-item small" href="{% url 'patrol:examine_tab' %}">Patrol</a></li>
                     {% endif %}
 

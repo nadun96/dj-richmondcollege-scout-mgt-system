@@ -44,11 +44,11 @@
                 <img src="{{ post.picture.url }}" class="card-img-top" alt="{{ post.title }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ post.title }}</h5>
-                    <p class="card-text">{{ post.description }}</p>
+                    <p class="card-text">{{ post.description | safe }}</p>
                     {% if post.file %}
                     {% comment %} {% for file in post.file.all %} {% endcomment %}
-                    <a href="{{ file.url }}" class="btn btn-primary">Download file
-                        {% comment %} <b>({{forloop.counter}})</b>{% endcomment %}
+                    <a href="{{ post.file.url }}" class="btn btn-primary" download={{post.file.name}}>Download file
+                        {% comment %} <b>({{forloop.counter}})</b> {% endcomment %}
                     </a>
                     {% comment %} {% endfor %} {% endcomment %}
                     {% endif %}

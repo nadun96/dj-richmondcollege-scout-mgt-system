@@ -1,3 +1,14 @@
+<style>
+    .rounded-outline{
+        {% comment %} display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+        border-radius: 50%;
+        background: yellow; {% endcomment %}
+    }
+    
+</style>
+
 {% regroup requires by badge__name as rb_level %}
 <div class="sorter px-2 py-3">
 {% for badge__name in rb_level %}
@@ -21,9 +32,9 @@
                     <tbody>
                         {% for item in badge__name.list %}
                         <tr>
-                            <td> {{ item.number }} </td>
-                            <td> {{ item.name }} </td>
-                            <td> {{ item.description }} </td>
+                            <td class="rounded-outline"> {{ item.number | safe }} </td>
+                            <td> {{ item.name | safe }} </td>
+                            <td> {{ item.description | safe}} </td>
                         </tr>
                         {% endfor %}
                     </tbody>

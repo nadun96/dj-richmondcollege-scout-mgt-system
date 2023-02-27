@@ -55,9 +55,8 @@
                         </thead>
                         {% for at in attends %}
                         <tr>
-
-                            <td>{{forloop.counter}}</td>
-                            <td>{{at.date|date:"Y-M-d"}}</td>
+                            <td>{{forloop.counter}}</td> Count
+                            <td>{{at.date|date:'l, F j, Y'}}</td>
                             <td>{{at.title}}</td>
                             <td>{{at.time|time:'g:i a'}}</td>
                             <td>{{at.marker__user__username}}</td>
