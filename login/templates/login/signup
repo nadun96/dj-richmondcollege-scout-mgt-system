@@ -31,7 +31,7 @@
                     <div class="input-group mb-2 ">
                         <span class="input-group-text w-25">Initials</span>
                         <input class="form-control text-bg-primary bg-opacity-10 text-dark" type="text"
-                            name="student_initials" placeholder="Ex: L.A.M.N.U" required>
+                            name="student_initials" placeholder="Ex: L.A.M.N.U" maxlength="10" required>
                     </div>
 
 

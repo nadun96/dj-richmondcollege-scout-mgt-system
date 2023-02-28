@@ -1,3 +1,4 @@
+from django.contrib.admin.models import LogEntry
 from django.contrib import admin
 from . import models
 
@@ -71,3 +72,29 @@ class LeaderAdmin(admin.ModelAdmin):
     list_display = ('name', 'patrol', 'start', 'end', 'is_active')
     list_filter = ('patrol', 'is_active')
     search_fields = ('name__user__username', 'patrol__name')
+
+
+@admin.register(LogEntry)
+class LogEntryAdmin(admin.ModelAdmin):
+    # to have a date-based drilldown navigation in the admin page
+    date_hierarchy = 'action_time'
+
+    # to filter the resultes by users, content types and action flags
+    list_filter = [
+        'user',
+        'content_type',
+        'action_flag'
+    ]
+
+    # when searching the user will be able to search in both object_repr and change_message
+    search_fields = [
+        'object_repr',
+        'change_message'
+    ]
+
+    list_display = [
+        'action_time',
+        'user',
+        'content_type',
+        'action_flag',
+    ]

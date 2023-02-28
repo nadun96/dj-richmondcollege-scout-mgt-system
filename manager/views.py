@@ -516,20 +516,30 @@ def get_profiles(request):
 
 @login_required()
 def del_patrol(request):
-    if request.method == 'POST':
 
-        response_data = {}
-        patrolForm = EndPatrolForm(request.POST)
+    try:
+        if request.method == 'POST':
 
-        if patrolForm.is_valid():
-            patrol = request.POST.get('patrol')
-            patrol = Patrol.objects.get(id=patrol)
-            patrol.delete()
-            response_data['result'] = 'success'
-        return HttpResponse(
-            JsonResponse(response_data),
-        )
-    else:
+            response_data = {}
+            patrolForm = EndPatrolForm(request.POST)
+
+            if patrolForm.is_valid():
+                patrol = request.POST.get('patrol')
+                patrol = Patrol.objects.get(id=patrol)
+                patrol.delete()
+                response_data['result'] = 'success'
+            return HttpResponse(
+                JsonResponse(response_data),
+            )
+
+        else:
+            response_data['result'] = 'error'
+            return HttpResponse(
+                JsonResponse(response_data),
+            )
+
+    except Exception as e:
+        print(e)
         response_data['result'] = 'error'
         return HttpResponse(
             JsonResponse(response_data),
