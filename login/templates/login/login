@@ -30,21 +30,35 @@
 
                                         {% csrf_token %}
                                         <div class="form-group p-1 m-1">
+                                    
                                             <label class="control-label col-sm-2 text-capitalize"
                                                 for="username">username<em>*</em></label>
                                             <div class="col">
                                                 <input type="text" name="username" id="username" placeholder="username"
                                                     required="true" class="form-control" />
                                             </div>
+
                                         </div>
                                         <div class="form-group p-1 m-1">
+
                                             <label class="control-label col-sm-2 text-capitalize"
                                                 for="password">password<em>*</em></label>
                                             <div class="col">
                                                 <input type="password" name="password" id="password" required="true"
                                                     class="form-control" />
                                             </div>
+
                                         </div>
+                                        {% if error %}
+                                        <div class="form-group p-1 m-1">
+                                            <p class="text-center bg-warning">
+                                                
+                                                    {{error}}
+                                               
+                                            </p>
+                                        </div>  
+                                        {% endif %}   
+                                        
                                         <div class="form-group text-center m-1 py-2">
                                             <div class="col-sm-offset-2">
 
@@ -65,25 +79,19 @@
                                         <a class="form-group text-center py-2">
                                             <div class="container">
 
-                                                <a href={% url 'home:signup' %}>
-
+                                                
                                                     <b>
+                                                        <a href={% url 'home:signup' %}>
                                                         <p
                                                             class="text-center text-decoration-underline font-weight-bold px-5">
 
                                                             click here to register
 
                                                         </p>
-
-                                                    </b>
-
-                                                </a>
-                                                <a href="">
-                                                    {% if error %}
-                                                    <p> {{error}}authentication failed</p>
-                                                    {% endif %}
-                                                </a>
-
+                                                        </a>
+                                                    </b>     
+                                                
+                                                    
                                             </div>
                                         </a>
                                     </div>

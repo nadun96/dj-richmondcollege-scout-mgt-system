@@ -2,5 +2,12 @@
     "cSpell.words": [
         "fernet",
         "rcsg"
+    ],
+
+    "python.linting.pylintEnabled": true,
+    "python.linting.pylintArgs": [
+        "--disable=C0111",
+        "--load-plugins",
+        "pylint_django",
     ]
 }

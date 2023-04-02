@@ -854,8 +854,8 @@ def export_items_rex(request):
     ws.merge_cells(start_row=footer_row, start_column=1,
                    end_row=footer_row, end_column=2)
     # 2nd column
-    ws.cell(row=footer_row, column=3, value="Address").font = Font(italic=True,
-                                                                   size=11, bold=True)
+    ws.cell(row=footer_row, column=3, value="Address").font = Font(
+        italic=True, size=11, bold=True)
     ws.cell(row=footer_row, column=3).fill = PatternFill(
         "solid", fgColor="ADD8E6")
     ws.cell(row=footer_row, column=3).alignment = Alignment(
@@ -863,8 +863,8 @@ def export_items_rex(request):
     ws.merge_cells(start_row=footer_row, start_column=3,
                    end_row=footer_row, end_column=5)
     # 3rd column
-    ws.cell(row=footer_row, column=6, value="Email").font = Font(italic=True,
-                                                                 size=11, bold=True)
+    ws.cell(row=footer_row, column=6, value="Email").font = Font(
+        italic=True, size=11, bold=True)
     ws.cell(row=footer_row, column=6).fill = PatternFill(
         "solid", fgColor="ADD8E6")
     ws.cell(row=footer_row, column=6).alignment = Alignment(

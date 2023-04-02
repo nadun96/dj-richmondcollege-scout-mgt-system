@@ -1,27 +1,42 @@
 <style>
     .rounded-outline{
-        {% comment %} display: table-cell;
-        text-align: center;
-        vertical-align: middle;
-        border-radius: 50%;
-        background: yellow; {% endcomment %}
+        text-align: center;   
+    }
+    .level-class{
+        background: #f5f5f5;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    .level-name{
+        text-align: center; 
     }
     
 </style>
-
+<div class="row">
+        <div class="col-sm my-1">
+            <div class="input-group">
+                <input type="search" class="form-control rounded-left search-input" placeholder="Search"
+                    aria-label="Search" data-table="requirements-table" aria-describedby="search-addon" />
+            </div>
+        </div>
+        
+</div>  
 {% regroup requires by badge__name as rb_level %}
 <div class="sorter px-2 py-3">
 {% for badge__name in rb_level %}
-<div class="row">
-    <div class="row">
-        <h3>Level:{{badge__name.list.0.badge__level}} - {{ badge__name.grouper }}</h3>
-        <p>{{badge__name.list.0.badge__description}}</p>
+<hr>
+<div class="row">   
+    <div class="row level-class">
+        <h3>Level:{{badge__name.list.0.badge__level}}
+            <span class="level-name">{{ badge__name.grouper }}</span>
+        </h3>
+        <p><i>{{badge__name.list.0.badge__description}}</i></p>
     </div>
-    <div class="row">
-        <div class="col">
-
+    <div class="row level-class ">
+        <div class="col ">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped ">
+                <table class="table table-bordered table-striped requirements-table">
                     <thead class="bg-success">
                         <tr>
                             <th>number</th>
@@ -31,19 +46,19 @@
                     </thead>
                     <tbody>
                         {% for item in badge__name.list %}
-                        <tr>
-                            <td class="rounded-outline"> {{ item.number | safe }} </td>
-                            <td> {{ item.name | safe }} </td>
-                            <td> {{ item.description | safe}} </td>
+                        <tr> 
+                            <td class="rounded-outline bg-warning"> 
+                                <b>{{ item.number | safe }} </b>
+                            </td>
+                            <td class=""> {{ item.name | safe }} </td>
+                            <td class=""> {{ item.description | safe}} </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
-
     </div>
 </div>
+<hr>
 {% endfor %}
-
-</div>

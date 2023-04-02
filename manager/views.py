@@ -118,7 +118,7 @@ def view_attendance(request):
 
 @ login_required
 def manage_roles(request):
-    activate_form = AssignRoleForm()
+    activate_form = AssignRoleForm(initial={'role': 2})
 
     context = {
         'title': 'manage_roles',

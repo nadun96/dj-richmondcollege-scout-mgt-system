@@ -22,25 +22,36 @@ User = get_user_model()
 
 def home(request):
     """ view login page """
-    group = Group.objects.filter(id=1).values()
+    try:
+        group = Group.objects.filter(id=1).values()
 
-    context = {
-        'title': 'home',
-        'group': group,
-    }
-    return render(request, 'login/login', context)
+        context = {
+            'title': 'home',
+            'group': group,
+        }
+    except Exception as e:
+        print(e)
+
+    finally:
+        return render(request, 'login/login', context)
 
 
 def signup(request):
     """ view signup page """
-    username = generate_username()
+    try:
+        username = generate_username()
 
-    # pass data to  context
-    context = {
-        'title': 'register',
-        'next_id': username
-    }
-    return render(request, 'login/signup', context)
+        # pass data to  context
+        context = {
+            'title': 'register',
+            'next_id': username
+        }
+
+    except Exception as e:
+        print(e)
+
+    finally:
+        return render(request, 'login/signup', context)
 
 
 def register(request):
@@ -131,59 +142,84 @@ def register(request):
 
 def user_login(request):
     """ call auth login function """
-    # try:
-    username = request.POST['username']
-    password = request.POST['password']
+    try:
+        username = request.POST['username']
+        password = request.POST['password']
 
-    user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=username, password=password)
 
-    if user is not None:
-        login(request, user)
-        #next_url = request.POST.get('next', '/')
-        # return redirect(next_url)
-        return redirect(reverse('member:profile', kwargs={'user_id': request.user.id}))
+        if user is not None:
+            login(request, user)
+            #next_url = request.POST.get('next', '/')
+            # return redirect(next_url)
+            return redirect(reverse('member:profile', kwargs={'user_id': request.user.id}))
 
-    else:
+        else:
+            group = Group.objects.filter(id=1).values()
+
+            context = {
+                'title': 'home',
+                'error': 'Invalid Credentials or Account Not Activated',
+                'group': group,
+            }
+
+            return render(request, 'login/login', context)
+
+    except Exception as e:
+        print(e)
+        group = Group.objects.filter(id=1).values()
+
         context = {
-            'title': 'login',
-            'messages': messages.get_messages(request)
+            'title': 'home',
+            'error': 'An Error Eccoured',
+            'group': group,
         }
-        LOG_IN_URL = reverse('home:home')
-        return redirect(LOG_IN_URL, context)
+        return render(request, 'login/login', context)
 
 
 def user_logout(request):
     """ call auth logout function """
-    logout(request)
-    return redirect(reverse('home:home'))
+    try:
+        logout(request)
+        return redirect(reverse('home:home'))
+    except Exception as e:
+        print(e)
 
 
 def events(request):
     """ view home events """
-    photos = Photo.objects.all().order_by('-date')
+    try:
+        photos = Photo.objects.all().order_by('-date')
 
-    context = {
-        'title': 'events',
-        'photos': photos,
-    }
+        context = {
+            'title': 'events',
+            'photos': photos,
+        }
 
-    return render(request, 'login/events', context)
+    except Exception as e:
+        print(e)
+
+    finally:
+        return render(request, 'login/events', context)
 
 
 def requirements(request):
     """ view requirements page """
-    requires = Requirement.objects.all().select_related('badge')\
-        .values(
-        'badge__level', 'badge__name', 'badge__description', 'number', 'name', 'description')\
-        .order_by('badge__level', 'number')
+    try:
+        requires = Requirement.objects.all().select_related('badge')\
+            .values(
+            'badge__level', 'badge__name', 'badge__description', 'number', 'name', 'description')\
+            .order_by('badge__level', 'number')
 
-    context = {
-        'title': 'badges',
-        'requires': requires,
-    }
+        context = {
+            'title': 'badges',
+            'requires': requires,
+        }
+    except Exception as e:
+        print(e)
 
-    print(requires)
-    return render(request, 'login/badges', context)
+    finally:
+        return render(request, 'login/badges', context)
 
 
 class MyCardView(ListView):

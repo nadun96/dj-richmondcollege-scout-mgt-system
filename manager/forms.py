@@ -168,19 +168,18 @@ class MembershipFeeForm(forms.ModelForm):
 """ Assign Role form """
 
 
-class AssignRoleForm(forms.ModelForm):
-    class Meta:
-        model = MemberRole
-        fields = ['role', 'profile']
-        widgets = {
+ROLES = {
+    (2, 'Member'),
+    (3, 'Secretary'),
+    (4, 'Storekeeper'),
+}
 
-            'role': forms.Select(attrs={'id': 'rf_select_role', 'class': 'form-control selectize ', 'placeholder': 'select role'}),
 
-            'profile': forms.Select(attrs={'id': 'rf_select_profile', 'class': 'form-control selectize ', 'placeholder': 'select profile'}),
-
-        }
-
-        initial = {'role': '', 'profile': ''}
+class AssignRoleForm(forms.Form):
+    role = forms.ChoiceField(choices=ROLES, widget=forms.Select(
+        attrs={'id': 'rf_select_role', 'class': 'form-control selectize '}))
+    profile = forms.ModelChoiceField(queryset=Profile.objects.all(), widget=forms.Select(
+        attrs={'id': 'rf_select_profile', 'class': 'form-control selectize ', 'placeholder': 'select profile'}))
 
 
 """ Assign Leader form  """

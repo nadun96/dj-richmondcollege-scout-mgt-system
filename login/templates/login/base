@@ -27,6 +27,12 @@
   {% load static %}
   <!-- External Css -->
   <link href="{% static 'css/welcome.css' %}" rel="stylesheet" />
+  
+  {% load static %}
+  <script src="{% static 'js/sorttable.js' %}"></script>
+
+  {% load static %}
+  <script src="{% static 'js/search.js' %}"></script>
 
   <title>{{title}}</title>
 
