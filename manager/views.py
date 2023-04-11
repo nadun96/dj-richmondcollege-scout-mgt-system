@@ -1,3 +1,10 @@
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter, landscape
+from reportlab.lib import colors
+import matplotlib.pyplot as plt
+import pandas as pd
+# imports for pdf
 from django.contrib.auth.decorators import login_required
 import datetime
 from datetime import date
@@ -879,3 +886,84 @@ def manage_badges(request):
     }
 
     return render(request, 'manager/manage_badge', context)
+
+
+""" export attendance report """
+
+
+@login_required()
+def export_attendance(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="attendance.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Patrol', 'Date', 'Hike', 'Camp',
+                    'Project', 'Meeting', 'Total'])
+
+    patrols = Patrol.objects.all()
+    for patrol in patrols:
+        writer.writerow([patrol.name])
+        for attendance in patrol.attendance_set.all():
+            writer.writerow([attendance.date, attendance.hike, attendance.camp,
+                            attendance.project, attendance.meeting, attendance.total])
+        writer.writerow([])
+
+    return response
+
+
+""" generate pdf report """
+
+
+def generate_attendance_report(year: int):
+    # Query the database to get the attendance data for the given year
+    attendance_data = Attendance.objects.filter(date__year=year)
+
+    # Create a pandas DataFrame from the attendance data
+    attendance_df = pd.DataFrame(list(attendance_data.values()))
+
+    # Group the attendance data by member and calculate the total attendance for each member
+    member_attendance = attendance_df.groupby(
+        ['member']).size().reset_index(name='attendance_count')
+
+    # Create a table from the member attendance data
+    member_attendance_table = Table(
+        data=[['Member', 'Attendance']] + [[row['member'], row['attendance_count']]
+                                           for _, row in member_attendance.iterrows()],
+        colWidths=[4.5*inch, 1*inch],
+        hAlign='LEFT'
+    )
+
+    # Add a style to the table
+    member_attendance_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 14),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
+        ('ALIGN', (1, 1), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 1), (-1, -1), 12),
+        ('BOTTOMPADDING', (0, 1), (-1, -1), 6),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ]))
+
+    # Create a pandas DataFrame for the weekly attendance data
+    weekly_attendance = attendance_df.groupby(pd.Grouper(
+        key='date', freq='W')).size().reset_index(name='attendance_count')
+
+    # Create a line graph of the weekly attendance data
+    fig, ax = plt.subplots()
+    ax.plot(weekly_attendance['date'], weekly_attendance['attendance_count'])
+    ax.set(xlabel='Week', ylabel='Attendance', title='Weekly Attendance')
+    ax.grid()
+
+    # Generate the pdf report with the table and the line graph
+    doc = SimpleDocTemplate(
+        f'{year}_attendance_report.pdf', pagesize=landscape(letter))
+    elements = []
+    elements.append(member_attendance_table)
+    elements.append(plt.gcf())
+    doc.build(elements)

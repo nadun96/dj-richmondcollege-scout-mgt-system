@@ -1320,7 +1320,7 @@ def export_broken_rex(request):
     ws.cell(row=merge_start_row, column=1).fill = PatternFill(
         "solid", fgColor="D3D3D3")
     ws.cell(row=merge_start_row, column=1,
-            value=f"Total Number of repaired Items: {repaired_count}        Broken to Repaired Ratio:{ repaired_count /  number_of_broken }").font = Font(size=12, bold=True)
+            value=f"Total Number of repaired Items: {repaired_count}  Broken to Repaired Ratio:{ repaired_count /  number_of_broken }").font = Font(size=12, bold=True)
 
     ws.merge_cells(start_row=merge_start_row, start_column=1,
                    end_row=merge_start_row, end_column=6)
@@ -1461,3 +1461,27 @@ def export_broken_rex(request):
     wb.save(response)
 
     return response
+
+
+""" pdf format broken items report """
+
+
+@login_required
+def export_broken_pdf():
+    pass
+
+
+""" pdf fromat Items Report """
+
+
+@login_required
+def export_items_pdf():
+    pass
+
+
+""" pdf format Lends Report """
+
+
+@login_required
+def export_lends_pdf():
+    pass
