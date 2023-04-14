@@ -1466,7 +1466,7 @@ def export_broken_rex(request):
 """ pdf format broken items report """
 
 
-@login_required
+@login_required()
 def export_broken_pdf():
     pass
 
@@ -1474,7 +1474,7 @@ def export_broken_pdf():
 """ pdf fromat Items Report """
 
 
-@login_required
+@login_required()
 def export_items_pdf():
     pass
 
@@ -1482,6 +1482,6 @@ def export_items_pdf():
 """ pdf format Lends Report """
 
 
-@login_required
+@login_required()
 def export_lends_pdf():
     pass

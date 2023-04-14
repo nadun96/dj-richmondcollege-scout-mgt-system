@@ -11,19 +11,17 @@ urlpatterns = [
     path('welcome/', views.manage_patrols, name='manage_patrols'),
     path('announce/', views.manage_announcements, name='manage_announce'),
     path('badge/', views.manage_badges, name='manage_badges'),
+    path('reports/', views.view_reports, name='manage_reports'),
 
     # code for manage roles in views
     path('role/', views.manage_roles, name='manage_roles'),
     path('role/tog/', views.toggle_role, name='toggle_roles'),
     #path('role/get/', views.toggle_role, name='toggle_roles'),
 
-
     # code for manage leaders in views
     path('leaders/', views.manage_leaders, name='manage_leaders'),
     path('leaders/tog/', views.toggle_leader, name='toggle_leaders'),
     path('leaders/rm/', views.rm_leader, name='rm_leaders'),
-
-
 
     path('member/', views.manage_member, name='manage_member'),
     path('member/toggle/', views.activate_member, name='activate_member'),
@@ -57,7 +55,17 @@ urlpatterns = [
 
     path('get/profiles/', views.get_profiles, name='get_profiles'),
 
+    # attendance urls config
     path('view/attendance/', views.view_attendance, name='attendance_tab'),
     path('add/attendance/', views.add_attendance, name='add_attendance'),
+
+    # get reports ajax urls config
+    path('get/attendance/member/', views.member_attendance_report,
+         name='member_attendance_report'),
+    path('get/attendance/patrol/', views.patrol_attendance_report,
+         name='patrol_attendance_report'),
+    path('get/attendance/event/', views.events_attendance_report,
+         name='events_attendance_report'),
+
 
 ]

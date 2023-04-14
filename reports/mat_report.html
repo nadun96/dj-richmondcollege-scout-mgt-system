@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Member Attendance Report</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+            border: 1px solid black;
+        }
+
+        th {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Member Attendance Report</h1>
+    <h2>{{ member.name }} - {{ year }}</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        {{data}}
+        <tbody>
+            {% for attendance in attendances %}
+            <tr>
+                <td>{{ attendance.title }}</td>
+                <td>{{ attendance.date }}</td>
+                <td>{{ attendance.time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+</html>

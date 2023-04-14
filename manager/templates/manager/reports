@@ -1,0 +1,335 @@
+{% extends 'manager/base' %}
+{{title}}
+{% block content %}
+{% load widget_tweaks %}
+
+<div class="container-fluid">
+    {%load crispy_forms_tags %}
+    <div class="row">
+        <div class="col-lg-4 col-sm-12 col-md-6 p-3">
+            <div class="bg-info px-4 py-2 rounded-2">
+                <h3 class="text-center"> Attendance </h3>
+            </div>
+            <div>
+
+                <!-- mat from -->
+                {{ matf.media }}
+                <form action="" method="post" class="form my-4 px-2" enctype="" id="mat_form" onsubmit="">
+                    <p><strong>Member Attendance</strong></p>
+                    {% csrf_token %}
+                    {{matf|crispy}}
+                    <input type="submit" value="Submit" class="btn btn-primary">
+                </form>
+                <!-- mat from script -->
+                <script>
+                    const matForm = document.querySelector('#mat_form');
+
+                    matForm.addEventListener('submit', (event) => {
+                        event.preventDefault();
+
+                        const matFormData = new FormData(matForm);
+
+                        matFormData.forEach((value, key) => {
+                            console.log(key + ': ' + value);
+                        });
+
+                        console.log(matFormData);
+
+                        fetch("{% url 'manager:member_attendance_report' %}", {
+                            method: 'POST',
+                            body: matFormData
+                        })
+                            .then((response) => {
+                                if (response.ok) {
+                                    return response.blob();
+                                } else {
+                                    throw new Error('Network response was not ok.');
+                                }
+                            })
+                            .then((data) => {
+                                // Create a URL for the blob object and download it
+                                const pdfUrl = URL.createObjectURL(data);
+                                const a = document.createElement('a');
+                                a.href = pdfUrl;
+                                a.download = 'attendance_report.pdf';
+                                a.click();
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                                $('.modal-body').html('There was an error with the form submission.');
+                                $('#modal-dialog').modal('show');
+                            });
+                    });
+
+                </script>
+                <script>
+                    {/* const matForm = document.querySelector('#mat_form');
+
+                    matForm.addEventListener('submit', (event) => {
+                        event.preventDefault();
+
+                        const matFormData = new FormData(matForm);
+
+                        matFormData.forEach((value, key) => {
+                            console.log(key + ': ' + value);
+                        });
+
+                        console.log(matFormData);
+
+                        fetch("{% url 'manager:member_attendance_report' %}", {
+                            method: 'POST',
+                            body: matFormData
+
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+
+                                console.log(data);
+
+                                if (data.result == 'success') {
+                                    $('.modal-body').html('Form submission was successful!');
+                                    $('#modal-dialog').modal('show');
+                                    matForm.reset();
+
+                                } else {
+
+                                    $('.modal-body').html('There was an error with the form submission.');
+                                    $('#modal-dialog').modal('show');
+                                }
+
+                            });
+                    }); */}
+
+                </script>
+
+            </div>
+            <div>
+                <!-- patrol Attendance form -->
+                <form action="" method="post" class="form my-4 px-2" enctype="" id="pat_form" onsubmit="">
+                    <p><strong>Patrol Attendance</strong></p>
+                    {% csrf_token %}
+                    {{patf|crispy}}
+                    <input type="submit" value="Submit" class="btn btn-primary">
+                </form>
+                <!-- pat from script -->
+                <script>
+                    const patForm = document.querySelector('#pat_form');
+
+                    patForm.addEventListener('submit', (event) => {
+                        event.preventDefault();
+
+                        const patFormData = new FormData(patForm);
+
+                        patFormData.forEach((value, key) => {
+                            console.log(key + ': ' + value);
+                        });
+
+                        console.log(patFormData);
+
+                        fetch("{% url 'manager:patrol_attendance_report' %}", {
+                            method: 'POST',
+                            body: patFormData
+
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+
+                                console.log(data);
+
+                                if (data.result == 'success') {
+                                    $('.modal-body').html('Form submission was successful!');
+                                    $('#modal-dialog').modal('show');
+                                    patForm.reset();
+
+                                } else {
+
+                                    $('.modal-body').html('There was an error with the form submission.');
+                                    $('#modal-dialog').modal('show');
+                                }
+
+                            });
+                    });
+
+                </script>
+            </div>
+            <div>
+                <!-- event Attendance form -->
+                <form action="" method="post" class="form my-4 px-2" enctype="" id="eat_form" onsubmit="">
+                    <p><strong>Event Attendance</strong></p>
+                    {% csrf_token %}
+                    {{eatf|crispy}}
+                    <input type="submit" value="Submit" class="btn btn-primary">
+                </form>
+                <!-- eat from script -->
+                <script>
+                    const eatForm = document.querySelector('#eat_form');
+
+                    eatForm.addEventListener('submit', (event) => {
+                        event.preventDefault();
+
+                        const eatFormData = new FormData(eatForm);
+
+                        eatFormData.forEach((value, key) => {
+                            console.log(key + ': ' + value);
+                        });
+
+                        console.log(eatFormData);
+
+                        fetch("{% url 'manager:events_attendance_report' %}", {
+                            method: 'POST',
+                            body: eatFormData
+
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+
+                                console.log(data);
+
+                                if (data.result == 'success') {
+                                    $('.modal-body').html('Form submission was successful!');
+                                    $('#modal-dialog').modal('show');
+                                    eatForm.reset();
+
+                                } else {
+
+                                    $('.modal-body').html('There was an error with the form submission.');
+                                    $('#modal-dialog').modal('show');
+                                }
+
+                            });
+                    });
+
+                </script>
+            </div>
+
+        </div>
+        <div class=" col-lg-4 col-sm-12 col-md-6 p-3">
+            <div class="bg-info px-4 py-2 rounded-2">
+                <h3 class="text-center">Membership</h3>
+            </div>
+            <!-- camp from -->
+            <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" onsubmit=""
+                id="camp_form">
+                {% csrf_token %}
+                {{camps|crispy}}
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </form>
+            <!-- camp from script -->
+            <script>
+                const campForm = document.querySelector('#camp_form');
+
+                campForm.addEventListener('submit', (event) => {
+
+                    event.preventDefault();
+
+                    const CampFormData = new FormData(campForm);
+
+                    console.log(CampFormData);
+
+                    fetch("{% url 'manager:add_camp' %}", {
+                        method: 'POST',
+                        body: CampFormData
+
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            console.log(data);
+                            if (data.result == 'success') {
+                                $('.modal-body').html('Form submission was successful!');
+                                $('#modal-dialog').modal('show');
+                                campForm.reset();
+                            } else {
+                                $('.modal-body').html('There was an error with the form submission.');
+                                $('#modal-dialog').modal('show');
+                            }
+                        });
+                });
+
+            </script>
+
+        </div>
+        <div class="col-lg-4 col-sm-12 col-md-6 p-3">
+            <div class="bg-info px-4 py-2 rounded-2">
+                <h3 class="text-center">Events</h3>
+            </div>
+
+            <!-- project from -->
+            <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" id="project_from"
+                onsubmit="">
+                {% csrf_token %}
+                {{projects|crispy}}
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </form>
+            <!-- project from script -->
+            <script>
+                const projectForm = document.querySelector('#project_from');
+
+                projectForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+
+                    const projectFormData = new FormData(projectForm);
+
+                    console.log(projectFormData);
+
+                    fetch("{% url 'manager:add_project' %}", {
+                        method: 'POST',
+                        body: projectFormData
+
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            console.log(data);
+                            if (data.result == 'success') {
+                                $('.modal-body').html('Form submission was successful!');
+                                $('#modal-dialog').modal('show');
+                                projectForm.reset();
+                            } else {
+                                $('.modal-body').html('There was an error with the form submission.');
+                                $('#modal-dialog').modal('show');
+                            }
+                        });
+                });
+            </script>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- selectize -->
+<script>
+    $(document).ready(function () {
+        $('.selectize').selectize();
+    });
+</script>
+
+<!-- close modal because I prevented default -->
+<script>
+    $(document).ready(function () {
+        $('#close-modal').on('click', function () {
+            $('#modal-dialog').modal('hide');
+        });
+    });
+</script>
+
+<!-- jason model dialog box -->
+<div class="modal" tabindex="-1" role="dialog" id="modal-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal content goes here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

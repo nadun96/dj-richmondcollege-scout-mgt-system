@@ -42,6 +42,10 @@
                 <a class=" " href={% url 'manager:attendance_tab' %}>Attendance</a>
             </li>
 
+            <li class="px-2 {% if title == 'reports' %} act   {% endif %} ">
+                <a class=" " href={% url 'manager:manage_reports'%}>Reports</a>
+            </li>
+
         </ul>
 
     </nav>

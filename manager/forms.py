@@ -1,3 +1,5 @@
+from datetime import datetime
+from patrol.models import Attendance
 from bootstrap_datepicker_plus.widgets import DatePickerInput
 from member.models import Camp, Project, Hike, Badge, Requirement
 from core.models import Profile, MembershipFee, MemberRole, Leader
@@ -6,7 +8,6 @@ from .models import Photo, Post, Announcement, Patrol  # MembershipFee
 from django import forms
 from django.contrib.auth import get_user_model
 User = get_user_model()
-
 """ Requirements form """
 
 
@@ -213,3 +214,50 @@ class EndPatrolForm(forms.Form):
     patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(),
                                     widget=forms.Select(
                                         attrs={'class': 'form-control selectize ', 'id': 'end-form-select-patrol', 'placeholder': 'select patrol'}))
+
+
+""" Member Attendance Reports """
+
+
+class MemberAttendanceForm(forms.Form):
+
+    member = forms.ModelChoiceField(queryset=Profile.objects.all(), required=False,
+                                    widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'mat_member', 'placeholder': 'select member'}))
+
+    year = forms.ChoiceField(choices=[(year, year)
+                                      for year in range(2000, datetime.now().year+1)], initial=datetime.now().year, required=True,
+                             widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'mat_year', 'placeholder': ''}))
+
+
+""" Patrol Attenddance Reports """
+
+
+class PatrolAttendanceForm(forms.Form):
+
+    patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(), required=False,
+                                    widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'pat_patrol', 'placeholder': 'select patrol'}))
+
+    year = forms.ChoiceField(choices=[(year, year)
+                                      for year in range(2000, datetime.now().year+1)], initial=datetime.now().year, required=True,
+                             widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'pat_year', 'placeholder': ''}))
+
+
+""" Event Attendance Reports """
+
+
+class EventAttendanceForm(forms.Form):
+
+    year = forms.ChoiceField(choices=[(year, year)
+                                      for year in range(2000, datetime.now().year+1)], initial=datetime.now().year, required=True,
+                             widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'eat_year', 'placeholder': ''}))
+
+    title = forms.ModelChoiceField(
+        queryset=Attendance.objects.values_list('title', flat=True).distinct(), required=False,
+        widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'eat_title', 'placeholder': 'select title'}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'year' in self.data:
+            year = int(self.data['year'])
+            self.fields['title'].queryset = Attendance.objects.filter(
+                date__year=year).values_list('title', flat=True).distinct()

@@ -125,6 +125,22 @@
         "documentation": {}
     },
     {
+        "label": "User",
+        "importPath": "core.models",
+        "description": "core.models",
+        "isExtraImport": true,
+        "detail": "core.models",
+        "documentation": {}
+    },
+    {
+        "label": "Profile",
+        "importPath": "core.models",
+        "description": "core.models",
+        "isExtraImport": true,
+        "detail": "core.models",
+        "documentation": {}
+    },
+    {
         "label": "MemberRole",
         "importPath": "core.models",
         "description": "core.models",
@@ -1682,6 +1698,14 @@
         "documentation": {}
     },
     {
+        "label": "get_object_or_404",
+        "importPath": "django.shortcuts",
+        "description": "django.shortcuts",
+        "isExtraImport": true,
+        "detail": "django.shortcuts",
+        "documentation": {}
+    },
+    {
         "label": "render",
         "importPath": "django.shortcuts",
         "description": "django.shortcuts",
@@ -1756,6 +1780,22 @@
     },
     {
         "label": "JsonResponse",
+        "importPath": "django.http",
+        "description": "django.http",
+        "isExtraImport": true,
+        "detail": "django.http",
+        "documentation": {}
+    },
+    {
+        "label": "HttpResponse",
+        "importPath": "django.http",
+        "description": "django.http",
+        "isExtraImport": true,
+        "detail": "django.http",
+        "documentation": {}
+    },
+    {
+        "label": "HttpResponse",
         "importPath": "django.http",
         "description": "django.http",
         "isExtraImport": true,
@@ -1924,6 +1964,30 @@
         "documentation": {}
     },
     {
+        "label": "When",
+        "importPath": "django.db.models",
+        "description": "django.db.models",
+        "isExtraImport": true,
+        "detail": "django.db.models",
+        "documentation": {}
+    },
+    {
+        "label": "Q",
+        "importPath": "django.db.models",
+        "description": "django.db.models",
+        "isExtraImport": true,
+        "detail": "django.db.models",
+        "documentation": {}
+    },
+    {
+        "label": "F",
+        "importPath": "django.db.models",
+        "description": "django.db.models",
+        "isExtraImport": true,
+        "detail": "django.db.models",
+        "documentation": {}
+    },
+    {
         "label": "Sum",
         "importPath": "django.db.models",
         "description": "django.db.models",
@@ -1980,118 +2044,6 @@
         "documentation": {}
     },
     {
-        "label": "DatePickerInput",
-        "importPath": "bootstrap_datepicker_plus.widgets",
-        "description": "bootstrap_datepicker_plus.widgets",
-        "isExtraImport": true,
-        "detail": "bootstrap_datepicker_plus.widgets",
-        "documentation": {}
-    },
-    {
-        "label": "YearPickerInput",
-        "importPath": "bootstrap_datepicker_plus.widgets",
-        "description": "bootstrap_datepicker_plus.widgets",
-        "isExtraImport": true,
-        "detail": "bootstrap_datepicker_plus.widgets",
-        "documentation": {}
-    },
-    {
-        "label": "DatePickerInput",
-        "importPath": "bootstrap_datepicker_plus.widgets",
-        "description": "bootstrap_datepicker_plus.widgets",
-        "isExtraImport": true,
-        "detail": "bootstrap_datepicker_plus.widgets",
-        "documentation": {}
-    },
-    {
-        "label": "YearPickerInput",
-        "importPath": "bootstrap_datepicker_plus.widgets",
-        "description": "bootstrap_datepicker_plus.widgets",
-        "isExtraImport": true,
-        "detail": "bootstrap_datepicker_plus.widgets",
-        "documentation": {}
-    },
-    {
-        "label": "forms",
-        "importPath": "django",
-        "description": "django",
-        "isExtraImport": true,
-        "detail": "django",
-        "documentation": {}
-    },
-    {
-        "label": "forms",
-        "importPath": "django",
-        "description": "django",
-        "isExtraImport": true,
-        "detail": "django",
-        "documentation": {}
-    },
-    {
-        "label": "forms",
-        "importPath": "django",
-        "description": "django",
-        "isExtraImport": true,
-        "detail": "django",
-        "documentation": {}
-    },
-    {
-        "label": "forms",
-        "importPath": "django",
-        "description": "django",
-        "isExtraImport": true,
-        "detail": "django",
-        "documentation": {}
-    },
-    {
-        "label": "forms",
-        "importPath": "django",
-        "description": "django",
-        "isExtraImport": true,
-        "detail": "django",
-        "documentation": {}
-    },
-    {
-        "label": "login_required",
-        "importPath": "django.contrib.auth.decorators",
-        "description": "django.contrib.auth.decorators",
-        "isExtraImport": true,
-        "detail": "django.contrib.auth.decorators",
-        "documentation": {}
-    },
-    {
-        "label": "login_required",
-        "importPath": "django.contrib.auth.decorators",
-        "description": "django.contrib.auth.decorators",
-        "isExtraImport": true,
-        "detail": "django.contrib.auth.decorators",
-        "documentation": {}
-    },
-    {
-        "label": "login_required",
-        "importPath": "django.contrib.auth.decorators",
-        "description": "django.contrib.auth.decorators",
-        "isExtraImport": true,
-        "detail": "django.contrib.auth.decorators",
-        "documentation": {}
-    },
-    {
-        "label": "login_required",
-        "importPath": "django.contrib.auth.decorators",
-        "description": "django.contrib.auth.decorators",
-        "isExtraImport": true,
-        "detail": "django.contrib.auth.decorators",
-        "documentation": {}
-    },
-    {
-        "label": "login_required",
-        "importPath": "django.contrib.auth.decorators",
-        "description": "django.contrib.auth.decorators",
-        "isExtraImport": true,
-        "detail": "django.contrib.auth.decorators",
-        "documentation": {}
-    },
-    {
         "label": "datetime",
         "kind": 6,
         "isExtraImport": true,
@@ -2101,6 +2053,22 @@
         "documentation": {}
     },
     {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
         "label": "date",
         "importPath": "datetime",
         "description": "datetime",
@@ -2141,6 +2109,175 @@
         "documentation": {}
     },
     {
+        "label": "Attendance",
+        "importPath": "patrol.models",
+        "description": "patrol.models",
+        "isExtraImport": true,
+        "detail": "patrol.models",
+        "documentation": {}
+    },
+    {
+        "label": "Attendance",
+        "importPath": "patrol.models",
+        "description": "patrol.models",
+        "isExtraImport": true,
+        "detail": "patrol.models",
+        "documentation": {}
+    },
+    {
+        "label": "DatePickerInput",
+        "importPath": "bootstrap_datepicker_plus.widgets",
+        "description": "bootstrap_datepicker_plus.widgets",
+        "isExtraImport": true,
+        "detail": "bootstrap_datepicker_plus.widgets",
+        "documentation": {}
+    },
+    {
+        "label": "YearPickerInput",
+        "importPath": "bootstrap_datepicker_plus.widgets",
+        "description": "bootstrap_datepicker_plus.widgets",
+        "isExtraImport": true,
+        "detail": "bootstrap_datepicker_plus.widgets",
+        "documentation": {}
+    },
+    {
+        "label": "DatePickerInput",
+        "importPath": "bootstrap_datepicker_plus.widgets",
+        "description": "bootstrap_datepicker_plus.widgets",
+        "isExtraImport": true,
+        "detail": "bootstrap_datepicker_plus.widgets",
+        "documentation": {}
+    },
+    {
+        "label": "YearPickerInput",
+        "importPath": "bootstrap_datepicker_plus.widgets",
+        "description": "bootstrap_datepicker_plus.widgets",
+        "isExtraImport": true,
+        "detail": "bootstrap_datepicker_plus.widgets",
+        "documentation": {}
+    },
+    {
+        "label": "forms",
+        "importPath": "django",
+        "description": "django",
+        "isExtraImport": true,
+        "detail": "django",
+        "documentation": {}
+    },
+    {
+        "label": "forms",
+        "importPath": "django",
+        "description": "django",
+        "isExtraImport": true,
+        "detail": "django",
+        "documentation": {}
+    },
+    {
+        "label": "forms",
+        "importPath": "django",
+        "description": "django",
+        "isExtraImport": true,
+        "detail": "django",
+        "documentation": {}
+    },
+    {
+        "label": "forms",
+        "importPath": "django",
+        "description": "django",
+        "isExtraImport": true,
+        "detail": "django",
+        "documentation": {}
+    },
+    {
+        "label": "forms",
+        "importPath": "django",
+        "description": "django",
+        "isExtraImport": true,
+        "detail": "django",
+        "documentation": {}
+    },
+    {
+        "label": "pisa",
+        "importPath": "xhtml2pdf",
+        "description": "xhtml2pdf",
+        "isExtraImport": true,
+        "detail": "xhtml2pdf",
+        "documentation": {}
+    },
+    {
+        "label": "get_template",
+        "importPath": "django.template.loader",
+        "description": "django.template.loader",
+        "isExtraImport": true,
+        "detail": "django.template.loader",
+        "documentation": {}
+    },
+    {
+        "label": "pandas",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pandas",
+        "description": "pandas",
+        "detail": "pandas",
+        "documentation": {}
+    },
+    {
+        "label": "canvas",
+        "importPath": "reportlab.pdfgen",
+        "description": "reportlab.pdfgen",
+        "isExtraImport": true,
+        "detail": "reportlab.pdfgen",
+        "documentation": {}
+    },
+    {
+        "label": "canvas",
+        "importPath": "reportlab.pdfgen",
+        "description": "reportlab.pdfgen",
+        "isExtraImport": true,
+        "detail": "reportlab.pdfgen",
+        "documentation": {}
+    },
+    {
+        "label": "BytesIO",
+        "importPath": "io",
+        "description": "io",
+        "isExtraImport": true,
+        "detail": "io",
+        "documentation": {}
+    },
+    {
+        "label": "BytesIO",
+        "importPath": "io",
+        "description": "io",
+        "isExtraImport": true,
+        "detail": "io",
+        "documentation": {}
+    },
+    {
+        "label": "letter",
+        "importPath": "reportlab.lib.pagesizes",
+        "description": "reportlab.lib.pagesizes",
+        "isExtraImport": true,
+        "detail": "reportlab.lib.pagesizes",
+        "documentation": {}
+    },
+    {
+        "label": "Table",
+        "importPath": "reportlab.platypus",
+        "description": "reportlab.platypus",
+        "isExtraImport": true,
+        "detail": "reportlab.platypus",
+        "documentation": {}
+    },
+    {
+        "label": "TableStyle",
+        "importPath": "reportlab.platypus",
+        "description": "reportlab.platypus",
+        "isExtraImport": true,
+        "detail": "reportlab.platypus",
+        "documentation": {}
+    },
+    {
         "label": "AttendanceForm",
         "importPath": "patrol.forms",
         "description": "patrol.forms",
@@ -2154,6 +2291,46 @@
         "description": "patrol.forms",
         "isExtraImport": true,
         "detail": "patrol.forms",
+        "documentation": {}
+    },
+    {
+        "label": "login_required",
+        "importPath": "django.contrib.auth.decorators",
+        "description": "django.contrib.auth.decorators",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.decorators",
+        "documentation": {}
+    },
+    {
+        "label": "login_required",
+        "importPath": "django.contrib.auth.decorators",
+        "description": "django.contrib.auth.decorators",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.decorators",
+        "documentation": {}
+    },
+    {
+        "label": "login_required",
+        "importPath": "django.contrib.auth.decorators",
+        "description": "django.contrib.auth.decorators",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.decorators",
+        "documentation": {}
+    },
+    {
+        "label": "login_required",
+        "importPath": "django.contrib.auth.decorators",
+        "description": "django.contrib.auth.decorators",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.decorators",
+        "documentation": {}
+    },
+    {
+        "label": "login_required",
+        "importPath": "django.contrib.auth.decorators",
+        "description": "django.contrib.auth.decorators",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.decorators",
         "documentation": {}
     },
     {
@@ -2235,15 +2412,6 @@
         "description": "store.models",
         "isExtraImport": true,
         "detail": "store.models",
-        "documentation": {}
-    },
-    {
-        "label": "pandas",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "pandas",
-        "description": "pandas",
-        "detail": "pandas",
         "documentation": {}
     },
     {
@@ -3227,7 +3395,7 @@
         "kind": 6,
         "importPath": "manager.forms",
         "description": "manager.forms",
-        "peekOfCode": "class AddPatrolForm(forms.ModelForm):\n    class Meta:\n        model = Patrol\n        fields = ['name']\nclass EndPatrolForm(forms.Form):\n    patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(),\n                                    widget=forms.Select(\n                                        attrs={'class': 'form-control selectize ', 'id': 'end-form-select-patrol', 'placeholder': 'select patrol'}))",
+        "peekOfCode": "class AddPatrolForm(forms.ModelForm):\n    class Meta:\n        model = Patrol\n        fields = ['name']\nclass EndPatrolForm(forms.Form):\n    patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(),\n                                    widget=forms.Select(\n                                        attrs={'class': 'form-control selectize ', 'id': 'end-form-select-patrol', 'placeholder': 'select patrol'}))\n\"\"\" Member Attendance Reports \"\"\"\nclass MemberAttendanceForm(forms.Form):",
         "detail": "manager.forms",
         "documentation": {}
     },
@@ -3236,7 +3404,34 @@
         "kind": 6,
         "importPath": "manager.forms",
         "description": "manager.forms",
-        "peekOfCode": "class EndPatrolForm(forms.Form):\n    patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(),\n                                    widget=forms.Select(\n                                        attrs={'class': 'form-control selectize ', 'id': 'end-form-select-patrol', 'placeholder': 'select patrol'}))",
+        "peekOfCode": "class EndPatrolForm(forms.Form):\n    patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(),\n                                    widget=forms.Select(\n                                        attrs={'class': 'form-control selectize ', 'id': 'end-form-select-patrol', 'placeholder': 'select patrol'}))\n\"\"\" Member Attendance Reports \"\"\"\nclass MemberAttendanceForm(forms.Form):\n    member = forms.ModelChoiceField(queryset=Profile.objects.all(), required=False,\n                                    widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'mat_member', 'placeholder': 'select member'}))\n    year = forms.ChoiceField(choices=[(year, year)\n                                      for year in range(2000, datetime.now().year+1)], initial=datetime.now().year, required=True,",
+        "detail": "manager.forms",
+        "documentation": {}
+    },
+    {
+        "label": "MemberAttendanceForm",
+        "kind": 6,
+        "importPath": "manager.forms",
+        "description": "manager.forms",
+        "peekOfCode": "class MemberAttendanceForm(forms.Form):\n    member = forms.ModelChoiceField(queryset=Profile.objects.all(), required=False,\n                                    widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'mat_member', 'placeholder': 'select member'}))\n    year = forms.ChoiceField(choices=[(year, year)\n                                      for year in range(2000, datetime.now().year+1)], initial=datetime.now().year, required=True,\n                             widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'mat_year', 'placeholder': ''}))\n\"\"\" Patrol Attenddance Reports \"\"\"\nclass PatrolAttendanceForm(forms.Form):\n    patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(), required=False,\n                                    widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'pat_patrol', 'placeholder': 'select patrol'}))",
+        "detail": "manager.forms",
+        "documentation": {}
+    },
+    {
+        "label": "PatrolAttendanceForm",
+        "kind": 6,
+        "importPath": "manager.forms",
+        "description": "manager.forms",
+        "peekOfCode": "class PatrolAttendanceForm(forms.Form):\n    patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(), required=False,\n                                    widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'pat_patrol', 'placeholder': 'select patrol'}))\n    year = forms.ChoiceField(choices=[(year, year)\n                                      for year in range(2000, datetime.now().year+1)], initial=datetime.now().year, required=True,\n                             widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'pat_year', 'placeholder': ''}))\n\"\"\" Event Attendance Reports \"\"\"\nclass EventAttendanceForm(forms.Form):\n    year = forms.ChoiceField(choices=[(year, year)\n                                      for year in range(2000, datetime.now().year+1)], initial=datetime.now().year, required=True,",
+        "detail": "manager.forms",
+        "documentation": {}
+    },
+    {
+        "label": "EventAttendanceForm",
+        "kind": 6,
+        "importPath": "manager.forms",
+        "description": "manager.forms",
+        "peekOfCode": "class EventAttendanceForm(forms.Form):\n    year = forms.ChoiceField(choices=[(year, year)\n                                      for year in range(2000, datetime.now().year+1)], initial=datetime.now().year, required=True,\n                             widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'eat_year', 'placeholder': ''}))\n    title = forms.ModelChoiceField(\n        queryset=Attendance.objects.values_list('title', flat=True).distinct(), required=False,\n        widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'eat_title', 'placeholder': 'select title'}))\n    def __init__(self, *args, **kwargs):\n        super().__init__(*args, **kwargs)\n        if 'year' in self.data:",
         "detail": "manager.forms",
         "documentation": {}
     },
@@ -3304,11 +3499,29 @@
         "documentation": {}
     },
     {
+        "label": "generate_member_attendance_report",
+        "kind": 2,
+        "importPath": "manager.reports",
+        "description": "manager.reports",
+        "peekOfCode": "def generate_member_attendance_report(year, member):\n    # year = 2023  # replace with the desired year\n    attendances = Attendance.objects.filter(\n        member__id=member.id, date__year=year).order_by('title', 'date', 'time')\n    print(attendances)\n    \"\"\" start style code with table lines \"\"\"\n    buffer = BytesIO()\n    p = canvas.Canvas(buffer, pagesize=letter)\n    data = [['Title', 'Date', 'Time']]\n    for attendance in attendances:",
+        "detail": "manager.reports",
+        "documentation": {}
+    },
+    {
+        "label": "generate_member_attendance_report_htm2pdf",
+        "kind": 2,
+        "importPath": "manager.reports",
+        "description": "manager.reports",
+        "peekOfCode": "def generate_member_attendance_report_htm2pdf(year, member):\n    attendances = Attendance.objects.filter(\n        member__id=member.id, date__year=year).order_by('title', 'date', 'time')\n    data = [['Title', 'Date', 'Time']]\n    for attendance in attendances:\n        title = attendance.title\n        date = attendance.date.strftime(\"%m/%d\")\n        time = attendance.time.strftime(\"%I:%M %p\")\n        data.append([title, date, time])\n    df = pd.DataFrame(data[1:], columns=data[0])",
+        "detail": "manager.reports",
+        "documentation": {}
+    },
+    {
         "label": "app_name",
         "kind": 5,
         "importPath": "manager.urls",
         "description": "manager.urls",
-        "peekOfCode": "app_name = 'manager'\nurlpatterns = [\n    path('view/', views.manage_view, name='main'),\n    path('events/', views.manage_events, name='events'),\n    path('wall/', views.manage_wall, name='manage_wall'),\n    path('welcome/', views.manage_patrols, name='manage_patrols'),\n    path('announce/', views.manage_announcements, name='manage_announce'),\n    path('badge/', views.manage_badges, name='manage_badges'),\n    # code for manage roles in views\n    path('role/', views.manage_roles, name='manage_roles'),",
+        "peekOfCode": "app_name = 'manager'\nurlpatterns = [\n    path('view/', views.manage_view, name='main'),\n    path('events/', views.manage_events, name='events'),\n    path('wall/', views.manage_wall, name='manage_wall'),\n    path('welcome/', views.manage_patrols, name='manage_patrols'),\n    path('announce/', views.manage_announcements, name='manage_announce'),\n    path('badge/', views.manage_badges, name='manage_badges'),\n    path('reports/', views.view_reports, name='manage_reports'),\n    # code for manage roles in views",
         "detail": "manager.urls",
         "documentation": {}
     },
@@ -3317,7 +3530,7 @@
         "kind": 5,
         "importPath": "manager.urls",
         "description": "manager.urls",
-        "peekOfCode": "urlpatterns = [\n    path('view/', views.manage_view, name='main'),\n    path('events/', views.manage_events, name='events'),\n    path('wall/', views.manage_wall, name='manage_wall'),\n    path('welcome/', views.manage_patrols, name='manage_patrols'),\n    path('announce/', views.manage_announcements, name='manage_announce'),\n    path('badge/', views.manage_badges, name='manage_badges'),\n    # code for manage roles in views\n    path('role/', views.manage_roles, name='manage_roles'),\n    path('role/tog/', views.toggle_role, name='toggle_roles'),",
+        "peekOfCode": "urlpatterns = [\n    path('view/', views.manage_view, name='main'),\n    path('events/', views.manage_events, name='events'),\n    path('wall/', views.manage_wall, name='manage_wall'),\n    path('welcome/', views.manage_patrols, name='manage_patrols'),\n    path('announce/', views.manage_announcements, name='manage_announce'),\n    path('badge/', views.manage_badges, name='manage_badges'),\n    path('reports/', views.view_reports, name='manage_reports'),\n    # code for manage roles in views\n    path('role/', views.manage_roles, name='manage_roles'),",
         "detail": "manager.urls",
         "documentation": {}
     },
@@ -3628,20 +3841,47 @@
         "documentation": {}
     },
     {
-        "label": "export_attendance",
+        "label": "test_pdf",
         "kind": 2,
         "importPath": "manager.views",
         "description": "manager.views",
-        "peekOfCode": "def export_attendance(request):\n    response = HttpResponse(content_type='text/csv')\n    response['Content-Disposition'] = 'attachment; filename=\"attendance.csv\"'\n    writer = csv.writer(response)\n    writer.writerow(['Patrol', 'Date', 'Hike', 'Camp',\n                    'Project', 'Meeting', 'Total'])\n    patrols = Patrol.objects.all()\n    for patrol in patrols:\n        writer.writerow([patrol.name])\n        for attendance in patrol.attendance_set.all():",
+        "peekOfCode": "def test_pdf(request):\n    # Generate the PDF report\n    buffer = BytesIO()\n    p = canvas.Canvas(buffer)\n    p.drawString(100, 750, \"Attendance Report for John Doe - 2022\")\n    p.drawString(100, 730, \"Date\")\n    p.drawString(200, 730, \"Time\")\n    p.drawString(300, 730, \"Title\")\n    p.drawString(100, 710, \"01/01/2022\")\n    p.drawString(200, 710, \"10:00 AM\")",
         "detail": "manager.views",
         "documentation": {}
     },
     {
-        "label": "generate_attendance_report",
+        "label": "view_reports",
         "kind": 2,
         "importPath": "manager.views",
         "description": "manager.views",
-        "peekOfCode": "def generate_attendance_report(year: int):\n    # Query the database to get the attendance data for the given year\n    attendance_data = Attendance.objects.filter(date__year=year)\n    # Create a pandas DataFrame from the attendance data\n    attendance_df = pd.DataFrame(list(attendance_data.values()))\n    # Group the attendance data by member and calculate the total attendance for each member\n    member_attendance = attendance_df.groupby(\n        ['member']).size().reset_index(name='attendance_count')\n    # Create a table from the member attendance data\n    member_attendance_table = Table(",
+        "peekOfCode": "def view_reports(request):\n    matf = MemberAttendanceForm()\n    eatf = EventAttendanceForm()\n    patf = PatrolAttendanceForm()\n    context = {\n        'title': 'reports',\n        'matf': matf,\n        'eatf': eatf,\n        'patf': patf,\n    }",
+        "detail": "manager.views",
+        "documentation": {}
+    },
+    {
+        "label": "member_attendance_report",
+        "kind": 2,
+        "importPath": "manager.views",
+        "description": "manager.views",
+        "peekOfCode": "def member_attendance_report(request):\n    if request.method == 'POST':\n        form = MemberAttendanceForm(request.POST)\n        if form.is_valid():\n            year = form.cleaned_data['year']\n            print(year)\n            member = form.cleaned_data['member']\n            print(member)\n            response = generate_member_attendance_report(year, member)\n            return response",
+        "detail": "manager.views",
+        "documentation": {}
+    },
+    {
+        "label": "patrol_attendance_report",
+        "kind": 2,
+        "importPath": "manager.views",
+        "description": "manager.views",
+        "peekOfCode": "def patrol_attendance_report(request):\n    pass\n\"\"\" event attendance report \"\"\"\ndef events_attendance_report(request):\n    pass",
+        "detail": "manager.views",
+        "documentation": {}
+    },
+    {
+        "label": "events_attendance_report",
+        "kind": 2,
+        "importPath": "manager.views",
+        "description": "manager.views",
+        "peekOfCode": "def events_attendance_report(request):\n    pass",
         "detail": "manager.views",
         "documentation": {}
     },
@@ -4559,7 +4799,7 @@
         "kind": 2,
         "importPath": "store.views",
         "description": "store.views",
-        "peekOfCode": "def export_broken_pdf():\n    pass\n\"\"\" pdf fromat Items Report \"\"\"\n@login_required\ndef export_items_pdf():\n    pass\n\"\"\" pdf format Lends Report \"\"\"\n@login_required\ndef export_lends_pdf():\n    pass",
+        "peekOfCode": "def export_broken_pdf():\n    pass\n\"\"\" pdf fromat Items Report \"\"\"\n@login_required()\ndef export_items_pdf():\n    pass\n\"\"\" pdf format Lends Report \"\"\"\n@login_required()\ndef export_lends_pdf():\n    pass",
         "detail": "store.views",
         "documentation": {}
     },
@@ -4568,7 +4808,7 @@
         "kind": 2,
         "importPath": "store.views",
         "description": "store.views",
-        "peekOfCode": "def export_items_pdf():\n    pass\n\"\"\" pdf format Lends Report \"\"\"\n@login_required\ndef export_lends_pdf():\n    pass",
+        "peekOfCode": "def export_items_pdf():\n    pass\n\"\"\" pdf format Lends Report \"\"\"\n@login_required()\ndef export_lends_pdf():\n    pass",
         "detail": "store.views",
         "documentation": {}
     },

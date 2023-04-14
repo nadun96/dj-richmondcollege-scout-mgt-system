@@ -1,25 +1,24 @@
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-from reportlab.lib.units import inch
-from reportlab.lib.pagesizes import letter, landscape
-from reportlab.lib import colors
-import matplotlib.pyplot as plt
-import pandas as pd
-# imports for pdf
-from django.contrib.auth.decorators import login_required
-import datetime
-from datetime import date
-from django.db import connection, transaction
-from django.http import JsonResponse, HttpResponse
-from core.models import Profile, MemberRole, Complete, Patrol, Communication, User, MembershipFee, Leader
-from django.shortcuts import render
-from member.models import Hike, Camp, Project, Badge, Requirement
-from .models import Photo, Post, Announcement, Patrol
-from patrol.models import Attendance
-from patrol.forms import AttendanceForm
-from .forms import CampForm, ProjectForm, HikeForm, UploadPostsForm, UploadPhotoForm, AnnounceForm, RequirementForm, BadgeForm, AddPatrolForm, EndPatrolForm, AssignPatrolForm, ActivateMemberForm, MembershipFeeForm, AssignRoleForm, AssignLeaderForm
-from django.db.models import Q, F
-""" get current active user model, current is core.User"""
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django.db.models import Q, F
+from .forms import CampForm, ProjectForm, HikeForm, UploadPostsForm, UploadPhotoForm, AnnounceForm, RequirementForm, BadgeForm, AddPatrolForm, EndPatrolForm, AssignPatrolForm, ActivateMemberForm, MembershipFeeForm, AssignRoleForm, AssignLeaderForm, MemberAttendanceForm, PatrolAttendanceForm, EventAttendanceForm
+from patrol.forms import AttendanceForm
+from patrol.models import Attendance
+from .models import Photo, Post, Announcement, Patrol
+from member.models import Hike, Camp, Project, Badge, Requirement
+from django.shortcuts import render
+from core.models import Profile, MemberRole, Complete, Patrol, Communication, User, MembershipFee, Leader
+from django.http import JsonResponse, HttpResponse
+from django.db import connection, transaction
+from datetime import date
+import datetime
+from django.contrib.auth.decorators import login_required
+from .reports import generate_member_attendance_report_pandas, generate_member_attendance_report_pdfkit, generate_member_attendance_report_weasyprint
+
+""" get current active user model, current is core.User"""
 User = get_user_model()
 
 today = date.today()
@@ -888,82 +887,78 @@ def manage_badges(request):
     return render(request, 'manager/manage_badge', context)
 
 
-""" export attendance report """
+""" viiew reports tab render """
 
 
-@login_required()
-def export_attendance(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="attendance.csv"'
+def test_pdf(request):
+    # Generate the PDF report
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer)
+    p.drawString(100, 750, "Attendance Report for John Doe - 2022")
+    p.drawString(100, 730, "Date")
+    p.drawString(200, 730, "Time")
+    p.drawString(300, 730, "Title")
+    p.drawString(100, 710, "01/01/2022")
+    p.drawString(200, 710, "10:00 AM")
+    p.drawString(300, 710, "Meeting")
+    p.drawString(100, 690, "01/15/2022")
+    p.drawString(200, 690, "02:30 PM")
+    p.drawString(300, 690, "Training")
+    p.showPage()
+    p.save()
 
-    writer = csv.writer(response)
-    writer.writerow(['Patrol', 'Date', 'Hike', 'Camp',
-                    'Project', 'Meeting', 'Total'])
+    # Set the buffer pointer to the beginning
+    buffer.seek(0)
 
-    patrols = Patrol.objects.all()
-    for patrol in patrols:
-        writer.writerow([patrol.name])
-        for attendance in patrol.attendance_set.all():
-            writer.writerow([attendance.date, attendance.hike, attendance.camp,
-                            attendance.project, attendance.meeting, attendance.total])
-        writer.writerow([])
-
+    # Return the PDF file as a response
+    response = HttpResponse(buffer, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=test_report.pdf'
     return response
 
 
-""" generate pdf report """
+@login_required()
+def view_reports(request):
+
+    matf = MemberAttendanceForm()
+    eatf = EventAttendanceForm()
+    patf = PatrolAttendanceForm()
+
+    context = {
+        'title': 'reports',
+        'matf': matf,
+        'eatf': eatf,
+        'patf': patf,
+    }
+
+    return render(request, 'manager/reports', context)
 
 
-def generate_attendance_report(year: int):
-    # Query the database to get the attendance data for the given year
-    attendance_data = Attendance.objects.filter(date__year=year)
+""" member attendance report """
 
-    # Create a pandas DataFrame from the attendance data
-    attendance_df = pd.DataFrame(list(attendance_data.values()))
 
-    # Group the attendance data by member and calculate the total attendance for each member
-    member_attendance = attendance_df.groupby(
-        ['member']).size().reset_index(name='attendance_count')
+def member_attendance_report(request):
 
-    # Create a table from the member attendance data
-    member_attendance_table = Table(
-        data=[['Member', 'Attendance']] + [[row['member'], row['attendance_count']]
-                                           for _, row in member_attendance.iterrows()],
-        colWidths=[4.5*inch, 1*inch],
-        hAlign='LEFT'
-    )
+    if request.method == 'POST':
+        form = MemberAttendanceForm(request.POST)
+        if form.is_valid():
+            year = form.cleaned_data['year']
+            member = form.cleaned_data['member']
 
-    # Add a style to the table
-    member_attendance_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 14),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-        ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
-        ('ALIGN', (1, 1), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 1), (-1, -1), 12),
-        ('BOTTOMPADDING', (0, 1), (-1, -1), 6),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black)
-    ]))
+            #response = generate_member_attendance_report(year, member)
+            response = generate_member_attendance_report_weasyprint(
+                year, member)
+            return response
 
-    # Create a pandas DataFrame for the weekly attendance data
-    weekly_attendance = attendance_df.groupby(pd.Grouper(
-        key='date', freq='W')).size().reset_index(name='attendance_count')
 
-    # Create a line graph of the weekly attendance data
-    fig, ax = plt.subplots()
-    ax.plot(weekly_attendance['date'], weekly_attendance['attendance_count'])
-    ax.set(xlabel='Week', ylabel='Attendance', title='Weekly Attendance')
-    ax.grid()
+""" patrol attendance report """
 
-    # Generate the pdf report with the table and the line graph
-    doc = SimpleDocTemplate(
-        f'{year}_attendance_report.pdf', pagesize=landscape(letter))
-    elements = []
-    elements.append(member_attendance_table)
-    elements.append(plt.gcf())
-    doc.build(elements)
+
+def patrol_attendance_report(request):
+    pass
+
+
+""" event attendance report """
+
+
+def events_attendance_report(request):
+    pass

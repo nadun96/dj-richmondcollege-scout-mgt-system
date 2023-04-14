@@ -10,142 +10,146 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 p-3">
             <h3>Export Raw Data as Excel Documents</h3>
-    </div>
-    <div class="row p-3">
-        <div class="col-lg-4 col-md-3 col-sm-12 p-3">
-            <button class="btn btn-secondary mx-auto" id="exp-lend" onclick="exportLends()">Export Lend Data</button>
         </div>
+        <div class="row p-3">
+            <div class="col-lg-4 col-md-3 col-sm-12 p-3">
+                <button class="btn btn-secondary mx-auto" id="exp-lend" onclick="exportLends()">Export Lend
+                    Data</button>
+            </div>
 
-        <!-- script to export lends -->
-        <script>
-            function exportLends() {
-                console.log('called')
-                $.ajax({
-                    url: "{% url 'store:exp_lend' %}",
-                    type: 'GET',
-                    success: function (response) {
-                        // do something with the response
-                        window.location = "{% url 'store:exp_lend' %}";
-                    },
-                    error: function (error) {
-                        // handle the error
-                    }
-                });
-            }
-        </script>
+            <!-- script to export lends -->
+            <script>
+                function exportLends() {
+                    console.log('called')
+                    $.ajax({
+                        url: "{% url 'store:exp_lend' %}",
+                        type: 'GET',
+                        success: function (response) {
+                            // do something with the response
+                            window.location = "{% url 'store:exp_lend' %}";
+                        },
+                        error: function (error) {
+                            // handle the error
+                        }
+                    });
+                }
+            </script>
 
-        <div class="col-lg-4 col-md-3 col-sm-12 p-3">
-            <button class="btn btn-secondary mx-auto" id="exp-item" onclick="exportItems()">Export Items Data</button>
+            <div class="col-lg-4 col-md-3 col-sm-12 p-3">
+                <button class="btn btn-secondary mx-auto" id="exp-item" onclick="exportItems()">Export Items
+                    Data</button>
+            </div>
+
+            <!-- script to export items -->
+            <script>
+                function exportItems() {
+                    console.log('called')
+                    $.ajax({
+                        url: "{% url 'store:exp_item' %}",
+                        type: 'GET',
+                        success: function (response) {
+                            // do something with the response
+                            window.location = "{% url 'store:exp_item' %}";
+                        },
+                        error: function (error) {
+                            // handle the error
+                        }
+                    });
+                }
+            </script>
+            <div class="col-lg-4 col-md-3 col-sm-12 p-3">
+                <button class="btn btn-secondary mx-auto" id="exp-broke" onclick="exportBroken()">Export Broken Items
+                    Data</button>
+            </div>
+            <!-- script to export broken -->
+            <script>
+                function exportBroken() {
+                    console.log('called')
+                    $.ajax({
+                        url: "{% url 'store:exp_broken' %}",
+                        type: 'GET',
+                        success: function (response) {
+                            // do something with the response
+                            window.location = "{% url 'store:exp_broken' %}";
+                        },
+                        error: function (error) {
+                            // handle the error
+                        }
+                    });
+                }
+            </script>
         </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 p-3">
+                <h3>Export Reports as Excel Documents</h3>
+            </div>
+            <div class="row p-3">
+                <div class="col-lg-4 col-md-3 col-sm-12 p-3">
+                    <button class="btn btn-primary mx-auto" id="exp-lend" onclick="exportLendsReport()">Lend
+                        Report</button>
+                </div>
 
-        <!-- script to export items -->
-        <script>
-            function exportItems() {
-                console.log('called')
-                $.ajax({
-                    url: "{% url 'store:exp_item' %}",
-                    type: 'GET',
-                    success: function (response) {
-                        // do something with the response
-                        window.location = "{% url 'store:exp_item' %}";
-                    },
-                    error: function (error) {
-                        // handle the error
+                <!-- script to export lends -->
+                <script>
+                    function exportLendsReport() {
+                        console.log('called')
+                        $.ajax({
+                            url: "{% url 'store:exp_lend_rex' %}",
+                            type: 'GET',
+                            success: function (response) {
+                                // do something with the response
+                                window.location = "{% url 'store:exp_lend_rex' %}";
+                            },
+                            error: function (error) {
+                                // handle the error
+                            }
+                        });
                     }
-                });
-            }
-        </script>
-        <div class="col-lg-4 col-md-3 col-sm-12 p-3">
-            <button class="btn btn-secondary mx-auto" id="exp-broke" onclick="exportBroken()">Export Broken Items
-                Data</button>
-        </div>
-        <!-- script to export broken -->
-        <script>
-            function exportBroken() {
-                console.log('called')
-                $.ajax({
-                    url: "{% url 'store:exp_broken' %}",
-                    type: 'GET',
-                    success: function (response) {
-                        // do something with the response
-                        window.location = "{% url 'store:exp_broken' %}";
-                    },
-                    error: function (error) {
-                        // handle the error
-                    }
-                });
-            }
-        </script>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 p-3">
-            <h3>Export Reports as Excel Documents</h3>
-    </div>
-    <div class="row p-3">
-        <div class="col-lg-4 col-md-3 col-sm-12 p-3">
-            <button class="btn btn-primary mx-auto" id="exp-lend" onclick="exportLendsReport()">Lend Report</button>
-        </div>
+                </script>
 
-        <!-- script to export lends -->
-        <script>
-            function exportLendsReport() {
-                console.log('called')
-                $.ajax({
-                    url: "{% url 'store:exp_lend_rex' %}",
-                    type: 'GET',
-                    success: function (response) {
-                        // do something with the response
-                        window.location = "{% url 'store:exp_lend_rex' %}";
-                    },
-                    error: function (error) {
-                        // handle the error
-                    }
-                });
-            }
-        </script>
+                <div class="col-lg-4 col-md-3 col-sm-12 p-3">
+                    <button class="btn btn-primary mx-auto" id="exp-item" onclick="exportItemsReport()">Items
+                        Report</button>
+                </div>
 
-        <div class="col-lg-4 col-md-3 col-sm-12 p-3">
-            <button class="btn btn-primary mx-auto" id="exp-item" onclick="exportItemsReport()">Items Report</button>
-        </div>
-
-        <!-- script to export items -->
-        <script>
-            function exportItemsReport() {
-                console.log('called')
-                $.ajax({
-                    url: "{% url 'store:exp_item_rex' %}",
-                    type: 'GET',
-                    success: function (response) {
-                        // do something with the response
-                        window.location = "{% url 'store:exp_item_rex' %}";
-                    },
-                    error: function (error) {
-                        // handle the error
+                <!-- script to export items -->
+                <script>
+                    function exportItemsReport() {
+                        console.log('called')
+                        $.ajax({
+                            url: "{% url 'store:exp_item_rex' %}",
+                            type: 'GET',
+                            success: function (response) {
+                                // do something with the response
+                                window.location = "{% url 'store:exp_item_rex' %}";
+                            },
+                            error: function (error) {
+                                // handle the error
+                            }
+                        });
                     }
-                });
-            }
-        </script>
-        <div class="col-lg-4 col-md-3 col-sm-12 p-3">
-            <button class="btn btn-primary mx-auto" id="exp-broke" onclick="exportBrokenReport()">Broken Items
-                Report</button>
-        </div>
-        <!-- script to export broken -->
-        <script>
-            function exportBrokenReport() {
-                console.log('called')
-                $.ajax({
-                    url: "{% url 'store:exp_broken_rex' %}",
-                    type: 'GET',
-                    success: function (response) {
-                        // do something with the response
-                        window.location = "{% url 'store:exp_broken_rex' %}";
-                    },
-                    error: function (error) {
-                        // handle the error
+                </script>
+                <div class="col-lg-4 col-md-3 col-sm-12 p-3">
+                    <button class="btn btn-primary mx-auto" id="exp-broke" onclick="exportBrokenReport()">Broken Items
+                        Report</button>
+                </div>
+                <!-- script to export broken -->
+                <script>
+                    function exportBrokenReport() {
+                        console.log('called')
+                        $.ajax({
+                            url: "{% url 'store:exp_broken_rex' %}",
+                            type: 'GET',
+                            success: function (response) {
+                                // do something with the response
+                                window.location = "{% url 'store:exp_broken_rex' %}";
+                            },
+                            error: function (error) {
+                                // handle the error
+                            }
+                        });
                     }
-                });
-            }
-        </script>
-    </div>
-</div>
-{% endblock %}
+                </script>
+            </div>
+        </div>
+        {% endblock %}
