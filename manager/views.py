@@ -16,7 +16,7 @@ from django.db import connection, transaction
 from datetime import date
 import datetime
 from django.contrib.auth.decorators import login_required
-from .reports import generate_member_attendance_report_pandas, generate_member_attendance_report_pdfkit, generate_member_attendance_report_weasyprint
+from .reports import generate_member_attendance_report
 
 """ get current active user model, current is core.User"""
 User = get_user_model()
@@ -945,7 +945,7 @@ def member_attendance_report(request):
             member = form.cleaned_data['member']
 
             #response = generate_member_attendance_report(year, member)
-            response = generate_member_attendance_report_weasyprint(
+            response = generate_member_attendance_report(
                 year, member)
             return response
 
