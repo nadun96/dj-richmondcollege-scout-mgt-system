@@ -183,15 +183,13 @@
                             <h3 class="text-center"> Return
                                 From Broken Items</h3>
                         </div>
-
-
                         <form action={% url 'store:add_repaired' %} method="post" class="form" id="mark_repaired_form">
                             {% csrf_token %}
                             <!-- item name -->
                             <div class="input-group mb-2 py-2">
                                 <span class="input-group-text w-50">Item Code</span>
                                 <input class="form-control text-bg-primary bg-opacity-10" type="number" name="item_id"
-                                    placeholder="Ex: 001" required>
+                                    placeholder="Ex: 001" min="1" required>
                             </div>
 
                             <!-- item quantity -->

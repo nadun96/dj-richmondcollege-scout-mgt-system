@@ -1369,3 +1369,49 @@ def generate_member_attendance_report_fpdf(year, member):
     finally:
         os.remove(pdf_path)
         file.close()
+
+
+# Determine start date for monthly join count data (6 years ago)
+    start_date = datetime.now().replace(year=datetime.now().year - 6, month=1, day=1)
+
+    # Query User model for monthly join counts
+    join_counts = User.objects.annotate(
+        year=ExtractYear('date_joined'),
+        month=Cast(ExtractMonth('date_joined'), output_field=CharField()),
+    ).filter(date_joined__gte=start_date).values('year', 'month').annotate(count=Count('id')).order_by('year', 'month')
+
+    # Organize join counts by year
+    yearly_join_counts = {}
+    for count in join_counts:
+        year = count['year']
+        if year not in yearly_join_counts:
+            yearly_join_counts[year] = [0] * 12
+        monthly_count = yearly_join_counts[year][int(count['month']) - 1]
+        yearly_join_counts[year][int(count['month']) -
+                                 1] = monthly_count + count['count']
+
+    # Get the list of all years with join counts
+    years = list(yearly_join_counts.keys())
+
+    # Create list of months and join counts for all years
+    months = [datetime.strptime(str(i+1), '%m').strftime('%B')
+              for i in range(12)]
+    join_data_all_years = [[yearly_join_counts[year][i]
+                            for year in years] for i in range(12)]
+
+    # Plot line graphs
+    fig, ax = plt.subplots()
+    for i in range(len(years)):
+        ax.plot(months, join_data_all_years[i], label=years[i])
+    ax.set_xlabel('Month')
+    ax.set_ylabel('Frequency of Registering')
+    ax.set_title(
+        f'Frequency of Registering each Month ({start_date:%B %Y} - {datetime.now():%B %Y})')
+    ax.legend()
+
+    # Set the x-axis limits to the first and last month displayed
+    ax.set_xlim([datetime.strptime('January', '%B'),
+                datetime.strptime('December', '%B')])
+
+    # Save the line graph as a PNG image
+    plt.savefig('frequency_of_registering.png')

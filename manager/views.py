@@ -16,7 +16,7 @@ from core.models import Profile, MemberRole, Complete, Patrol, Communication, Us
 from datetime import date
 import datetime
 from .models import Photo, Post, Announcement, Patrol
-from .reports import generate_member_attendance_report, generate_patrol_attendance_report, generate_event_attendance_report, generate_member_attendance_report_new, generate_patrol_attendance_report_new, generate_event_attendance_report_new, generate_membership_fee_paid_report_new, generate_event_list_report_new
+from .reports import generate_member_attendance_report, generate_patrol_attendance_report, generate_event_attendance_report, generate_member_attendance_report_new, generate_patrol_attendance_report_new, generate_event_attendance_report_new, generate_membership_fee_paid_report_new, generate_event_list_report_new, generate_user_report_new
 
 
 """ get current active user model, current is core.User"""
@@ -828,12 +828,6 @@ def manage_member(request):
     users = User.objects.all().values(
         'id', 'username', 'is_active', 'is_skr', 'is_mem', 'is_sec', 'is_ldr', 'is_exa', 'last_login')
 
-    """ .select_related(
-        'user').values_list('id', 'member__user_user', 'for_year', 'member__user__is_active', 'is_paid')
-    #is_superuser, last_login, last_name, leader, logentry, message, password, profile, receiver, user_permissions, #username
-    date_joined, email, first_name, groups, id, is_active, is_exa, is_ldr, is_mem, is_sec, is_skr, is_staff,
-    print(profiles.values_list()) """
-
     context = {
         'title': 'manage_member',
         'profiles': profiles,
@@ -979,15 +973,13 @@ def patrol_attendance_report(request):
 def events_attendance_report(request):
     if request.method == 'POST':
         form = PatrolAttendanceForm(request.POST)      
-        if form.is_valid():
-            title = request.POST.get('title')
-            year = request.POST.get('year')
-            print(year, title)
-            response = generate_event_attendance_report_new(
-                year, title)
-            # response = generate_event_attendance_report(
-            #     year, title)
-            return response
+        #if form.is_valid():
+        title = request.POST.get('title')
+        year = request.POST.get('year')
+        print('YEAR',year,'TITLE', title)
+        response = generate_event_attendance_report_new(
+            year, title)
+        return response
 
 """ membership fee paid report by year """
 
@@ -1027,5 +1019,21 @@ def events_list_report(request):
         print(year)
         
         response = generate_event_list_report_new(
+                year)
+        return response
+    
+""" user report """
+
+@login_required()
+def user_report(request):
+    if request.method == 'POST':
+        form = MembershipFeeListForm(request.POST)
+        # if form.is_valid():
+        year = form.data['year']
+        year = extract_year(year)
+        
+        print(year)
+        
+        response = generate_user_report_new(
                 year)
         return response

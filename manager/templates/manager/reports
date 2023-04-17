@@ -150,7 +150,7 @@
             </div>
             <div>
                 <!-- membership year select from -->
-                <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" onsubmit=""
+            <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" onsubmit=""
                 id="myf_form">
                 <p><strong>Membership Paid Report</strong></p>
                 {{myf.media}}
@@ -158,9 +158,9 @@
                 {{myf|crispy}}
                 <input type="submit" value="Download" class="btn btn-primary">
             </form>
-        </div>
-        <!-- membership year select from from script -->
-        <script>
+            </div>
+            <!-- membership year select from from script -->
+            <script>
                     const myfForm = document.querySelector('#myf_form');
 
                     myfForm.addEventListener('submit', (event) => {
@@ -175,9 +175,7 @@
                             if(key == 'year'){
                                 reportName += ` ${value.substring(0, 4)} `;
                             }
-                        });
-
-                        
+                        });                       
 
                         console.log(myfFormData);
 
@@ -214,8 +212,72 @@
                     });
 
             </script>
+            <div>
+                <!-- membership year select from -->
+            <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" onsubmit=""
+                id="user_form">
+                <p><strong>User Report</strong></p>
+                {{myf.media}}
+                {% csrf_token %}
+                {{myf|crispy}}
+                <input type="submit" value="Download" class="btn btn-primary">
+            </form>
+            </div>
+            <!-- user year select from from script -->
+            <script>
+                    const userForm = document.querySelector('#user_form');
 
+                    userForm.addEventListener('submit', (event) => {
+                        event.preventDefault();
+
+                        const userFormData = new FormData(userForm);
+
+                        let reportName = 'User Report';
+
+                        userFormData.forEach((value, key) => {
+                            console.log(key + ': ' + value);
+                            if(key == 'year'){
+                                reportName += ` ${value.substring(0, 4)} `;
+                            }
+                        });                       
+
+                        console.log(userFormData);
+
+                        console.log(reportName);
+
+                        fetch("{% url 'manager:user_report' %}", {
+                            method: 'POST',
+                            body: userFormData
+
+                        })
+                            .then((response) => {
+                                if (response.ok) {
+                                    return response.blob();
+                                } else {
+                                    console.error('Error:', error);
+                                    $('.modal-body').html('There was an error with the form submission.');
+                                    $('#modal-dialog').modal('show');
+                                    throw new Error('Network response was not ok.');
+                                }
+                            })
+                            .then((data) => {
+                                // Create a URL for the blob object and download it
+                                const pdfUrl = URL.createObjectURL(data);
+                                const a = document.createElement('a');
+                                a.href = pdfUrl;
+                                a.download = reportName+'.pdf';
+                                a.click();
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                                $('.modal-body').html('There was an error with the form submission.');
+                                $('#modal-dialog').modal('show');
+                            });
+                    });
+
+            </script>
         </div>
+
         <div class="col-lg-4 col-sm-12 col-md-6 p-3">
             <div class="bg-info px-4 py-2 rounded-2">
                 <h3 class="text-center">Events</h3>
