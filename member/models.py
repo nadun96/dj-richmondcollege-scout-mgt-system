@@ -46,6 +46,7 @@ class Project(models.Model):
     date = models.DateField(blank=False)
     time = models.TimeField(blank=False)
     location = models.CharField(blank=False, max_length=50)
+    coordinator = models.CharField(blank=True, max_length=50)
 
     def __str__(self):
         return f'{self.title} | {self.date.strftime("%Y")}'

@@ -18,7 +18,7 @@
                     <p><strong>Member Attendance</strong></p>
                     {% csrf_token %}
                     {{matf|crispy}}
-                    <input type="submit" value="Submit" class="btn btn-primary">
+                    <input type="submit" value="Download" class="btn btn-primary">
                 </form>
                 <!-- mat from script -->
                 <script>
@@ -26,11 +26,22 @@
 
                     matForm.addEventListener('submit', (event) => {
                         event.preventDefault();
-
+                        
                         const matFormData = new FormData(matForm);
+
+                        let reportName = 'Member Attendance Report';
 
                         matFormData.forEach((value, key) => {
                             console.log(key + ': ' + value);
+                            if (key == 'member' ){
+                                const memberSelect = document.querySelector('#mat_member');
+                                const selectedOption = memberSelect.options[memberSelect.selectedIndex];
+                                const displayedValue = selectedOption.textContent;
+                                reportName += ` ${displayedValue} `;
+                            }
+                            if (key == 'year') {
+                                reportName += ` ${value.substring(0, 4)} `;
+                            }
                         });
 
                         console.log(matFormData);
@@ -43,6 +54,9 @@
                                 if (response.ok) {
                                     return response.blob();
                                 } else {
+                                    console.error('Error:', error);
+                                    $('.modal-body').html('There was an error with the form submission.');
+                                    $('#modal-dialog').modal('show');
                                     throw new Error('Network response was not ok.');
                                 }
                             })
@@ -51,7 +65,7 @@
                                 const pdfUrl = URL.createObjectURL(data);
                                 const a = document.createElement('a');
                                 a.href = pdfUrl;
-                                a.download = 'attendance_report.pdf';
+                                a.download = reportName+'.pdf';
                                 a.click();
                             })
                             .catch((error) => {
@@ -62,46 +76,6 @@
                     });
 
                 </script>
-                <script>
-                    {/* const matForm = document.querySelector('#mat_form');
-
-                    matForm.addEventListener('submit', (event) => {
-                        event.preventDefault();
-
-                        const matFormData = new FormData(matForm);
-
-                        matFormData.forEach((value, key) => {
-                            console.log(key + ': ' + value);
-                        });
-
-                        console.log(matFormData);
-
-                        fetch("{% url 'manager:member_attendance_report' %}", {
-                            method: 'POST',
-                            body: matFormData
-
-                        })
-                            .then((response) => response.json())
-                            .then((data) => {
-
-                                console.log(data);
-
-                                if (data.result == 'success') {
-                                    $('.modal-body').html('Form submission was successful!');
-                                    $('#modal-dialog').modal('show');
-                                    matForm.reset();
-
-                                } else {
-
-                                    $('.modal-body').html('There was an error with the form submission.');
-                                    $('#modal-dialog').modal('show');
-                                }
-
-                            });
-                    }); */}
-
-                </script>
-
             </div>
             <div>
                 <!-- patrol Attendance form -->
@@ -109,7 +83,7 @@
                     <p><strong>Patrol Attendance</strong></p>
                     {% csrf_token %}
                     {{patf|crispy}}
-                    <input type="submit" value="Submit" class="btn btn-primary">
+                    <input type="submit" value="Download" class="btn btn-primary">
                 </form>
                 <!-- pat from script -->
                 <script>
@@ -119,9 +93,20 @@
                         event.preventDefault();
 
                         const patFormData = new FormData(patForm);
+                        let reportName = 'Patrol Attendance Report';
 
                         patFormData.forEach((value, key) => {
                             console.log(key + ': ' + value);
+
+                            if(key == 'patrol'){
+                                const patrolSelect = document.querySelector('#pat_patrol');
+                                const selectedOption = patrolSelect.options[patrolSelect.selectedIndex];
+                                const displayedValue = selectedOption.textContent;
+                                reportName += ` ${displayedValue} `;
+                            }
+                            if (key == 'year') {
+                                reportName += ` ${value.substring(0, 4)} `;
+                            }            
                         });
 
                         console.log(patFormData);
@@ -129,121 +114,104 @@
                         fetch("{% url 'manager:patrol_attendance_report' %}", {
                             method: 'POST',
                             body: patFormData
-
                         })
-                            .then((response) => response.json())
-                            .then((data) => {
-
-                                console.log(data);
-
-                                if (data.result == 'success') {
-                                    $('.modal-body').html('Form submission was successful!');
-                                    $('#modal-dialog').modal('show');
-                                    patForm.reset();
-
+                            .then((response) => {
+                                if (response.ok) {
+                                    return response.blob();
                                 } else {
-
+                                     console.error('Error:', error);
                                     $('.modal-body').html('There was an error with the form submission.');
                                     $('#modal-dialog').modal('show');
+                                    throw new Error('Network response was not ok.');                           
                                 }
-
+                            })
+                            .then((data) => {
+                                // Create a URL for the blob object and download it
+                                const pdfUrl = URL.createObjectURL(data);
+                                const a = document.createElement('a');
+                                a.href = pdfUrl;
+                                a.download = 'patrol attendance_report.pdf';
+                                a.click();
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                                $('.modal-body').html('There was an error with the form submission.');
+                                $('#modal-dialog').modal('show');
                             });
                     });
 
                 </script>
             </div>
-            <div>
-                <!-- event Attendance form -->
-                <form action="" method="post" class="form my-4 px-2" enctype="" id="eat_form" onsubmit="">
-                    <p><strong>Event Attendance</strong></p>
-                    {% csrf_token %}
-                    {{eatf|crispy}}
-                    <input type="submit" value="Submit" class="btn btn-primary">
-                </form>
-                <!-- eat from script -->
-                <script>
-                    const eatForm = document.querySelector('#eat_form');
-
-                    eatForm.addEventListener('submit', (event) => {
-                        event.preventDefault();
-
-                        const eatFormData = new FormData(eatForm);
-
-                        eatFormData.forEach((value, key) => {
-                            console.log(key + ': ' + value);
-                        });
-
-                        console.log(eatFormData);
-
-                        fetch("{% url 'manager:events_attendance_report' %}", {
-                            method: 'POST',
-                            body: eatFormData
-
-                        })
-                            .then((response) => response.json())
-                            .then((data) => {
-
-                                console.log(data);
-
-                                if (data.result == 'success') {
-                                    $('.modal-body').html('Form submission was successful!');
-                                    $('#modal-dialog').modal('show');
-                                    eatForm.reset();
-
-                                } else {
-
-                                    $('.modal-body').html('There was an error with the form submission.');
-                                    $('#modal-dialog').modal('show');
-                                }
-
-                            });
-                    });
-
-                </script>
-            </div>
-
+            
         </div>
         <div class=" col-lg-4 col-sm-12 col-md-6 p-3">
             <div class="bg-info px-4 py-2 rounded-2">
                 <h3 class="text-center">Membership</h3>
             </div>
-            <!-- camp from -->
-            <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" onsubmit=""
-                id="camp_form">
+            <div>
+                <!-- membership year select from -->
+                <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" onsubmit=""
+                id="myf_form">
+                <p><strong>Membership Paid Report</strong></p>
+                {{myf.media}}
                 {% csrf_token %}
-                {{camps|crispy}}
-                <input type="submit" value="Submit" class="btn btn-primary">
+                {{myf|crispy}}
+                <input type="submit" value="Download" class="btn btn-primary">
             </form>
-            <!-- camp from script -->
-            <script>
-                const campForm = document.querySelector('#camp_form');
+        </div>
+        <!-- membership year select from from script -->
+        <script>
+                    const myfForm = document.querySelector('#myf_form');
 
-                campForm.addEventListener('submit', (event) => {
+                    myfForm.addEventListener('submit', (event) => {
+                        event.preventDefault();
 
-                    event.preventDefault();
+                        const myfFormData = new FormData(myfForm);
 
-                    const CampFormData = new FormData(campForm);
+                        let reportName = 'Membership Paid Report';
 
-                    console.log(CampFormData);
-
-                    fetch("{% url 'manager:add_camp' %}", {
-                        method: 'POST',
-                        body: CampFormData
-
-                    })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            console.log(data);
-                            if (data.result == 'success') {
-                                $('.modal-body').html('Form submission was successful!');
-                                $('#modal-dialog').modal('show');
-                                campForm.reset();
-                            } else {
-                                $('.modal-body').html('There was an error with the form submission.');
-                                $('#modal-dialog').modal('show');
+                        myfFormData.forEach((value, key) => {
+                            console.log(key + ': ' + value);
+                            if(key == 'year'){
+                                reportName += ` ${value.substring(0, 4)} `;
                             }
                         });
-                });
+
+                        
+
+                        console.log(myfFormData);
+
+                        console.log(reportName);
+
+                        fetch("{% url 'manager:membership_fee_paid_report' %}", {
+                            method: 'POST',
+                            body: myfFormData
+
+                        })
+                            .then((response) => {
+                                if (response.ok) {
+                                    return response.blob();
+                                } else {
+                                    console.error('Error:', error);
+                                    $('.modal-body').html('There was an error with the form submission.');
+                                    $('#modal-dialog').modal('show');
+                                    throw new Error('Network response was not ok.');
+                                }
+                            })
+                            .then((data) => {
+                                // Create a URL for the blob object and download it
+                                const pdfUrl = URL.createObjectURL(data);
+                                const a = document.createElement('a');
+                                a.href = pdfUrl;
+                                a.download = reportName+'.pdf';
+                                a.click();
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                                $('.modal-body').html('There was an error with the form submission.');
+                                $('#modal-dialog').modal('show');
+                            });
+                    });
 
             </script>
 
@@ -252,50 +220,149 @@
             <div class="bg-info px-4 py-2 rounded-2">
                 <h3 class="text-center">Events</h3>
             </div>
+            <div>
+                <!-- event year select from -->
+                <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" onsubmit=""
+                    id="elr_form">
+                    <p><strong>Event List Report</strong></p>
+                    {{myf.media}}
+                    {% csrf_token %}
+                    {{myf|crispy}}
+                    <input type="submit" value="Download" class="btn btn-primary">
+                </form>
+            </div>
 
-            <!-- project from -->
-            <form action="" method="post" class="form my-4 px-2" enctype="multipart/form-data" id="project_from"
-                onsubmit="">
-                {% csrf_token %}
-                {{projects|crispy}}
-                <input type="submit" value="Submit" class="btn btn-primary">
-            </form>
-            <!-- project from script -->
+            <!-- event year select from from script -->
             <script>
-                const projectForm = document.querySelector('#project_from');
 
-                projectForm.addEventListener('submit', (event) => {
+                const elrForm = document.querySelector('#elr_form');
+
+                elrForm.addEventListener('submit', (event) => {
                     event.preventDefault();
 
-                    const projectFormData = new FormData(projectForm);
+                    const elrFormData = new FormData(elrForm);
 
-                    console.log(projectFormData);
+                    let reportName = 'Event List Report Paid Report';
 
-                    fetch("{% url 'manager:add_project' %}", {
+                    elrFormData.forEach((value, key) => {
+                        console.log(key + ': ' + value);
+                        if(key == 'year'){
+                            reportName += ` ${value.substring(0, 4)} `;
+                        }
+                    });
+                    
+                    console.log(elrFormData);
+
+                    fetch("{% url 'manager:event_list_report' %}", {
                         method: 'POST',
-                        body: projectFormData
+                        body: elrFormData
 
                     })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            console.log(data);
-                            if (data.result == 'success') {
-                                $('.modal-body').html('Form submission was successful!');
-                                $('#modal-dialog').modal('show');
-                                projectForm.reset();
+                        .then((response) => {
+                            if (response.ok) {
+                                return response.blob();
                             } else {
+                                console.error('Error:', error);
                                 $('.modal-body').html('There was an error with the form submission.');
                                 $('#modal-dialog').modal('show');
+                                throw new Error('Network response was not ok.');
                             }
+                        })
+                        .then((data) => {
+                            // Create a URL for the blob object and download it
+                            const pdfUrl = URL.createObjectURL(data);
+                            const a = document.createElement('a');
+                            a.href = pdfUrl;
+                            a.download = reportName+'.pdf';
+                            a.click();
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                            $('.modal-body').html('There was an error with the form submission.');
+                            $('#modal-dialog').modal('show');
                         });
                 });
+
             </script>
+            
+                <div>
+                    <!-- event Attendance form -->
+                    <form action="" method="post" class="form my-4 px-2" enctype="" id="eat_form" onsubmit="">
+                        <p><strong>Event Attendance</strong></p>
+                        <p>* if no titles are selected you will get saturday attendance report</p>
+                        {{eatf.media}}
+                        {% csrf_token %}
+                        {{eatf|crispy}}
+                        <input type="submit" value="Download" class="btn btn-primary">
+                    </form>
+                    <!-- eat from script -->
+                    <script>
+
+                        const eatForm = document.querySelector('#eat_form');
+                
+                        eatForm.addEventListener('submit', (event) => {
+                            event.preventDefault();
+                
+                            const eatFormData = new FormData(eatForm);
+
+                            let reportName = 'Event Attendance Report';
+                
+                            eatFormData.forEach((value, key) => {
+
+                                console.log(key + ': ' + value);
+
+                                if(key == 'title'){
+                                    reportName += ` ${value} `;
+                                }
+                                if(key == 'year'){
+                                    reportName += ` ${value.substring(0, 4)} `;
+                                }
+
+                            });
+                
+                            console.log(eatFormData);
+                
+                            fetch("{% url 'manager:events_attendance_report' %}", {
+                                method: 'POST',
+                                body: eatFormData
+                
+                            })
+                                .then((response) => {
+                                    if (response.ok) {
+                                        return response.blob();
+                                    } else {
+                                        console.error('Error:', error);
+                                        $('.modal-body').html('There was an error with the form submission.');
+                                        $('#modal-dialog').modal('show');
+                                        throw new Error('Network response was not ok.');
+                                    }
+                                })
+                                .then((data) => {
+                                    // Create a URL for the blob object and download it
+                                    const pdfUrl = URL.createObjectURL(data);
+                                    const a = document.createElement('a');
+                                    a.href = pdfUrl;
+                                    a.download = reportName+'.pdf';
+                                    a.click();
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                    $('.modal-body').html('There was an error with the form submission.');
+                                    $('#modal-dialog').modal('show');
+                                });
+                        });
+                
+                    </script>
+                </div>
+
+            
+
 
         </div>
 
     </div>
-
 </div>
+
 <!-- selectize -->
 <script>
     $(document).ready(function () {

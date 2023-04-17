@@ -125,22 +125,6 @@
         "documentation": {}
     },
     {
-        "label": "User",
-        "importPath": "core.models",
-        "description": "core.models",
-        "isExtraImport": true,
-        "detail": "core.models",
-        "documentation": {}
-    },
-    {
-        "label": "Profile",
-        "importPath": "core.models",
-        "description": "core.models",
-        "isExtraImport": true,
-        "detail": "core.models",
-        "documentation": {}
-    },
-    {
         "label": "MemberRole",
         "importPath": "core.models",
         "description": "core.models",
@@ -1362,6 +1346,14 @@
         "documentation": {}
     },
     {
+        "label": "Patrol",
+        "importPath": "manager.models",
+        "description": "manager.models",
+        "isExtraImport": true,
+        "detail": "manager.models",
+        "documentation": {}
+    },
+    {
         "label": "Announcement",
         "importPath": "manager.models",
         "description": "manager.models",
@@ -1940,31 +1932,15 @@
         "documentation": {}
     },
     {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
         "label": "Max",
-        "importPath": "django.db.models",
-        "description": "django.db.models",
-        "isExtraImport": true,
-        "detail": "django.db.models",
-        "documentation": {}
-    },
-    {
-        "label": "Q",
-        "importPath": "django.db.models",
-        "description": "django.db.models",
-        "isExtraImport": true,
-        "detail": "django.db.models",
-        "documentation": {}
-    },
-    {
-        "label": "F",
-        "importPath": "django.db.models",
-        "description": "django.db.models",
-        "isExtraImport": true,
-        "detail": "django.db.models",
-        "documentation": {}
-    },
-    {
-        "label": "When",
         "importPath": "django.db.models",
         "description": "django.db.models",
         "isExtraImport": true,
@@ -2197,11 +2173,27 @@
         "documentation": {}
     },
     {
-        "label": "pisa",
-        "importPath": "xhtml2pdf",
-        "description": "xhtml2pdf",
+        "label": "inch",
+        "importPath": "reportlab.lib.units",
+        "description": "reportlab.lib.units",
         "isExtraImport": true,
-        "detail": "xhtml2pdf",
+        "detail": "reportlab.lib.units",
+        "documentation": {}
+    },
+    {
+        "label": "Context",
+        "importPath": "django.template",
+        "description": "django.template",
+        "isExtraImport": true,
+        "detail": "django.template",
+        "documentation": {}
+    },
+    {
+        "label": "render_to_string",
+        "importPath": "django.template.loader",
+        "description": "django.template.loader",
+        "isExtraImport": true,
+        "detail": "django.template.loader",
         "documentation": {}
     },
     {
@@ -2210,6 +2202,40 @@
         "description": "django.template.loader",
         "isExtraImport": true,
         "detail": "django.template.loader",
+        "documentation": {}
+    },
+    {
+        "label": "jinja2",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "jinja2",
+        "description": "jinja2",
+        "detail": "jinja2",
+        "documentation": {}
+    },
+    {
+        "label": "pdfkit",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pdfkit",
+        "description": "pdfkit",
+        "detail": "pdfkit",
+        "documentation": {}
+    },
+    {
+        "label": "FPDF",
+        "importPath": "fpdf",
+        "description": "fpdf",
+        "isExtraImport": true,
+        "detail": "fpdf",
+        "documentation": {}
+    },
+    {
+        "label": "pisa",
+        "importPath": "xhtml2pdf",
+        "description": "xhtml2pdf",
+        "isExtraImport": true,
+        "detail": "xhtml2pdf",
         "documentation": {}
     },
     {
@@ -3431,7 +3457,7 @@
         "kind": 6,
         "importPath": "manager.forms",
         "description": "manager.forms",
-        "peekOfCode": "class EventAttendanceForm(forms.Form):\n    year = forms.ChoiceField(choices=[(year, year)\n                                      for year in range(2000, datetime.now().year+1)], initial=datetime.now().year, required=True,\n                             widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'eat_year', 'placeholder': ''}))\n    title = forms.ModelChoiceField(\n        queryset=Attendance.objects.values_list('title', flat=True).distinct(), required=False,\n        widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'eat_title', 'placeholder': 'select title'}))\n    def __init__(self, *args, **kwargs):\n        super().__init__(*args, **kwargs)\n        if 'year' in self.data:",
+        "peekOfCode": "class EventAttendanceForm(forms.Form):\n    year = forms.ChoiceField(choices=[(year, year)\n                                      for year in range(2000, datetime.now().year+1)], initial=datetime.now().year, required=True,\n                             widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'eat_year', 'placeholder': ''}))\n    title = forms.ModelChoiceField(\n        queryset=Attendance.objects.values_list('title', flat=True).distinct(), required=False,\n        widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'eat_title', 'placeholder': 'select title'}))\n    # def __init__(self, *args, **kwargs):\n    #     super().__init__(*args, **kwargs)\n    #     if 'year' in self.data:",
         "detail": "manager.forms",
         "documentation": {}
     },
@@ -3503,7 +3529,25 @@
         "kind": 2,
         "importPath": "manager.reports",
         "description": "manager.reports",
-        "peekOfCode": "def generate_member_attendance_report(year, member):\n    # year = 2023  # replace with the desired year\n    attendances = Attendance.objects.filter(\n        member__id=member.id, date__year=year).order_by('title', 'date', 'time')\n    print(attendances)\n    \"\"\" start style code with table lines \"\"\"\n    buffer = BytesIO()\n    p = canvas.Canvas(buffer, pagesize=letter)\n    data = [['Title', 'Date', 'Time']]\n    for attendance in attendances:",
+        "peekOfCode": "def generate_member_attendance_report(year, member):\n    attendances = Attendance.objects.filter(\n        member__id=member.id, date__year=year).order_by('title', 'date', 'time')\n    buffer = BytesIO()\n    p = canvas.Canvas(buffer, pagesize=letter)\n    data = [['Title', 'Date', 'Time']]\n    for attendance in attendances:\n        title = attendance.title\n        date = attendance.date.strftime(\"%m/%d\")\n        time = attendance.time.strftime(\"%I:%M %p\")",
+        "detail": "manager.reports",
+        "documentation": {}
+    },
+    {
+        "label": "generate_patrol_attendance_report",
+        "kind": 2,
+        "importPath": "manager.reports",
+        "description": "manager.reports",
+        "peekOfCode": "def generate_patrol_attendance_report(year, patrol):\n    try:\n        patrol = Patrol.objects.get(pk=patrol.id)\n        print(f'{patrol.id} patrol found')\n    except:\n        print(\"Patrol not found\")\n    try:\n        attendances = Attendance.objects.filter(\n            member__patrol=patrol.id, date__year=year\n        ).order_by(\"title\", \"member\", \"date\", \"time\")",
+        "detail": "manager.reports",
+        "documentation": {}
+    },
+    {
+        "label": "generate_event_attendance_report",
+        "kind": 2,
+        "importPath": "manager.reports",
+        "description": "manager.reports",
+        "peekOfCode": "def generate_event_attendance_report(year, title):\n    print(year, title)\n    try:\n        attendances = Attendance.objects.filter(title=title, year=year).order_by(\n            \"member__patrol__name\", \"member\"\n        )\n        print(attendances)\n    except Attendance.DoesNotExist:\n        print(\"Event not found\")\n        return None",
         "detail": "manager.reports",
         "documentation": {}
     },
@@ -3512,7 +3556,25 @@
         "kind": 2,
         "importPath": "manager.reports",
         "description": "manager.reports",
-        "peekOfCode": "def generate_member_attendance_report_htm2pdf(year, member):\n    attendances = Attendance.objects.filter(\n        member__id=member.id, date__year=year).order_by('title', 'date', 'time')\n    data = [['Title', 'Date', 'Time']]\n    for attendance in attendances:\n        title = attendance.title\n        date = attendance.date.strftime(\"%m/%d\")\n        time = attendance.time.strftime(\"%I:%M %p\")\n        data.append([title, date, time])\n    df = pd.DataFrame(data[1:], columns=data[0])",
+        "peekOfCode": "def generate_member_attendance_report_htm2pdf(year, member):\n    \"\"\" html to pdf solution not working os error\"\"\"\n    attendances = Attendance.objects.filter(\n        member__id=member.id, date__year=year).order_by('title', 'date', 'time')\n    data = [['Title', 'Date', 'Time']]\n    for attendance in attendances:\n        title = attendance.title\n        date = attendance.date.strftime(\"%m/%d\")\n        time = attendance.time.strftime(\"%I:%M %p\")\n        data.append([title, date, time])",
+        "detail": "manager.reports",
+        "documentation": {}
+    },
+    {
+        "label": "generate_member_attendance_report_pandas",
+        "kind": 2,
+        "importPath": "manager.reports",
+        "description": "manager.reports",
+        "peekOfCode": "def generate_member_attendance_report_pandas(year, member):\n    \"\"\" pandas solution not working os error \"\"\"\n    # Filter attendance records for the given year and member\n    attendances = Attendance.objects.filter(\n        member__id=member.id, date__year=year).order_by('title', 'date', 'time')\n    # Convert the attendance data to a Pandas DataFrame\n    data = []\n    for attendance in attendances:\n        title = attendance.title\n        date = attendance.date.strftime(\"%m/%d\")",
+        "detail": "manager.reports",
+        "documentation": {}
+    },
+    {
+        "label": "generate_member_attendance_report_pdfkit",
+        "kind": 2,
+        "importPath": "manager.reports",
+        "description": "manager.reports",
+        "peekOfCode": "def generate_member_attendance_report_pdfkit(year, member):\n    # Load the Jinja2 template\n    loader = jinja2.FileSystemLoader(searchpath='./manager/templates/reports')\n    tmemplateEnv = jinja2.Environment(loader=loader)\n    # view all templates in the folder TO:TEST\n    print(tmemplateEnv.loader.list_templates())\n    # get the template\n    template = tmemplateEnv.get_template('matreport.html')\n    # Get the data for the report\n    attendances = Attendance.objects.filter(",
         "detail": "manager.reports",
         "documentation": {}
     },
@@ -3863,7 +3925,7 @@
         "kind": 2,
         "importPath": "manager.views",
         "description": "manager.views",
-        "peekOfCode": "def member_attendance_report(request):\n    if request.method == 'POST':\n        form = MemberAttendanceForm(request.POST)\n        if form.is_valid():\n            year = form.cleaned_data['year']\n            print(year)\n            member = form.cleaned_data['member']\n            print(member)\n            response = generate_member_attendance_report(year, member)\n            return response",
+        "peekOfCode": "def member_attendance_report(request):\n    if request.method == 'POST':\n        form = MemberAttendanceForm(request.POST)\n        if form.is_valid():\n            year = form.cleaned_data['year']\n            member = form.cleaned_data['member']\n            #response = generate_member_attendance_report(year, member)\n            response = generate_member_attendance_report(\n                year, member)\n            return response",
         "detail": "manager.views",
         "documentation": {}
     },
@@ -3872,7 +3934,7 @@
         "kind": 2,
         "importPath": "manager.views",
         "description": "manager.views",
-        "peekOfCode": "def patrol_attendance_report(request):\n    pass\n\"\"\" event attendance report \"\"\"\ndef events_attendance_report(request):\n    pass",
+        "peekOfCode": "def patrol_attendance_report(request):\n    if request.method == 'POST':\n        form = PatrolAttendanceForm(request.POST)\n        if form.is_valid():\n            year = form.cleaned_data['year']\n            patrol = form.cleaned_data['patrol']\n            print(year, patrol)\n            response = generate_patrol_attendance_report(\n                year, patrol)\n            return response",
         "detail": "manager.views",
         "documentation": {}
     },
@@ -3881,7 +3943,7 @@
         "kind": 2,
         "importPath": "manager.views",
         "description": "manager.views",
-        "peekOfCode": "def events_attendance_report(request):\n    pass",
+        "peekOfCode": "def events_attendance_report(request):\n    if request.method == 'POST':\n        form = PatrolAttendanceForm(request.POST)\n        print(request.POST)\n        if form.is_valid():\n            print(form.errors)\n            title = request.POST.get['title']\n            year = request.POST.get['year']\n            print(year, title)\n            response = generate_patrol_attendance_report(",
         "detail": "manager.views",
         "documentation": {}
     },

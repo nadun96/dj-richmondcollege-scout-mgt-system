@@ -66,6 +66,14 @@ urlpatterns = [
          name='patrol_attendance_report'),
     path('get/attendance/event/', views.events_attendance_report,
          name='events_attendance_report'),
+    
+    path('get/membership/year/', views.membership_fee_paid_report,
+         name='membership_fee_paid_report'),
+    
+    path('get/events/year/', views.events_list_report,
+         name='event_list_report'),
+    
+    
 
 
 ]

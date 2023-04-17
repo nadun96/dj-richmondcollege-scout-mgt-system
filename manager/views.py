@@ -4,19 +4,20 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.db.models import Q, F
-from .forms import CampForm, ProjectForm, HikeForm, UploadPostsForm, UploadPhotoForm, AnnounceForm, RequirementForm, BadgeForm, AddPatrolForm, EndPatrolForm, AssignPatrolForm, ActivateMemberForm, MembershipFeeForm, AssignRoleForm, AssignLeaderForm, MemberAttendanceForm, PatrolAttendanceForm, EventAttendanceForm
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.db import connection, transaction
+from .forms import CampForm, ProjectForm, HikeForm, UploadPostsForm, UploadPhotoForm, AnnounceForm, RequirementForm, BadgeForm, AddPatrolForm, EndPatrolForm, AssignPatrolForm, ActivateMemberForm, MembershipFeeForm, AssignRoleForm, AssignLeaderForm, MemberAttendanceForm, PatrolAttendanceForm, EventAttendanceForm, MembershipFeeListForm
 from patrol.forms import AttendanceForm
 from patrol.models import Attendance
-from .models import Photo, Post, Announcement, Patrol
 from member.models import Hike, Camp, Project, Badge, Requirement
-from django.shortcuts import render
 from core.models import Profile, MemberRole, Complete, Patrol, Communication, User, MembershipFee, Leader
-from django.http import JsonResponse, HttpResponse
-from django.db import connection, transaction
 from datetime import date
 import datetime
-from django.contrib.auth.decorators import login_required
-from .reports import generate_member_attendance_report
+from .models import Photo, Post, Announcement, Patrol
+from .reports import generate_member_attendance_report, generate_patrol_attendance_report, generate_event_attendance_report, generate_member_attendance_report_new, generate_patrol_attendance_report_new, generate_event_attendance_report_new, generate_membership_fee_paid_report_new, generate_event_list_report_new
+
 
 """ get current active user model, current is core.User"""
 User = get_user_model()
@@ -887,7 +888,7 @@ def manage_badges(request):
     return render(request, 'manager/manage_badge', context)
 
 
-""" viiew reports tab render """
+""" view reports tab render test function """
 
 
 def test_pdf(request):
@@ -916,26 +917,30 @@ def test_pdf(request):
     return response
 
 
+""" view reports tab render function """
+
 @login_required()
 def view_reports(request):
 
     matf = MemberAttendanceForm()
     eatf = EventAttendanceForm()
     patf = PatrolAttendanceForm()
+    
+    myf = MembershipFeeListForm()
 
     context = {
         'title': 'reports',
         'matf': matf,
         'eatf': eatf,
         'patf': patf,
+        'myf': myf,
     }
 
     return render(request, 'manager/reports', context)
 
-
 """ member attendance report """
 
-
+@login_required()
 def member_attendance_report(request):
 
     if request.method == 'POST':
@@ -944,21 +949,83 @@ def member_attendance_report(request):
             year = form.cleaned_data['year']
             member = form.cleaned_data['member']
 
-            #response = generate_member_attendance_report(year, member)
-            response = generate_member_attendance_report(
-                year, member)
+            response = generate_member_attendance_report_new(year,member)
+             
+            #response = generate_member_attendance_report(
+            #   year, member)
             return response
-
 
 """ patrol attendance report """
 
-
+@login_required()
 def patrol_attendance_report(request):
-    pass
+    if request.method == 'POST':
+        form = PatrolAttendanceForm(request.POST)
+        if form.is_valid():
+            year = form.cleaned_data['year']
+            patrol = form.cleaned_data['patrol']
 
+            print(year, patrol)
+
+            response = generate_patrol_attendance_report_new(
+                year, patrol)
+            # response = generate_patrol_attendance_report(
+            #     year, patrol)
+            return response
 
 """ event attendance report """
 
-
+@login_required()
 def events_attendance_report(request):
-    pass
+    if request.method == 'POST':
+        form = PatrolAttendanceForm(request.POST)      
+        if form.is_valid():
+            title = request.POST.get('title')
+            year = request.POST.get('year')
+            print(year, title)
+            response = generate_event_attendance_report_new(
+                year, title)
+            # response = generate_event_attendance_report(
+            #     year, title)
+            return response
+
+""" membership fee paid report by year """
+
+def extract_year(date_string):
+    """
+    Extracts the year part from a string in the format 'YYYY-MM-DD'.
+    """
+    year = date_string.split('-')[0]
+    return year
+
+""" membership fee paid report """
+
+@login_required()
+def membership_fee_paid_report(request):
+    if request.method == 'POST':
+        form = MembershipFeeListForm(request.POST)
+        # if form.is_valid():
+        year = form.data['year']
+        year = extract_year(year)
+        
+        print(year)
+        
+        response = generate_membership_fee_paid_report_new(
+                year)
+        return response
+    
+""" event list report """
+
+@login_required()
+def events_list_report(request):
+    if request.method == 'POST':
+        form = MembershipFeeListForm(request.POST)
+        # if form.is_valid():
+        year = form.data['year']
+        year = extract_year(year)
+        
+        print(year)
+        
+        response = generate_event_list_report_new(
+                year)
+        return response

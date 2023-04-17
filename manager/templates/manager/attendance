@@ -14,10 +14,10 @@
     <div class="row p-3">
 
         <div class="col-lg-4 col-md-4 col-sm-12">
-
             <form action="" class="from" method="post" id="add_attendance">
                 {% csrf_token %}
                 <div class="col-lg-9 col-sm-12">
+                    <p>* don't set a title to mark saturday attendance </p>
                     {{form|crispy}}
                     {{form.non_field_errors}}
                 </div>

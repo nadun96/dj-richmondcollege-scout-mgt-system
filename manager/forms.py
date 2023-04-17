@@ -1,3 +1,5 @@
+from core.models import MembershipFee
+from django.utils import timezone
 from datetime import datetime
 from patrol.models import Attendance
 from bootstrap_datepicker_plus.widgets import DatePickerInput
@@ -16,6 +18,8 @@ class RequirementForm(forms.ModelForm):
     badge = forms.ModelChoiceField(queryset=Badge.objects.all(),
                                    widget=forms.Select(
         attrs={'class': 'form-control selectize', 'placeholder': 'Select the badge'}))
+    
+    number = forms.IntegerField(widget=forms.NumberInput(attrs={'min': 1}))
 
     description = forms.CharField(widget=forms.Textarea(
         attrs={'rows': 3, 'class': 'py-2'}))
@@ -31,6 +35,7 @@ class RequirementForm(forms.ModelForm):
 class BadgeForm(forms.ModelForm):
 
     description = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
+    level = forms.IntegerField(widget=forms.NumberInput(attrs={'min': 1}))
 
     class Meta:
         model = Badge
@@ -62,7 +67,7 @@ class HikeForm(forms.ModelForm):
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
-        fields = ['title', 'description', 'date', 'time', 'location']
+        fields = ['title', 'description', 'date', 'time', 'location','coordinator']
 
         widgets = {
             'date': forms.DateInput(format='%Y/%m/%d', attrs={'type': 'date', 'class': 'form-control'}),
@@ -192,7 +197,7 @@ class AssignLeaderForm(forms.ModelForm):
         fields = ['name', 'patrol']
         widgets = {
 
-            'name': forms.Select(attrs={'class': 'form-control selectize', 'placeholder': 'select member'}),
+            'name': forms.Select(attrs={'class': 'form-control selectize', 'placeholder': 'select member' }),
 
             'patrol': forms.Select(attrs={'class': 'form-control selectize', 'placeholder': 'select patrol'}),
 
@@ -211,7 +216,7 @@ class AddPatrolForm(forms.ModelForm):
 
 
 class EndPatrolForm(forms.Form):
-    patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(),
+    patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(),required=True,
                                     widget=forms.Select(
                                         attrs={'class': 'form-control selectize ', 'id': 'end-form-select-patrol', 'placeholder': 'select patrol'}))
 
@@ -221,7 +226,7 @@ class EndPatrolForm(forms.Form):
 
 class MemberAttendanceForm(forms.Form):
 
-    member = forms.ModelChoiceField(queryset=Profile.objects.all(), required=False,
+    member = forms.ModelChoiceField(queryset=Profile.objects.all(), required=True,
                                     widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'mat_member', 'placeholder': 'select member'}))
 
     year = forms.ChoiceField(choices=[(year, year)
@@ -234,7 +239,7 @@ class MemberAttendanceForm(forms.Form):
 
 class PatrolAttendanceForm(forms.Form):
 
-    patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(), required=False,
+    patrol = forms.ModelChoiceField(queryset=Patrol.objects.all(), required=True,
                                     widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'pat_patrol', 'placeholder': 'select patrol'}))
 
     year = forms.ChoiceField(choices=[(year, year)
@@ -255,9 +260,17 @@ class EventAttendanceForm(forms.Form):
         queryset=Attendance.objects.values_list('title', flat=True).distinct(), required=False,
         widget=forms.Select(attrs={'class': 'form-control selectize ', 'id': 'eat_title', 'placeholder': 'select title'}))
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if 'year' in self.data:
-            year = int(self.data['year'])
-            self.fields['title'].queryset = Attendance.objects.filter(
-                date__year=year).values_list('title', flat=True).distinct()
+
+
+""" membershp yearly fee form """
+
+class MembershipFeeListForm(forms.Form):
+    
+    year = forms.ChoiceField(required=True,
+                             widget=YearPickerInput(attrs={'class': 'form-control', 'id': 'myf_year', 'placeholder': 'select year'}))
+
+    def clean_for_year(self):
+        for_year = self.cleaned_data.get('for_year')
+        if not for_year or for_year > timezone.now().date():
+            raise forms.ValidationError('Invalid year')
+        return for_year
