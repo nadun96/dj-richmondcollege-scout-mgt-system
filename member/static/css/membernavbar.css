@@ -1,91 +1,47 @@
-.new ul {
-    display: table;
-    padding: 0px 20px;
-    border-radius: 8px;
+/* Member dashboard navigation harmonized with the shared theme */
+nav.new {
+    backdrop-filter: blur(18px);
+    margin: 0 1rem 1.75rem;
+    padding: 0.6rem 1.25rem;
 }
 
-.new ul li {
+nav.new ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+nav.new ul li {
     list-style: none;
-    display: inline-block;
 }
 
-.new ul li a {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
-    font-weight: 900;
-    color: #0a0907;
-    text-decoration: none;
-    position: relative;
-    padding: 5px 5px;
-    display: block;
-}
-
-.new ul li a+a {
-    margin-left: 16px;
-}
-
-.new ul li a::after {
-    content: '';
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
-    width: 100%;
-    height: .2rem;
-    background-color:#721c1c;
-    transform-origin: bottom right;
-    transition: transform 0.5s ease;
-    transform: scaleX(0);
-}
-
-.new ul a:hover::after {
-    transform-origin: bottom left;
-    transform: scaleX(1);
-}
-
-.top-nav {
-    opacity: 1;
-    background: #721c25;
-}
-
-#childnav{
-    background: #65a6a8;
-}
-
-
-.act {
-    background: #ffffff;
-}
-
-.nav-item button {
-    background: #60242a;
-    color: #080808;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
-    font-weight: 900;
-}
-
-
-h3 {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: #0a0907;
-    position: relative;
-    padding: 15px 10px;
-}
-
-table {
-    font-family: 'Inter', monospace;
+nav.new ul li a,
+nav.new ul li button {
+    min-width: 6.25rem;
+    text-align: center;
 }
 
 .nav-toggle {
-    background-color: #537FE7;
-    font-weight: 600;
-    font-size: 0.8rem;
-    color: #0a0907;
-    text-align: center;
-    padding: 5px 5px;
+    display: block;
+    width: fit-content;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+}
+
+.navbar .btn-light,
+.navbar .dropdown-toggle {
+    border-radius: 12px;
+}
+
+.table {
+    font-family: 'Inter', sans-serif;
+}
+
+@media (max-width: 992px) {
+    nav.new ul li a,
+    nav.new ul li button {
+        min-width: auto;
+        width: 100%;
+    }
 }
