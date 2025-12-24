@@ -36,26 +36,33 @@
 
 </head>
 
-<body>
+<body class="app-shell">
 
   {% block header %}
   {% include 'login/header' %}
   {% endblock %}
 
-  {% block content %}
-  {% endblock %}
+  <main class="app-main {% block main_class %}{% endblock %}">
+    <div class="app-container {% block container_class %}{% endblock %}">
+      <div class="app-content">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+  </main>
 
   {% block footer %}
   {% include 'login/footer'%}
   {% endblock %}
 
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  <!-- boot box JS  -->
+  <script src="https://cdn.jsdelivr.net/npm/bootbox@6.1.0/dist/bootbox.all.min.js"></script>
+
+  {% block extra_scripts %}{% endblock %}
+
 </body>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-
-    <!-- boot box JS  -->
-    <script src="https://cdn.jsdelivr.net/npm/bootbox@6.1.0/dist/bootbox.all.min.js"></script>
-
 </html>

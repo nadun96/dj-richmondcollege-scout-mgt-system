@@ -1,53 +1,53 @@
 {% load static %}
-<nav class="top-nav navbar navbar-expand-lg navbar-dark m-0 app-navbar">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <img src="{% static 'img/symbol.png' %}" alt="RCSG" style="width:40px;" class="rounded-pill">
-
+<nav class="top-nav navbar navbar-dark app-navbar py-2">
+    <div class="app-container d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <a class="app-brand" href="{% url 'patrol:examine_tab' %}">
+            <img src="{% static 'img/symbol.png' %}" alt="RCSG crest">
+            <span>
+                <span class="app-brand-title">Patrol Lead Hub</span>
+                <span class="app-brand-subtitle">Guide your patrol forward</span>
+            </span>
         </a>
-        <div class="d-flex">
-                        <div class="dropdown">
-                <button class="btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
+
+        <div class="app-header-actions">
+            <span class="app-pill d-none d-md-inline-flex">
+                <i class="fa-solid fa-user"></i>
+                {% with request.user.get_full_name as full_name %}
+                    {{ full_name|default:request.user.username }}
+                {% endwith %}
+            </span>
+
+            <div class="dropdown">
+                <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" id="patrolPositionMenu"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     Position
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-                    <li><a class="dropdown-item small"
-                            href="{% url 'member:profile' user_id=request.user.id %}">Member</a></li>
-
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="patrolPositionMenu">
+                    <li><a class="dropdown-item small" href="{% url 'member:profile' user_id=request.user.id %}">Member</a></li>
 
                     {% if request.session.is_secretary %}
                     <li><a class="dropdown-item small" href="{% url 'manager:main' %}">Secretary</a></li>
-                    {%endif%}
-
-
-                    {% if request.session.is_storekeeper %}
-                    <li><a class="dropdown-item small" href="{% url 'store:main' %} ">StoreKeeper</a></li>
-                    {%endif%}
-
-
-                    {% if request.session.is_admin %}
-                    <li><a class="dropdown-item small" href="/admin/login/">Admin</a></li>
                     {% endif %}
 
-                </ul>
+                    {% if request.session.is_storekeeper %}
+                    <li><a class="dropdown-item small" href="{% url 'store:main' %}">Storekeeper</a></li>
+                    {% endif %}
 
+                    {% if request.session.is_admin %}
+                    <li><a class="dropdown-item small" href="/admin/login/" target="_blank" rel="noopener">Admin</a></li>
+                    {% endif %}
+                </ul>
             </div>
+
             <div class="dropdown">
-                <button class="btn-sm btn-light dropdown-toggle ms-3" type="button" id="dropdownMenuButton"
+                <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" id="patrolMenuActions"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     Menu
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    {% comment %} <li><a class="dropdown-item small" href="#">Media</a></li>
-                    <li><a class="dropdown-item small" href="#">Product Two</a></li> {% endcomment %}
-
-                    <li><a class="dropdown-item small" href={% url 'home:logout' %}>Log out</a></li>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="patrolMenuActions">
+                    <li><a class="dropdown-item small" href="{% url 'home:logout' %}">Log out</a></li>
                 </ul>
             </div>
-
         </div>
-    </div>
     </div>
 </nav>

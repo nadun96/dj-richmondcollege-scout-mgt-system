@@ -33,7 +33,7 @@
 
 </head>
 
-<body>
+<body class="app-shell">
 
     <!-- header -->
     <header class="sticky-top">
@@ -44,48 +44,53 @@
 
     </header>
 
-    <!-- content -->
-    {% block content %}
+    <main class="app-main {% block main_class %}{% endblock %}">
+        <div class="app-container app-container--wide {% block container_class %}{% endblock %}">
+            <div class="app-content">
+                {% block content %}
 
-    {% endblock %}
-    <!-- end content -->
-
-</body>
-
-<!-- close modal because I prevented default -->
-<script>
-    $(document).ready(function () {
-        $('#close-modal').on('click', function () {
-            $('#modal-dialog').modal('hide');
-        });
-    });
-</script>
-
-<!-- jason model dialog box -->
-<div class="modal" tabindex="-1" role="dialog" id="modal-dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Feedback</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                {% endblock %}
             </div>
-            <div class="modal-body">
-                <!-- Modal content goes here -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+        </div>
+    </main>
+
+    {% block footer %}{% endblock %}
+
+    {% block modals %}
+    <div class="modal" tabindex="-1" role="dialog" id="modal-dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Feedback</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Modal content goes here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="close-modal" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    {% endblock %}
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-
     <!-- boot box JS  -->
     <script src="https://cdn.jsdelivr.net/npm/bootbox@6.1.0/dist/bootbox.all.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#close-modal').on('click', function () {
+                $('#modal-dialog').modal('hide');
+            });
+        });
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
+
+</body>
 
 </html>
