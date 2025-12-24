@@ -11,6 +11,7 @@
             id="registerForm">
 
             {% csrf_token %}
+
             <div class="row mt-0 mb-2">
                 <p class="h3 text-center text-capitalize ">Member Registration Form</p>
             </div>
@@ -206,6 +207,7 @@
                         if (result) {
                             // the user clicked "OK"
                             const regFormData = new FormData(regForm);
+                            const csrfToken = regForm.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
                             regFormData.forEach((value, key) => {
                                 console.log(key + ': ' + value);
@@ -215,6 +217,9 @@
 
                             fetch("{% url 'home:register' %} ", {
                                 method: 'POST',
+                                headers: {
+                                    'X-CSRFToken': csrfToken
+                                },
                                 body: regFormData
 
                             })
