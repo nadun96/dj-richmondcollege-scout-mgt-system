@@ -1,5 +1,5 @@
 {% load static %}
-<nav class="top-nav navbar navbar-expand-lg navbar-dark m-0 ">
+<nav class="top-nav navbar navbar-expand-lg navbar-dark m-0 app-navbar">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
             <img src="{% static 'img/symbol.png' %}" alt="RCSG" style="width:40px;" class="rounded-pill">

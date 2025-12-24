@@ -5,135 +5,75 @@
 
 {% block content %}
 
-<div class="main content container">
-    <section class="content">
-        <div class="container-fluid">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md m-1">
-                        <h1>About Us</h1>
-                        {% for g in group %}
-                        <p id="about" class="small">{{g.about}}</p>
-                        {% endfor %}
+<section class="auth-hero">
+    <div class="container">
+        <div class="row align-items-center justify-content-between g-5">
+            <div class="col-lg-6 order-lg-1 order-2 text-lg-start text-center">
+                <span class="gradient-pill">
+                    <i class="fa-solid fa-compass"></i>
+                    Richmond College Scouts
+                </span>
+                <h1 class="section-title display-5 mt-4">
+                    Lead. Serve. Inspire.
+                </h1>
+                {% for g in group %}
+                <p class="section-lead mt-3">
+                    {{ g.about }}
+                </p>
+                {% endfor %}
 
+                <ul class="feature-list">
+                    <li><i class="fa-solid fa-people-group"></i> Unified dashboards for scouts, leaders, and staff</li>
+                    <li><i class="fa-solid fa-calendar-check"></i> Seamless event planning and badge tracking</li>
+                    <li><i class="fa-solid fa-shield-heart"></i> Secure access with role-based controls</li>
+                </ul>
+            </div>
+            <div class="col-lg-5 order-lg-2 order-1">
+                <div class="glass-card p-4 p-lg-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="h3 mb-0 text-white">Welcome back</h2>
+                        <span class="badge-soft">Secure Access</span>
                     </div>
-                    <div class="col-md my-2">
-                        <h1 class="text-center">Login</h1>
-                        <div class="center  align-content-center justify-content-center d-flex">
+                    <p class="text-muted mb-4">Sign in to manage your troop, monitor progress, and stay informed.</p>
 
-                            <div class="container">
-                                <div class="row">
+                    {% if error %}
+                    <div class="alert alert-danger border-0" role="alert">
+                        {{ error }}
+                    </div>
+                    {% endif %}
 
-                                    <!-- start login form  -->
-                                    <form method="post" action="{% url 'home:login' %}" class="form-horizontal"
-                                        role="form">
-
-                                        {% csrf_token %}
-                                        <div class="form-group p-1 m-1">
-                                    
-                                            <label class="control-label col-sm-2 text-capitalize"
-                                                for="username">username<em>*</em></label>
-                                            <div class="col">
-                                                <input type="text" name="username" id="username" placeholder="username"
-                                                    required="true" class="form-control" />
-                                            </div>
-
-                                        </div>
-                                        <div class="form-group p-1 m-1">
-
-                                            <label class="control-label col-sm-2 text-capitalize"
-                                                for="password">password<em>*</em></label>
-                                            <div class="col">
-                                                <input type="password" name="password" id="password" required="true"
-                                                    class="form-control" />
-                                            </div>
-
-                                        </div>
-                                        {% if error %}
-                                        <div class="form-group p-1 m-1">
-                                            <p class="text-center bg-warning">
-                                                
-                                                    {{error}}
-                                               
-                                            </p>
-                                        </div>  
-                                        {% endif %}   
-                                        
-                                        <div class="form-group text-center m-1 py-2">
-                                            <div class="col-sm-offset-2">
-
-                                                <input type="submit" name="sign_in" id="login" value="login"
-                                                    class="btn primary text-bg-primary px-5" />
-
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <!-- end login form  -->
-
-                                </div>
-
-
-                                <div class="row">
-
-                                    <div class="center  align-content-center justify-content-center d-flex">
-                                        <a class="form-group text-center py-2">
-                                            <div class="container">
-
-                                                
-                                                    <b>
-                                                        <a href={% url 'home:signup' %}>
-                                                        <p
-                                                            class="text-center text-decoration-underline font-weight-bold px-5">
-
-                                                            click here to register
-
-                                                        </p>
-                                                        </a>
-                                                    </b>     
-                                                
-                                                    
-                                            </div>
-                                        </a>
-                                    </div>
-
-                                </div>
-                            </div>
-
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-soft" role="alert">
+                            {{ message }}
                         </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" action="{% url 'home:login' %}" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="username" id="username" placeholder="Username" autocomplete="username" required>
+                            <label for="username">Username</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" autocomplete="current-password" required>
+                            <label for="password">Password</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2">Sign In</button>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="small text-muted mb-2">New to the troop?</p>
+                        <a class="btn btn-outline-light w-100" href="{% url 'home:signup' %}">
+                            Create an account
+                        </a>
+                        <p class="small text-muted mt-3 mb-0">Having trouble signing in? Contact your troop administrator for assistance.</p>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-</div>
-
-
-<!-- alert section -->
-<div id="alert-box"></div>
-
-<style>
-    #alert-box {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-</style>
-<script>
-    function showAlert(message) {
-        var alertBox = document.createElement("div");
-        alertBox.innerHTML = message;
-        alertBox.classList.add("alert");
-        document.getElementById("alert-box").appendChild(alertBox);
-    }
-</script>
-<script>
-    {% if messages %}
-    {% for message in messages %}
-    showAlert("{{ message }}");
-    {% endfor %}
-    {% endif %}
-</script>
-
+    </div>
+</section>
 
 {% endblock %}

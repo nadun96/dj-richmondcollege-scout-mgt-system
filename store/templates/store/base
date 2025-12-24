@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
 
     {% load static %}
+    <link rel="stylesheet" href="{% static 'css/app-theme.css' %}">
+
     <!-- other css -->
     <link rel="stylesheet" href="{% static 'css/storenavbar.css' %}">
 
@@ -84,6 +86,6 @@
 
 
     <!-- boot box JS  -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootbox@6.1.0/dist/bootbox.all.min.js"></script>
 
 </html>

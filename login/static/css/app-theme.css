@@ -165,6 +165,47 @@ nav.app-subnav {
   box-shadow: var(--shadow-soft);
 }
 
+.list-group-item {
+  background: rgba(15, 23, 42, 0.55);
+  color: var(--color-text);
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+.list-group-item.active,
+.list-group-item:hover {
+  background: rgba(35, 70, 255, 0.28);
+  color: #fff;
+}
+
+.dropdown-menu {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.dropdown-item {
+  color: rgba(226, 232, 240, 0.9);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background: rgba(35, 70, 255, 0.18);
+  color: #fff;
+}
+
+.btn-light {
+  background: rgba(226, 232, 240, 0.1);
+  border-color: rgba(148, 163, 184, 0.25);
+  color: var(--color-text);
+}
+
+.btn-light:hover,
+.btn-light:focus {
+  background: rgba(226, 232, 240, 0.2);
+  color: #fff;
+}
+
 .table thead {
   background: rgba(148, 163, 184, 0.08);
   color: var(--color-text);

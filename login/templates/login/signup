@@ -2,21 +2,27 @@
 {% block title %}{{register}}{% endblock %}
 {% block content %}
 <!-- Start of main -->
-<div class="container-fluid">
+<section class="auth-hero">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10">
+                <div class="glass-card p-4 p-lg-5">
+                    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center mb-4">
+                        <div>
+                            <span class="gradient-pill"><i class="fa-solid fa-user-plus"></i> Join The Troop</span>
+                            <h1 class="h3 text-white mt-3 mb-0">Member Registration Form</h1>
+                            <p class="text-muted mb-0">Fill out your details to start your scouting journey.</p>
+                        </div>
+                        <span class="badge-soft mt-3 mt-lg-0">Takes ~5 minutes</span>
+                    </div>
 
-    <div class="container mt-0 pt-3">
-
-        <!-- Start of form -->
-        <form name="Student_form" class="form form-group" action="" method="post" enctype="multipart/form-data"
-            id="registerForm">
+                    <!-- Start of form -->
+                    <form name="Student_form" class="form form-group" action="" method="post" enctype="multipart/form-data"
+                        id="registerForm">
 
             {% csrf_token %}
 
-            <div class="row mt-0 mb-2">
-                <p class="h3 text-center text-capitalize ">Member Registration Form</p>
-            </div>
-
-            <div class="row">
+            <div class="row g-4">
 
                 <!-- div left section -->
                 <div class="col-lg-6">
@@ -24,14 +30,14 @@
                     <!-- Name input -->
                     <div class="input-group mb-2 ">
                         <span class="input-group-text w-25">Surname</span>
-                        <input class="form-control text-bg-primary bg-opacity-10 text-dark" type="text"
+                        <input class="form-control" type="text"
                             name="student_surname" placeholder="Ex: Bandara" required>
                     </div>
 
                     <!-- Initials input -->
                     <div class="input-group mb-2 ">
                         <span class="input-group-text w-25">Initials</span>
-                        <input class="form-control text-bg-primary bg-opacity-10 text-dark" type="text"
+                        <input class="form-control" type="text"
                             name="student_initials" placeholder="Ex: L.A.M.N.U" maxlength="10" required>
                     </div>
 
@@ -39,7 +45,7 @@
                     <!-- birthday input  -->
                     <div class=" input-group mb-2 ">
                         <span class="input-group-text w-25">Birthday</span>
-                        <input class="form-control text-bg-primary bg-opacity-10 text-dark" type="date"
+                        <input class="form-control" type="date"
                             name="student_birthday" id="student_birthday" onchange="getAge()" required>
                     </div>
 
@@ -64,7 +70,7 @@
                     <!-- entrance number -->
                     <div class="input-group mb-2 ">
                         <span class="input-group-text w-50" for="entrance">Entrance Number </span>
-                        <input class="form-control text-dark text-bg-primary bg-opacity-10" type="number"
+                        <input class="form-control" type="number"
                             name="student_entrance" placeholder="Ex: 223423" required />
                     </div>
 
@@ -72,14 +78,14 @@
                     <!-- photo input -->
                     <div class="input-group mb-2 ">
                         <span for="photo" class="input-group-text w-50" for="entrance">Upload Photo</span>
-                        <input class="form-control text-bg-primary bg-opacity-10 text-dark text-opacity-50" type="file"
+                        <input class="form-control" type="file"
                             name="student_photo" placeholder="Click to Upload" required />
                     </div>
 
                     <!-- residence -->
                     <div class="input-group mb-2 ">
                         <span class="input-group-text w-25" for="residance">Residence</span>
-                        <input class="form-control text-bg-primary bg-opacity-10 text-dark text-opacity-50"
+                        <input class="form-control"
                             type="textarea" name="student_residence" cols="4" rows="5"
                             placeholder="type current address" required>
                     </div>
@@ -87,21 +93,21 @@
                     <!-- fathers name -->
                     <div class="input-group mb-2 ">
                         <span class="input-group-text w-25" for="guardian">Guardian</span>
-                        <input class="form-control text-bg-primary bg-opacity-10 text-dark text-opacity-50" type="text"
+                        <input class="form-control" type="text"
                             name="student_father" placeholder="type guardian/Father's name" required>
                     </div>
 
                     <!-- email -->
                     <div class="input-group mb-2 ">
                         <span class="input-group-text w-25" for="email">Email</span>
-                        <input class="form-control text-bg-primary bg-opacity-10 text-dark text-opacity-50" type="email"
+                        <input class="form-control" type="email"
                             name="student_email" placeholder="type guardian/Fathers 's email">
                     </div>
 
                     <!-- fathers number -->
                     <div class="input-group mb-2 ">
                         <span class="input-group-text w-25" for="gtele">Contact</span>
-                        <input class="form-control text-bg-primary bg-opacity-10 text-dark text-opacity-50"
+                        <input class="form-control"
                             name="student_contact" placeholder="type guardian/Fathers 's telephone" type="tel" required>
                     </div>
 
@@ -120,14 +126,14 @@
                     <!-- birth certificate -->
                     <div class="input-group mb-2 ">
                         <span class="input-group-text w-50" for="Certificate">Birth Certificate</span>
-                        <input class="form-control text-bg-primary bg-opacity-10 text-dark text-opacity-50" type="file"
+                        <input class="form-control" type="file"
                             name="student_certificate" placeholder="Upload birth Certificate here" />
                     </div>
 
                     <!-- letter -->
                     <div class="input-group mb-2 ">
                         <span class="input-group-text w-50" for="letter">Permission Letter</span>
-                        <input class="form-control text-bg-primary bg-opacity-10 text-dark text-opacity-50" type="file"
+                        <input class="form-control" type="file"
                             name="student_letter" placeholder="Upload Permission letter to here" />
                     </div>
 
@@ -155,14 +161,14 @@
                     <!-- password -->
                     <div class="input-group mb-2 ">
                         <span class="input-group-text w-25" for="sports">Password</span>
-                        <input class="form-control text-bg-warning bg-opacity-25" type="password"
+                        <input class="form-control" type="password"
                             name="student_password" name="password" placeholder="type your password" required />
                     </div>
 
                     <!-- Confirm -->
                     <div class="input-group mb-2 ">
                         <span class="input-group-text w-25" type="text" for="student_username">Confirm</span>
-                        <input class="form-control text-bg-warning bg-opacity-25" type="password"
+                        <input class="form-control" type="password"
                             placeholder="type password again" required />
                     </div>
 
@@ -173,7 +179,7 @@
             <div class="row">
 
                 <div class="col-lg-12 text-center">
-                    <button class=" btn btn-primary btn-lg px-5 my-3" type="submit" value="submit" onclick="">
+                    <button class="btn btn-primary btn-lg px-5 my-3" type="submit" value="submit" onclick="">
                         Submit
                     </button>
                 </div>
@@ -274,8 +280,11 @@
                 <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
             </div>
         </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
 
 
 
